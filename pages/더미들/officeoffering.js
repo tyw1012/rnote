@@ -4,15 +4,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Button, Header, } from 'react-native-elements'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PopupDialog from 'react-native-popup-dialog';
-import PopupList from '../commonComponents/popupList';
-import SegmentList from '../commonComponents/segmentList';
+import PopupList from './popupList';
+import SegmentList from './segmentList';
 import FilterModalOffice from './filterModalOffice';
 import Swipeout from 'react-native-swipeout';
 import call from 'react-native-phone-call';
-import FolderListPopup from '../commonComponents/folderListPopup';
+import FolderListPopup from './folderListPopup';
 import getBookmark from './getBookmark';
 import ListItem from './listItem';
-import SubHeader from '../commonComponents/SubHeader';
+import SubHeader from './SubHeader';
 
 var folderList = [];
 var swipeSettings;

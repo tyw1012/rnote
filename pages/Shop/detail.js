@@ -3,26 +3,44 @@ import { AppRegistry,View,Text,StyleSheet,ActivityIndicator,ScrollView,Touchable
 import MapView from 'react-native-maps';
 import call from 'react-native-phone-call'
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Header } from 'react-native-elements'
+// import { Header } from 'react-native-elements'
 import ShopDetail from './shopDetail';
 // import StreetView from 'react-native-streetview';
 var self;
 
 export default class detail extends Component{
 static navigationOptions= ({navigation}) =>({
-          
-    header:null,
-    // title: '매물정보',
-    // headerTitleStyle: {color:'white',fontSize:16, },
-    // headerStyle: {
-    //   backgroundColor: '#3b4db7',
-    //   elevation:0,
-    //   height: 52,
+     
+      title: `${navigation.state.params.wr_subject}`,
+      headerTitleStyle: {color:'white',fontSize:18, fontWeight:'bold'},
+      headerStyle: {
+        backgroundColor: '#3b4db7',
+        elevation:0,
+        height: 52,          
+      },
+      headerTintColor: 'white',
+      headerRight:   navigation.state.params.mode=='edit'? <TouchableOpacity
+      style={{width:50,height:50,backgroundColor:'#3b4db7', marginRight:-10,justifyContent:'center', alignItems:'center'}}
+      onPress={()=>{
+          if(self.state.segment=='임대'){
+              self.state.wr_rec_sectors.split(' ');
+              self.props.navigation.navigate('WriteofferRent',{...self.state, wr_rec_sectors: self.state.wr_rec_sectors.split(' ')})
+           }
+           else if(this.state.segment=='매매'){
+              self.props.navigation.navigate('WriteofferSell',selfthis.state)
+           }
+      }}>                
+      <Icon
+      name="md-create"
+      size={25}
+      style={{color:'#fff', marginRight: 20,}}
+      /> 
+      </TouchableOpacity> :   <Icon
+                            name="md-create"
+                            size={25}
+                            style={{color:'rgba(255,255,255,0.3)', marginRight:20}}/> 
       
-      
-    // },
-    // headerTintColor: 'white',
-    });
+});
 
 static updateInformationFromOutside(params){
     self.setState({...params});
@@ -34,6 +52,8 @@ static updateInformationFromOutside(params){
             isLoaded: false,
                         
         };
+
+ self = this;
     }
     
     componentWillMount(){
@@ -45,7 +65,7 @@ static updateInformationFromOutside(params){
           })
         this.setState({isLoaded: true});
        
-    self = this;
+    
        
     }
 
@@ -76,73 +96,7 @@ static updateInformationFromOutside(params){
         )
     }  
 
-    _renderHeader(){
 
-        if(this.state.mode=='edit'){
-
-            return(
-                
-                        <Header
-                        outerContainerStyles={{height: 52, backgroundColor: '#3b4db7', borderBottomWidth:0,}}
-                        innerContainerStyles={{ alignItems:'center'}}
-                        leftComponent={ 
-                            <Icon
-                            name="md-arrow-back"
-                            size={25}
-                            style={{color:'#fff', marginLeft:5}}
-                            onPress={()=>{this.props.navigation.goBack(null); }}
-                            />
-                        }
-                        centerComponent={ <Text style={{color:'#fff',fontSize:18, fontWeight:'bold',marginLeft:5,}}>{this.state.wr_subject}</Text>}
-                        rightComponent={ 
-                            <TouchableOpacity
-                            style={{width:50,height:50,backgroundColor:'#3b4db7', marginRight:-10,justifyContent:'center', alignItems:'center'}}
-                            onPress={()=>{
-                                if(this.state.segment=='임대'){
-                                    this.state.wr_rec_sectors.split(' ');
-                                    this.props.navigation.navigate('WriteofferRent',{...this.state, wr_rec_sectors: this.state.wr_rec_sectors.split(' ')})
-                                 }
-                                 else if(this.state.segment=='매매'){
-                                    this.props.navigation.navigate('WriteofferSell',this.state)
-                                 }
-                            }}>                
-                            <Icon
-                            name="md-create"
-                            size={25}
-                            style={{color:'#fff'}}
-                            /> 
-                            </TouchableOpacity>                           
-                        } />                       
-                   )
-        }
-        else{
-            return(
-                        <Header
-                        outerContainerStyles={{height: 52, backgroundColor: '#3b4db7', borderBottomWidth:0,}}
-                        innerContainerStyles={{ alignItems:'center'}}
-                        leftComponent={ 
-                            <Icon
-                            name="md-arrow-back"
-                            size={25}
-                            style={{color:'#fff', marginLeft:5}}
-                            onPress={()=>{this.props.navigation.goBack(null); }}
-                            />
-                        }
-                        centerComponent={ <Text style={{color:'#fff',fontSize:18, fontWeight:'bold', marginLeft:5,}}>{this.state.wr_subject}</Text>}
-                        rightComponent={ 
-                
-                            <Icon
-                            name="md-create"
-                            size={25}
-                            style={{color:'rgba(255,255,255,0.3)', marginRight:5}}/> 
-                           
-                        }
-                        />
-            )
-        }
-    }
-
-   
 	render(){
         
         if(!this.state.isLoaded){
@@ -156,7 +110,6 @@ static updateInformationFromOutside(params){
         else{
             return(
              <View style={styles.container}>
-                {this._renderHeader()}
                 <ScrollView >
                     
                     <View style={styles.map}>

@@ -33,16 +33,17 @@ header("Content-Type: text/html; charset=UTF-8");
 	  
     
     $memberID = $obj['memberID'];
-    $memberName = $obj['memberName'];
-    $contact = $obj['contact'];
-    
+    $wr_id = $obj['wr_id'];
+       
     $wr_subject = $obj['wr_subject'];
     $wr_address = $obj['wr_address'];    
     $wr_seller_contact = $obj['wr_seller_contact'];
     
     $wr_address_sale = $obj['wr_address_sale'];
+    $wr_area_p = $obj['wr_area_p'];
+    $wr_area_m = $obj['wr_area_m'];
     $wr_area_p_all = $obj['wr_area_p_all'];
-    $wr_area_m_all = $obj['wr_area_m_all']; 
+    $wr_area_m_all = $obj['wr_area_m_all'];
     $wr_sale_price = $obj['wr_sale_price'];
     $wr_p_sale_price = $obj['wr_p_sale_price'];
     $wr_sale_price_b = $obj['wr_sale_price_b'];
@@ -70,8 +71,8 @@ header("Content-Type: text/html; charset=UTF-8");
     $wr_posy = $obj['wr_posy'];
     $wr_code = $obj['wr_code'];
 
-    $wr_datetime = date('Y-m-d H:i:s');
-    $wr_num = get_next_num('g5_write_'.$memberID);
+    // $wr_datetime = date('Y-m-d H:i:s');
+    // $wr_num = get_next_num('g5_write_'.$memberID);
     
 
     $response = array();
@@ -82,17 +83,16 @@ header("Content-Type: text/html; charset=UTF-8");
 //   $sql_query = "INSERT IGNORE INTO g5_write_$memberID (wr_subject, wr_address, wr_sale_area, wr_renter_contact, wr_lessor_contact, wr_rec_sectors, wr_floor, wr_area_p, wr_rent_deposit, wr_m_rate, wr_premium_o, wr_premium_b, wr_memo, wr_content, wr_datetime, wr_posx, wr_posy, wr_sale_type, wr_important) VALUES ('$wr_subject', '$wr_address', '$wr_sale_area', '$wr_renter_contact', '$wr_lessor_contact', '$wr_rec', '$wr_floor', '$wr_area_p', '$wr_rent_deposit', '$wr_m_rate', '$wr_premium_o', '$wr_premium_b', '$wr_memo', '$wr_content', '$wr_datetime', '$wr_posx', '$wr_posy', 1, 2, )";
 
 
-  $sql_query = "INSERT IGNORE INTO g5_write_$memberID SET 
-  wr_writer_id='$memberID',
-  wr_writer='$memberName',
-  wr_hp = '$contact',
-  board_list= 3,
+  $sql_query = "UPDATE g5_write_$memberID SET 
+  
 
   wr_subject='$wr_subject',
   wr_address='$wr_address',  
   wr_seller_contact='$wr_seller_contact',
    
   wr_address_sale='$wr_address_sale',
+  wr_area_p='$wr_area_p',
+  wr_area_m='$wr_area_m',
   wr_area_p_all='$wr_area_p_all', 
   wr_area_m_all='$wr_area_m_all',
   wr_sale_price='$wr_sale_price',
@@ -104,7 +104,7 @@ header("Content-Type: text/html; charset=UTF-8");
   wr_year_rate = '$wr_year_rate',
   wr_loan = '$wr_loan',
   wr_int_rate = '$wr_int_rate',
-   wr_mon_income = '$wr_mon_income',
+  wr_mon_income = '$wr_mon_income',
   wr_year_income = '$wr_year_income',
   wr_year_int='$wr_year_int',
   wr_mon_int='$wr_mon_int',
@@ -119,18 +119,9 @@ header("Content-Type: text/html; charset=UTF-8");
   wr_content = '$wr_content',
   
   wr_posx = '$wr_posx',
-  wr_posy = '$wr_posy',
-  wr_datetime='$wr_datetime',
-  wr_num = '$wr_num',
-  wr_sale_type= 2, 
-  wr_important= 2,
-  wr_code = '$wr_code'
+  wr_posy = '$wr_posy', wr_code = '$wr_code' WHERE wr_id = '$wr_id'  
   ";
 
-
- 
-
-  
   function checkValidity(){
       
     global $response;  
@@ -181,8 +172,7 @@ header("Content-Type: text/html; charset=UTF-8");
 
   if(checkValidity()){
     $result= mysqli_query($con, $sql_query) or die("Error in Selecting " . mysqli_error($con));
-    $wr_id = mysqli_insert_id($con);
-    mysqli_query($con, "update g5_write_$memberID set wr_parent = '$wr_id', wr_o_id = '$wr_id' where wr_id='$wr_id'");
+   
     echo json_encode($response);
   }
   else{

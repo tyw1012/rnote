@@ -41,8 +41,10 @@ header("Content-Type: text/html; charset=UTF-8");
     $wr_seller_contact = $obj['wr_seller_contact'];
     
     $wr_address_sale = $obj['wr_address_sale'];
+    $wr_area_p = $obj['wr_area_p'];
+    $wr_area_m = $obj['wr_area_m'];
     $wr_area_p_all = $obj['wr_area_p_all'];
-    $wr_area_m_all = $obj['wr_area_m_all']; 
+    $wr_area_m_all = $obj['wr_area_m_all'];
     $wr_sale_price = $obj['wr_sale_price'];
     $wr_p_sale_price = $obj['wr_p_sale_price'];
     $wr_sale_price_b = $obj['wr_sale_price_b'];
@@ -86,7 +88,7 @@ header("Content-Type: text/html; charset=UTF-8");
   wr_writer_id='$memberID',
   wr_writer='$memberName',
   wr_hp = '$contact',
-  board_list= 3,
+  board_list= 4,
 
   wr_subject='$wr_subject',
   wr_address='$wr_address',  
@@ -95,6 +97,8 @@ header("Content-Type: text/html; charset=UTF-8");
   wr_address_sale='$wr_address_sale',
   wr_area_p_all='$wr_area_p_all', 
   wr_area_m_all='$wr_area_m_all',
+  wr_area_p='$wr_area_p',
+  wr_area_m='$wr_area_m',
   wr_sale_price='$wr_sale_price',
   wr_p_sale_price='$wr_p_sale_price',
   wr_sale_price_b='$wr_sale_price_b',
@@ -162,7 +166,7 @@ header("Content-Type: text/html; charset=UTF-8");
         return false;
       }
 
-      if(strlen($wr_area_p_all)<=0){
+      if(strlen($wr_area_p)<=0){
         $response['error'] = true;
         $response['item'] = '평';
         return false;

@@ -13,6 +13,7 @@ header("Content-Type: text/html; charset=UTF-8");
 
 	$obj = json_decode($json,true);
    
+    $selectedOfferingType= $obj['selectedOfferingType'];
     $memberID = $obj['memberID'];
     $level = $obj['level'];
     $boss = $obj['boss'];

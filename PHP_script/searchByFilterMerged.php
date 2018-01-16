@@ -12,7 +12,8 @@ header("Content-Type: text/html; charset=UTF-8");
 	$json = file_get_contents('php://input');
 
 	$obj = json_decode($json,true);
-   
+    
+    $selectedOfferingType= $obj['selectedOfferingType'];
     $memberID = $obj['memberID'];
     $memberName = $obj['memberName'];
     $level = $obj['level'];

@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
 import { Platform, BackHandler, ToastAndroid } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
-import HomeScreen from './home';
-import Login from './login';
-import Register from './register';
-import Register_emp from './register_emp';
-import Home_emp from './home_emp';
-import Agreement from './agreement';
-import Agreement_text_1 from './agreement_text_1';
-import Agreement_text_2 from './agreement_text_2';
-import FunctionList from './functionList';
-import Employee from './employee';
+// import HomeScreen from './home';
+import Login from './login/login';
+import Register from './Register/register';
+import Register_emp from './Register/register_emp';
+// import Home_emp from './home_emp';
+import Agreement from './Register/agreement';
+import Agreement_text_1 from './Register/agreement_text_1';
+import Agreement_text_2 from './Register/agreement_text_2';
+import FunctionList from './commonComponents/functionList';
+import Employee from './commonComponents/employee';
 
 // import Writeoffer_sell_fourth from './writeoffer_sell_fourth';
 // import Writetest from './writetest';
@@ -33,20 +33,20 @@ function getCurrentRouteName(navigationState) {
   
 /////////////////////////// 상가시작 ///////////////////////////////////////////////////
 
-import Myoffering from './myoffering';
-import Officeoffering from './officeoffering';
-import GetBookmark from './getBookmark';
-import BookmarkList from './bookmarkList';
-import Detail from './detail';
-import Profile from './profile';
-import Writeoffer from './writeoffer';
-import Writeoffer_second from './writeoffer_second';
-import Writeoffer_third from './writeoffer_third';
-import Writeoffer_fourth from './writeoffer_fourth';
-import Writeoffer_sell from './writeoffer_sell';
-import Writeoffer_sell_second from './writeoffer_sell_second';
-import Writeoffer_sell_third from './writeoffer_sell_third';
-import Writeoffer_sell_fourth from './writeoffer_sell_fourth';
+import Myoffering from './Shop/myoffering';
+import Officeoffering from './Shop/officeoffering';
+import GetBookmark from './Shop/getBookmark';
+import BookmarkList from './Shop/bookmarkList';
+import Detail from './Shop/detail';
+import Profile from './Shop/profile';
+import Writeoffer from './Shop/writeoffer';
+import Writeoffer_second from './Shop/writeoffer_second';
+import Writeoffer_third from './Shop/writeoffer_third';
+import Writeoffer_fourth from './Shop/writeoffer_fourth';
+import Writeoffer_sell from './Shop/writeoffer_sell';
+import Writeoffer_sell_second from './Shop/writeoffer_sell_second';
+import Writeoffer_sell_third from './Shop/writeoffer_sell_third';
+import Writeoffer_sell_fourth from './Shop/writeoffer_sell_fourth';
 
  const WriteOfferRentNavigator = TabNavigator({
 	 Basic: { 
@@ -350,10 +350,7 @@ import GetBookmark_land from './Land/getBookmark';
 import BookmarkList_land from './Land/bookmarkList';
 import Detail_land from './Land/detail';
 import Profile_land from './Land/profile';
-import Writeoffer_land from './Land/writeoffer';
-import Writeoffer_second_land from './Land/writeoffer_second';
-import Writeoffer_third_land from './Land/writeoffer_third';
-import Writeoffer_fourth_land from './Land/writeoffer_fourth';
+
 import Writeoffer_sell_land from './Land/writeoffer_sell';
 import Writeoffer_sell_second_land from './Land/writeoffer_sell_second';
 import Writeoffer_sell_third_land from './Land/writeoffer_sell_third';

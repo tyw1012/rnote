@@ -7,12 +7,13 @@ import Swipeout from 'react-native-swipeout';
 import PopupDialog from 'react-native-popup-dialog';
 import call from 'react-native-phone-call';
 import getBookmark from './getBookmark';
-import SegmentList from '../commonComponents/segmentList';
-import FolderListPopup from '../commonComponents/folderListPopup';
-import PopupList from '../commonComponents/popupList';
+import SegmentList from './segmentList';
+import FolderListPopup from './folderListPopup';
+import PopupList from './popupList';
 import FilterModal from './filterModal';
+// import FilterModalTest from './FilterModalTest';
 import ListItem from './listItem';
-import SubHeader from '../commonComponents/SubHeader';
+import SubHeader from './SubHeader';
 
 const options = ['임대', '매매', '거래완료'];
 var folderList = [];
