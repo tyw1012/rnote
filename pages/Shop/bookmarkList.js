@@ -7,7 +7,7 @@ import Swipeout from 'react-native-swipeout';
 import PopupDialog from 'react-native-popup-dialog';
 import call from 'react-native-phone-call';
 import Icon from 'react-native-vector-icons/Entypo';
-
+import MapView from 'react-native-maps';
 import SegmentList from '../commonComponents/segmentList';
 
 import PopupList from '../commonComponents/popupList';
@@ -19,7 +19,7 @@ var swipeSettings;
 var previous;
 var self;
 
-export default class bookmarkDetail extends Component{
+export default class bookmarkList extends Component{
 static navigationOptions= ({navigation}) =>({
       // header: null,
      
@@ -32,11 +32,16 @@ static navigationOptions= ({navigation}) =>({
        },
       headerTintColor: 'white',    
       headerRight:  <TouchableOpacity
-      style={{marginRight: 15}}
+      style={{marginRight: 20}}
       onPress={()=>{
-       self.setState({onWriteOfferMode:!self.state.onWriteOfferMode,})
+      //  self.props.navigation.navigate('BookmarkMap', self.state)
+      self.setState({mapVisible:!self.state.mapVisible})
      }}>
-             
+             <Icon
+             name="location"
+             size={23}
+             style={{color:'#fff', }}
+             />
      </TouchableOpacity>,    
       swipeEnabled:false,
   });
@@ -76,20 +81,29 @@ static navigationOptions= ({navigation}) =>({
       arrayStart: 0,
       arrayEnd: 24,
       filteredData:[],
+      mapVisible:false,
     
       
     };
     //스태틱 함수용
     self=this;
+    this.marker=[];
     
   }
   componentWillMount(){
-    console.log('willmount');
+    
     const {params} = this.props.navigation.state;
     this.setState(params, function(){
 
-      this.setState({filteredData: this.state.data.filter(function(d,i){return self.state.arrayStart<=i && i<=self.state.arrayEnd}),
-                     filteredData_all : this.state.data.filter(function(d,i){return self.state.arrayStart<=i && i<=self.state.arrayEnd}) })
+      this.setState({
+        filteredData: this.state.data.filter(function(d,i){return self.state.arrayStart<=i && i<=self.state.arrayEnd}),
+        filteredData_all : this.state.data.filter(function(d,i){return self.state.arrayStart<=i && i<=self.state.arrayEnd}) 
+      
+      }, function(){
+         this.state.filteredData[0] == undefined?
+          this.setState({mapCoordX: 126.8739597, mapCoordY: 37.5643456,}):
+          this.setState({mapCoordX: this.state.filteredData[0].wr_posx, mapCoordY: this.state.filteredData[0].wr_posy})
+      })
       
     })
 
@@ -401,6 +415,10 @@ static navigationOptions= ({navigation}) =>({
     }
     
   }
+  _panToSelection(item){
+    this.setState({mapCoordX: item.wr_posx, mapCoordY: item.wr_posy })
+    this.marker[item.wr_id].showCallout();
+  }
   _toggle(item){
    
     var offering = this.state.myoffering.slice(0);
@@ -580,8 +598,8 @@ static navigationOptions= ({navigation}) =>({
         <TouchableOpacity style={{ flexDirection: 'row', borderBottomWidth:1, borderTopWidth:1,borderColor:'#ddd',
        padding: 12, marginBottom: 4, backgroundColor:'#fff', justifyContent:'space-between' }}
           onPress={()=>{ 
-            if(this.state.onCheckMode){
-              this._toggle(item)
+            if(this.state.mapVisible){
+              this._panToSelection(item)
             }
             else{
               
@@ -654,6 +672,52 @@ static navigationOptions= ({navigation}) =>({
     )
 
   }
+  _renderMapView(){
+    if(this.state.mapVisible){
+      return (
+      <View style={{height:240}}>
+        <MapView style ={styles.mapView}
+        region={{
+            latitude: parseFloat(this.state.mapCoordY),
+            longitude: parseFloat(this.state.mapCoordX),
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
+            
+        }}
+        >
+  
+        {this.state.filteredData.map(data => (
+            <MapView.Marker
+            key={data.wr_id}
+            coordinate={{
+                latitude: parseFloat(data.wr_posy),
+                longitude: parseFloat(data.wr_posx)
+            }}
+            title={data.wr_subject}
+            ref = {c => this.marker[data.wr_id]=c}
+            // description={data.wr_subject}
+            >
+              
+            </MapView.Marker>
+        ))}
+  
+        {/* <MapView.Marker
+            coordinate ={{
+                latitude: parseFloat(this.state.wr_posy),
+                longitude: parseFloat(this.state.wr_posx)
+                
+            }}
+        /> */}
+  
+      </MapView> 
+        </View>
+      )
+     
+  
+    
+    }
+    
+  }
 	render(){
 
     return(
@@ -673,9 +737,18 @@ static navigationOptions= ({navigation}) =>({
                     onChangeText= {input => {
                         
                         filtered = this.state.data.filter(function(val){return val.wr_subject.includes(input.toUpperCase()) || val.wr_subject.includes(input.toLowerCase())});
+                        filtered[0]==undefined?
+                        this.setState({
+                          filteredData:filtered,
+                          isFiltered:true,
+                          mapCoordX: 126.8739597,
+                          mapCoordY: 37.5643456,                       
+                        }):
                         this.setState({
                             filteredData:filtered,
-                            isFiltered:true
+                            isFiltered:true,
+                            mapCoordX: filtered[0].wr_posx,
+                            mapCoordY: filtered[0].wr_posy
                         })
                         if (input==''){
 
@@ -694,6 +767,11 @@ static navigationOptions= ({navigation}) =>({
                     />
                 </View>
         </View>
+    
+        <View>
+                      {this._renderMapView()}
+        </View>
+     
         
         <FlatList data ={this.state.filteredData}
                 ref={(ref) => { this.flatListRef = ref; }}
@@ -719,7 +797,13 @@ const styles = StyleSheet.create({
     display:'flex',
     flex:1,
     backgroundColor:'#f1f1f1'
-	},
+  },
+  mapView:{
+    position: 'relative',
+    width:'100%',
+    flex:1,
+    height:240,
+},
   buttonWrapper:{
     flexDirection: 'row',
     // alignItems:'center',
@@ -786,7 +870,8 @@ const styles = StyleSheet.create({
 	pageName:{
 		margin:10,fontWeight:'bold',
 		color:'#000', textAlign:'center'
-	},
+  },
+  
 
 
 });

@@ -37,6 +37,7 @@ import Myoffering from './Shop/myoffering';
 import Officeoffering from './Shop/officeoffering';
 import GetBookmark from './Shop/getBookmark';
 import BookmarkList from './Shop/bookmarkList';
+import BookmarkMap from './Shop/bookmarkMap';
 import Detail from './Shop/detail';
 import Profile from './Shop/profile';
 import Writeoffer from './Shop/writeoffer';
@@ -235,10 +236,13 @@ const WriteOfferSellNavigator = TabNavigator({
 
  const BookmarkStack = StackNavigator({
 	GetBookmark: {screen: GetBookmark},
-	BookmarkList : {screen: BookmarkList},
+	BookmarkList : {screen: BookmarkList, 
+					navigationOptions:{tabBarVisible:false,}},
+	BookmarkMap : {screen: BookmarkMap, 
+					navigationOptions:{tabBarVisible:false,}},
 	Detail:{screen: Detail,
-		navigationOptions:{tabBarVisible:false,}
-	},
+					navigationOptions:{tabBarVisible:false,}
+	},		
 
 },)
 
