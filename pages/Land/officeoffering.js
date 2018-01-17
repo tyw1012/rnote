@@ -16,7 +16,7 @@ import SubHeader from '../commonComponents/SubHeader';
 
 var folderList = [];
 var swipeSettings;
-const options = ['임대', '매매', '거래완료'];
+const options = ['매매', '거래완료'];
 var previous;
 var self;
 
@@ -60,7 +60,7 @@ static navigationOptions= ({navigation}) =>({
       myoffering_all:[],
       myoffering_num:30,
       modalVisible: false,
-      selectedSegment: '임대',
+      selectedSegment: '매매',
       selectedSegment_before:'',
       isFiltered:false,
       filterText:'통합검색',
@@ -98,7 +98,7 @@ static navigationOptions= ({navigation}) =>({
   componentWillMount(){
     const {params} = this.props.navigation.state;
     this.setState(params, function(){
-      // console.log(this.state);
+      console.log(this.state);
     })
   }
   
@@ -392,7 +392,7 @@ static navigationOptions= ({navigation}) =>({
   _onRefresh = () =>{
     if(!this.state.isFiltered){
         
-      const {memberID, countPerLoad, myoffering_from,level,boss,selectedSegment} = this.state;
+      const {memberID, countPerLoad, myoffering_from,level,boss,selectedSegment,selectedOfferingType} = this.state;
       this.setState({myoffering_from: 0, isRefreshing: true, }, function(){
         fetch('http://real-note.co.kr/app3/getOfficeOfferingMerged.php',{
           method:'post',
@@ -514,6 +514,7 @@ static navigationOptions= ({navigation}) =>({
 
       return(
         <Swipeout {...swipeSettings}
+        sensitivity={20}
         backgroundColor='#f1f1f1'>
 
             <ListItem item = {item}
@@ -841,178 +842,193 @@ _showSegmentDialog(){
       )
     }
     else{
-      return(
-  	     <View style={styles.container}>
 
-            {this.state.isSegmentChanging?this._renderIndicator():null}
-            
-            {/* 헤더 */}
-            
-              {/* {this._renderHeader()} */}
-           
-
-
-          {/* 통화팝업 */}
-            <PopupDialog
-            ref={(popupDialog) => { this.popupDialog = popupDialog; }}            
-            dialogStyle ={{elevation:2, width: '80%', height: 80,}}
-            >
-              
-              <PopupList data={this.state.longPressed}
-              from = 'officeoffering'
-              popupText="담당자에게 전화걸기" 
-            />
-            
-            </PopupDialog>
-           {/* 통화팝업 */}
-
-            {/* 세그먼트팝업 */}
-            <PopupDialog
-            ref={(popupDialog) => { this.segmentDialog = popupDialog; }}            
-            dialogStyle ={{elevation:2, width: '60%', height: 134, position:'absolute', top: 100, borderRadius:0, justifyContent:'center'}}
-            
-            >
-              
-              <SegmentList 
-              selectedSegment = {this.state.selectedSegment}
-              options={options}
-              handler ={this.setSelectedOption.bind(this)}
-              />
-            
-            </PopupDialog>
-           {/* 세그먼트팝업 */}
-
-           <PopupDialog
-            ref={(popupDialog) => { this.folderListDialog = popupDialog; }}            
-            dialogStyle ={{elevation:2, width: '70%', height: 350, position:'absolute', top: 60}}
-            
-            >
-              
-              <FolderListPopup 
-              memberID = {this.state.memberID}
-              boss ={this.state.boss}
-              folderList = {folderList}
-              selectedFolder = {this.state.selectedFolder}
-              selectHandler ={this._chooseFolder.bind(this)}
-              submitHandler={this._insertToFolder.bind(this)}
-              cancelHandler={()=>{this.folderListDialog.dismiss()}}
-              />
-            
-            </PopupDialog>
-
-           <TouchableOpacity style={{borderRadius:27.5, backgroundColor: '#3b4db7', position: 'absolute',
-           bottom: 20, right: 20, width: 55, height: 55, zIndex: 10, elevation: 5, alignItems: 'center'
-          , justifyContent: 'center',}}
-            onPress={()=>{
-              // if(this.state.isFiltered){
-
-              //   // this.setState(previousState => {
-              //   //   previous = previousState.selectedSegment;
-                        
-              //   //   return {
-                        
-              //   //     filterText:'통합검색', isFiltered:false, myoffering:this.state.myoffering_all
-              //   //   };
-              //   // })
-              // this.setState({filterText:'통합검색', isFiltered:false, myoffering:this.state.myoffering_all, selectedSegment: this.state.selectedSegment_before })
-              // this.state.offering_count_fltr!=0?
-              // this.flatListRef.scrollToIndex({animated: true, index: 0}):null;
-              // }
-              // else{
-                this.setState({modalVisible: true})
-              // }
-              // this.props.navigation.navigate('Writeoffer',{memberID: this.state.memberID, memberName: this.state.memberName, contact:this.state.contact })
-            }}
-            >
-                {/* {this.state.isFiltered?this._renderFunnel():this._renderSearch()} */}
-                {this._renderSearch()}
-               
-           </TouchableOpacity>
-
-           <TouchableOpacity style={this.state.isFiltered?{borderRadius:27.5, backgroundColor: '#000', position: 'absolute',
-           bottom: 20, right: 85, width: 55, height: 55, zIndex: 10, elevation: 5, alignItems: 'center'
-          , justifyContent: 'center',}:{display:'none'}}
-            onPress={()=>{
-              if(this.state.isFiltered){
-
-                // this.setState(previousState => {
-                //   previous = previousState.selectedSegment;
-                        
-                //   return {
-                        
-                //     filterText:'통합검색', isFiltered:false, myoffering:this.state.myoffering_all
-                //   };
-                // })
-              this.setState({filterText:'통합검색', isFiltered:false, myoffering:this.state.myoffering_all, selectedSegment: this.state.selectedSegment_before, noMoreData:false  })
-              this.state.offering_count_fltr!=0?
-              this.flatListRef.scrollToIndex({animated: true, index: 0}):null;
-              }
-              
-              // this.props.navigation.navigate('Writeoffer',{memberID: this.state.memberID, memberName: this.state.memberName, contact:this.state.contact })
-            }}
-            >
-                {/* {this.state.isFiltered?this._renderFunnel():this._renderSearch()} */}
-                {this._renderFunnel()}
-               
-           </TouchableOpacity>
-
-           <SubHeader
-          stateHandler={this.setState.bind(this)}
-          onCheckMode={this.state.onCheckMode}
-          offering_count={this.state.offering_count}
-          offering_count_fltr={this.state.offering_count_fltr}
-          isFiltered={this.state.isFiltered}
-          selectedSegment={this.state.selectedSegment}
-          checkedOffering={this.state.checkedOffering}
-          myoffering={this.state.myoffering}
-          memberID={this.state.memberID}
-          boss={this.state.boss}
-          folderListDialog={this._showFolderListDialog.bind(this)}
-          segmentDialog={this._showSegmentDialog.bind(this)}
-          selectedOfferingType={this.state.selectedOfferingType}
-          />
-                                   
-            {/* 필터 모달창 */}
-                   
-            <FilterModalOffice
-             selectedOfferingType= {this.state.selectedOfferingType}
-             memberID = {this.state.memberID}
-             memberName = {this.state.memberName}
-             level = {this.state.level}
-             boss = {this.state.boss}
-             segmentChange = {this.setSelectedOption_filter.bind(this)}
-             selectedSegment = {this.state.selectedSegment}
-             countPerLoad = {this.state.countPerLoad}
-             modalVisible = {this.state.modalVisible}
-             getFilterValue = {this._getFilterValue.bind(this)}
-             inputHandler = {this._filterInputHandler.bind(this)}
-             recHandler = {this._filterRecHandler.bind(this)}
-             resetHandler = {this._filterResetHandler.bind(this)}
-             offeringCountHandler = {this._filterOfferingCountHandler.bind(this)}
-             offeringHandler ={this._filterOfferingHandler.bind(this)}
-             fromHandler= {this._makeFromZero.bind(this)}
-             closeModal = {this._closeModal.bind(this)}
-             />
-
-            {/* 필터 모달창 */}          
-
-            <FlatList data ={this.state.myoffering}
-                ref={(ref) => { this.flatListRef = ref; }}
-                style={{ marginTop:0}}
-                contentContainerStyle={{paddingTop:10,}}
-                keyExtractor ={(x,i)=>i}
-                extraData={this.state}
-                onEndReached = {() => this.state.myoffering.length>=this.state.countPerLoad?this._handleEnd():null}
-                onEndReachedThreshold ={0.05}
-                refreshing = {this.state.isRefreshing}
-                onRefresh ={this._onRefresh}
-                renderItem = {({item}) => {return this._renderRow({item})}}
-                ListFooterComponent = {this._renderFooter()}/> 
-                
-            
+      if(this.state.boss==''){
+        return ( 
+           <View style ={{justifyContent:'center', alignItems: 'center', flex:1,}}>
+             <Text style={{fontWeight:'bold', fontSize: 15,}}>
+              가입된 오피스가 없습니다.
+             </Text>
            </View>
+        )
+      }
+      else{
 
-       		)
+        return(
+          <View style={styles.container}>
+ 
+             {this.state.isSegmentChanging?this._renderIndicator():null}
+             
+             {/* 헤더 */}
+             
+               {/* {this._renderHeader()} */}
+            
+ 
+ 
+           {/* 통화팝업 */}
+             <PopupDialog
+             ref={(popupDialog) => { this.popupDialog = popupDialog; }}            
+             dialogStyle ={{elevation:2, width: '80%', height: 80,}}
+             >
+               
+               <PopupList data={this.state.longPressed}
+               from = 'officeoffering'
+               popupText="담당자에게 전화걸기" 
+             />
+             
+             </PopupDialog>
+            {/* 통화팝업 */}
+ 
+             {/* 세그먼트팝업 */}
+             <PopupDialog
+             ref={(popupDialog) => { this.segmentDialog = popupDialog; }}            
+             dialogStyle ={{elevation:2, width: '60%', height: 134, position:'absolute', top: 100, borderRadius:0, justifyContent:'center'}}
+             
+             >
+               
+               <SegmentList 
+               selectedSegment = {this.state.selectedSegment}
+               options={options}
+               handler ={this.setSelectedOption.bind(this)}
+               />
+             
+             </PopupDialog>
+            {/* 세그먼트팝업 */}
+ 
+            <PopupDialog
+             ref={(popupDialog) => { this.folderListDialog = popupDialog; }}            
+             dialogStyle ={{elevation:2, width: '70%', height: 350, position:'absolute', top: 60}}
+             
+             >
+               
+               <FolderListPopup 
+               memberID = {this.state.memberID}
+               boss ={this.state.boss}
+               folderList = {folderList}
+               selectedFolder = {this.state.selectedFolder}
+               selectHandler ={this._chooseFolder.bind(this)}
+               submitHandler={this._insertToFolder.bind(this)}
+               cancelHandler={()=>{this.folderListDialog.dismiss()}}
+               />
+             
+             </PopupDialog>
+ 
+            <TouchableOpacity style={{borderRadius:27.5, backgroundColor: '#3b4db7', position: 'absolute',
+            bottom: 20, right: 20, width: 55, height: 55, zIndex: 10, elevation: 5, alignItems: 'center'
+           , justifyContent: 'center',}}
+             onPress={()=>{
+               // if(this.state.isFiltered){
+ 
+               //   // this.setState(previousState => {
+               //   //   previous = previousState.selectedSegment;
+                         
+               //   //   return {
+                         
+               //   //     filterText:'통합검색', isFiltered:false, myoffering:this.state.myoffering_all
+               //   //   };
+               //   // })
+               // this.setState({filterText:'통합검색', isFiltered:false, myoffering:this.state.myoffering_all, selectedSegment: this.state.selectedSegment_before })
+               // this.state.offering_count_fltr!=0?
+               // this.flatListRef.scrollToIndex({animated: true, index: 0}):null;
+               // }
+               // else{
+                 this.setState({modalVisible: true})
+               // }
+               // this.props.navigation.navigate('Writeoffer',{memberID: this.state.memberID, memberName: this.state.memberName, contact:this.state.contact })
+             }}
+             >
+                 {/* {this.state.isFiltered?this._renderFunnel():this._renderSearch()} */}
+                 {this._renderSearch()}
+                
+            </TouchableOpacity>
+ 
+            <TouchableOpacity style={this.state.isFiltered?{borderRadius:27.5, backgroundColor: '#000', position: 'absolute',
+            bottom: 20, right: 85, width: 55, height: 55, zIndex: 10, elevation: 5, alignItems: 'center'
+           , justifyContent: 'center',}:{display:'none'}}
+             onPress={()=>{
+               if(this.state.isFiltered){
+ 
+                 // this.setState(previousState => {
+                 //   previous = previousState.selectedSegment;
+                         
+                 //   return {
+                         
+                 //     filterText:'통합검색', isFiltered:false, myoffering:this.state.myoffering_all
+                 //   };
+                 // })
+               this.setState({filterText:'통합검색', isFiltered:false, myoffering:this.state.myoffering_all, selectedSegment: this.state.selectedSegment_before, noMoreData:false  })
+               this.state.offering_count_fltr!=0?
+               this.flatListRef.scrollToIndex({animated: true, index: 0}):null;
+               }
+               
+               // this.props.navigation.navigate('Writeoffer',{memberID: this.state.memberID, memberName: this.state.memberName, contact:this.state.contact })
+             }}
+             >
+                 {/* {this.state.isFiltered?this._renderFunnel():this._renderSearch()} */}
+                 {this._renderFunnel()}
+                
+            </TouchableOpacity>
+ 
+            <SubHeader
+           stateHandler={this.setState.bind(this)}
+           onCheckMode={this.state.onCheckMode}
+           offering_count={this.state.offering_count}
+           offering_count_fltr={this.state.offering_count_fltr}
+           isFiltered={this.state.isFiltered}
+           selectedSegment={this.state.selectedSegment}
+           checkedOffering={this.state.checkedOffering}
+           myoffering={this.state.myoffering}
+           memberID={this.state.memberID}
+           boss={this.state.boss}
+           folderListDialog={this._showFolderListDialog.bind(this)}
+           segmentDialog={this._showSegmentDialog.bind(this)}
+           selectedOfferingType={this.state.selectedOfferingType}
+           />
+                                    
+             {/* 필터 모달창 */}
+                    
+             <FilterModalOffice
+              selectedOfferingType= {this.state.selectedOfferingType}
+              memberID = {this.state.memberID}
+              memberName = {this.state.memberName}
+              level = {this.state.level}
+              boss = {this.state.boss}
+              segmentChange = {this.setSelectedOption_filter.bind(this)}
+              selectedSegment = {this.state.selectedSegment}
+              countPerLoad = {this.state.countPerLoad}
+              modalVisible = {this.state.modalVisible}
+              getFilterValue = {this._getFilterValue.bind(this)}
+              inputHandler = {this._filterInputHandler.bind(this)}
+              recHandler = {this._filterRecHandler.bind(this)}
+              resetHandler = {this._filterResetHandler.bind(this)}
+              offeringCountHandler = {this._filterOfferingCountHandler.bind(this)}
+              offeringHandler ={this._filterOfferingHandler.bind(this)}
+              fromHandler= {this._makeFromZero.bind(this)}
+              closeModal = {this._closeModal.bind(this)}
+              />
+ 
+             {/* 필터 모달창 */}          
+ 
+             <FlatList data ={this.state.myoffering}
+                 ref={(ref) => { this.flatListRef = ref; }}
+                 style={{ marginTop:0}}
+                 contentContainerStyle={{paddingTop:10,}}
+                 keyExtractor ={(x,i)=>i}
+                 extraData={this.state}
+                 onEndReached = {() => this.state.myoffering.length>=this.state.countPerLoad?this._handleEnd():null}
+                 onEndReachedThreshold ={0.05}
+                 refreshing = {this.state.isRefreshing}
+                 onRefresh ={this._onRefresh}
+                 renderItem = {({item}) => {return this._renderRow({item})}}
+                 ListFooterComponent = {this._renderFooter()}/> 
+                 
+             
+            </View>
+ 
+            )
+
+      }
+      
     }
 
 	}

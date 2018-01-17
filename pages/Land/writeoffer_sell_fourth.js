@@ -119,6 +119,89 @@ export default class writeoffer_sell_fourth extends Component {
     
   }
 
+  _parseAreaP(){
+    var areaP = [this.state.wr_area_p, this.state.wr_area_p_added1, this.state.wr_area_p_added2, this.state.wr_area_p_added3, this.state.wr_area_p_added4].filter(function(value){return value != undefined})
+    var areaP_string = '';
+    areaP.forEach(function(el,i){ //i적용할거남음, 쉼표구분자 바꾸기
+       if(el==''){
+         if(i == 0){
+           areaP_string = el;
+         }
+         else{
+           areaP_string = areaP_string + ',' 
+         }
+         
+       }
+       else{
+         if(i==0){
+           areaP_string = el;
+         }
+         else{
+           areaP_string = areaP_string + ',' + el
+          
+         }
+       }
+    })
+ 
+    return areaP_string
+ 
+  }
+  _parseAreaM(){
+ 
+   var areaM = [this.state.wr_area_m, this.state.wr_area_m_added1, this.state.wr_area_m_added2, this.state.wr_area_m_added3, this.state.wr_area_m_added4].filter(function(value){return value != undefined})
+   var areaM_string = '';
+   areaM.forEach(function(el,i){
+    if(el==''){
+      if(i == 0){
+        areaM_string = el;
+      }
+      else{
+        areaM_string = areaM_string + ','
+      }
+      
+    }
+    else{
+      if(i==0){
+        areaM_string = el;
+      }
+      else{
+        areaM_string = areaM_string + ',' + el
+       
+      }
+    }
+   })
+ 
+   return areaM_string
+ 
+  }
+  _parseAddressSale(){
+ 
+   var address = [this.state.wr_address_sale, this.state.wr_address_sale_added1, this.state.wr_address_sale_added2, this.state.wr_address_sale_added3, this.state.wr_address_sale_added4].filter(function(value){return value != undefined})
+   var address_string = '';
+   address.forEach(function(el,i){
+    if(el==''){
+      if(i == 0){
+        address_string = el;
+      }
+      else{
+        address_string = address_string + ','
+      }
+      
+    }
+    else{
+      if(i==0){
+        address_string = el;
+      }
+      else{
+        address_string = address_string + ',' + el
+       
+      }
+    }
+   })
+ 
+   return address_string
+ 
+  }
   render() {
     
      return (
@@ -374,9 +457,9 @@ export default class writeoffer_sell_fourth extends Component {
                      ()=>{
                   this.setState(this.props.navigation.state.params, 
                   function(){ 
-                    // console.log(this.state);
+                    console.log(this.state, this._parseAddressSale());
                   if (this.state.mode=='write'){
-                    fetch('http://real-note.co.kr/app3/writeOffer_sell.php',{
+                    fetch('http://real-note.co.kr/app3/writeOffer_sell_land.php',{
                       method:'post',
                       header:{
                         'Accept': 'application/json',
@@ -392,12 +475,14 @@ export default class writeoffer_sell_fourth extends Component {
                         wr_seller_contact : this.state.wr_seller_contact,
 
                         
-                        wr_address_sale :this.state.wr_address_sale,
+                        wr_address_sale :this._parseAddressSale(),                          
                         wr_area_p_all :this.state.wr_area_p_all,
                         wr_area_m_all :this.state.wr_area_m_all,
+                        wr_area_p: this._parseAreaP(),
+                        wr_area_m: this._parseAreaM(),
                         wr_sale_price :this.state.wr_sale_price,
                         wr_p_sale_price :this.state.wr_p_sale_price,
-                        wr_sale_price_b: this.state.wr_sale_price_b,
+                        wr_sale_price_b :this.state.wr_sale_price_b,
                         wr_code: this.state.wr_code,
 
                         wr_sale_deposit :this.state.wr_sale_deposit,
@@ -446,7 +531,7 @@ export default class writeoffer_sell_fourth extends Component {
                   }
                   else{
 
-                    fetch('http://real-note.co.kr/app3/editOffer_sell.php',{
+                    fetch('http://real-note.co.kr/app3/editOffer_sell_land.php',{
                       method:'post',
                       header:{
                         'Accept': 'application/json',
@@ -462,12 +547,14 @@ export default class writeoffer_sell_fourth extends Component {
                         wr_address : this.state.wr_address,
                         wr_seller_contact : this.state.wr_seller_contact,
                         
-                        wr_address_sale :this.state.wr_address_sale,
+                        wr_address_sale :this._parseAddressSale(),                          
                         wr_area_p_all :this.state.wr_area_p_all,
                         wr_area_m_all :this.state.wr_area_m_all,
+                        wr_area_p: this._parseAreaP(),
+                        wr_area_m: this._parseAreaM(),
                         wr_sale_price :this.state.wr_sale_price,
                         wr_p_sale_price :this.state.wr_p_sale_price,
-                        wr_sale_price_b: this.state.wr_sale_price_b,
+                        wr_sale_price_b :this.state.wr_sale_price_b,
                         wr_code: this.state.wr_code,
 
                         wr_sale_deposit :this.state.wr_sale_deposit,
@@ -495,7 +582,7 @@ export default class writeoffer_sell_fourth extends Component {
 
                       })
                     })
-                    .then((res)=>res.json())
+                    .then((res)=>{console.log(res); return res.json()})
                     .then((json) =>{
                       if (json.error){
                         

@@ -62,24 +62,24 @@ header("Content-Type: text/html; charset=UTF-8");
 
     if($level =='emp'){
         if($selectedSegment=='임대'){
-            $sql_query = "select count(*) as count from g5_write_$boss where wr_office_permission = 2 AND wr_sale_type = 1 AND wr_sold_out != 1 ";
+            $sql_query = "select count(*) as count from g5_write_$boss where board_list = '$selectedOfferingType' and wr_office_permission = 2 AND wr_sale_type = 1 AND wr_sold_out != 1 ";
         }
         else if($selectedSegment=='매매'){
-            $sql_query = "select count(*) as count from g5_write_$boss where wr_office_permission = 2 AND wr_sale_type = 2 AND wr_sold_out != 1 ";
+            $sql_query = "select count(*) as count from g5_write_$boss where board_list = '$selectedOfferingType' and wr_office_permission = 2 AND wr_sale_type = 2 AND wr_sold_out != 1 ";
         }
         else{
-            $sql_query = "select count(*) as count from g5_write_$boss where wr_office_permission = 2 AND wr_sold_out = 1 ";
+            $sql_query = "select count(*) as count from g5_write_$boss where board_list = '$selectedOfferingType' and wr_office_permission = 2 AND wr_sold_out = 1 ";
         }
     }
     else{
         if($selectedSegment=='임대'){
-            $sql_query = "select count(*) as count from g5_write_$memberID where wr_office_permission !='' AND wr_sale_type = 1 AND wr_sold_out != 1 ";
+            $sql_query = "select count(*) as count from g5_write_$memberID where board_list = '$selectedOfferingType' and wr_office_permission !='' AND wr_sale_type = 1 AND wr_sold_out != 1 ";
         }
         else if($selectedSegment=='매매'){
-            $sql_query = "select count(*) as count from g5_write_$memberID where wr_office_permission !='' AND wr_sale_type = 2 AND wr_sold_out != 1 ";
+            $sql_query = "select count(*) as count from g5_write_$memberID where board_list = '$selectedOfferingType' and wr_office_permission !='' AND wr_sale_type = 2 AND wr_sold_out != 1 ";
         }
         else{
-            $sql_query = "select count(*) as count from g5_write_$memberID where wr_office_permission !='' AND wr_sold_out = 1 ";
+            $sql_query = "select count(*) as count from g5_write_$memberID where board_list = '$selectedOfferingType' and wr_office_permission !='' AND wr_sold_out = 1 ";
 
         }
     }
@@ -299,24 +299,24 @@ header("Content-Type: text/html; charset=UTF-8");
 
     if($level =='emp'){
         if($selectedSegment=='임대'){
-            $sql_query2 = "select * from g5_write_$boss where wr_office_permission = 2 AND wr_sale_type = 1 AND wr_sold_out != 1 ";
+            $sql_query2 = "select * from g5_write_$boss where board_list = '$selectedOfferingType' and wr_office_permission = 2 AND wr_sale_type = 1 AND wr_sold_out != 1 ";
         }
         else if($selectedSegment=='매매'){
-            $sql_query2 = "select * from g5_write_$boss where wr_office_permission = 2 AND wr_sale_type = 2 AND wr_sold_out != 1 ";
+            $sql_query2 = "select * from g5_write_$boss where board_list = '$selectedOfferingType' and wr_office_permission = 2 AND wr_sale_type = 2 AND wr_sold_out != 1 ";
         }
         else{
-            $sql_query2 = "select * from g5_write_$boss where wr_office_permission = 2 AND wr_sold_out = 1 ";
+            $sql_query2 = "select * from g5_write_$boss where board_list = '$selectedOfferingType' and wr_office_permission = 2 AND wr_sold_out = 1 ";
         }
     }
     else{
         if($selectedSegment=='임대'){
-            $sql_query2 = "select * from g5_write_$memberID where wr_office_permission !='' AND wr_sale_type = 1 AND wr_sold_out != 1 ";
+            $sql_query2 = "select * from g5_write_$memberID where board_list = '$selectedOfferingType' and wr_office_permission !='' AND wr_sale_type = 1 AND wr_sold_out != 1 ";
         }
         else if($selectedSegment=='매매'){
-            $sql_query2 = "select * from g5_write_$memberID where wr_office_permission !='' AND wr_sale_type = 2 AND wr_sold_out != 1 ";
+            $sql_query2 = "select * from g5_write_$memberID where board_list = '$selectedOfferingType' and wr_office_permission !='' AND wr_sale_type = 2 AND wr_sold_out != 1 ";
         }
         else{
-            $sql_query2 = "select * from g5_write_$memberID where wr_office_permission !='' AND wr_sold_out = 1 ";
+            $sql_query2 = "select * from g5_write_$memberID where board_list = '$selectedOfferingType' and wr_office_permission !='' AND wr_sold_out = 1 ";
 
         }
     }

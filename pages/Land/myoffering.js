@@ -14,7 +14,7 @@ import FilterModal from './filterModal';
 import ListItem from './listItem';
 import SubHeader from '../commonComponents/SubHeader';
 
-const options = ['임대', '매매', '거래완료'];
+const options = ['매매', '거래완료'];
 var folderList = [];
 var swipeSettings;
 var previous;
@@ -49,14 +49,16 @@ static navigationOptions= ({navigation}) =>({
 
           <TouchableOpacity
           style={{marginRight: 15}}
-          onPress={()=>{
-          self.setState({onWriteOfferMode:!self.state.onWriteOfferMode,})
-        }}>
+          onPress={()=>{                        
+            self.props.navigation.navigate('WriteofferSell',{memberID: self.state.memberID, memberName: self.state.memberName, contact:self.state.contact, mode:'write' })
+            self.setState({onWriteOfferMode:false,})
+          }}>
                       <Icon 
                       name="md-add"
                       size={26}
                       style={{ marginRight:5,color: '#fff'}}
                             
+                      
                       />  
         </TouchableOpacity>
       </View>,    
@@ -98,7 +100,7 @@ static setSelectedOfferingType(type){
       myoffering_all:[],
       myoffering_num:30,
       modalVisible: false,
-      selectedSegment: '임대',
+      selectedSegment: '매매',
       selectedSegment_before:'',
       selectedIndex:0,
       isFiltered:false,
@@ -115,7 +117,7 @@ static setSelectedOfferingType(type){
       onCheckMode: false,
       onWriteOfferMode: false,
       checkedOffering:[],
-      
+      scrollEnabled:true,
       
     };
     //스태틱 함수용
@@ -328,17 +330,7 @@ static setSelectedOfferingType(type){
  _renderWriteSellButton(){
   return(
    
-       <TouchableOpacity style={{borderRadius:27.5, backgroundColor: '#3b4db7', position: 'absolute',
-       top: 65, right: 8, width: 50, height: 50, zIndex: 10, elevation: 5, alignItems: 'center'
-     , justifyContent: 'center', zIndex:10,}}
-       onPress={()=>{
-         
-         this.props.navigation.navigate('WriteofferSell',{memberID: this.state.memberID, memberName: this.state.memberName, contact:this.state.contact, mode:'write' })
-         this.setState({onWriteOfferMode:false,})
-       }}
-       >
-       <Text style={{color:'white'}}>매매</Text>
-       </TouchableOpacity>
+{}
   )
 }
 
@@ -465,6 +457,8 @@ static setSelectedOfferingType(type){
         }
       return(
         <Swipeout {...swipeSettings}
+        // scroll={(scrollEnabled) => { this.setState({ scrollEnabled }); }}
+        sensitivity={20}
         backgroundColor='#f1f1f1'>
 
             <ListItem item = {item}
@@ -955,6 +949,7 @@ _showSegmentDialog(){
 
             <FlatList data ={this.state.myoffering}
                 ref={(ref) => { this.flatListRef = ref; }}
+                scrollEnabled={this.state.scrollEnabled}
                 style={{ marginTop:0}}
                 contentContainerStyle={{paddingTop:10,}}
                 keyExtractor ={(x,i)=>i}

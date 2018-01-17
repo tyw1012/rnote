@@ -166,7 +166,7 @@ header("Content-Type: text/html; charset=UTF-8");
         return false;
       }
 
-      if(strlen($wr_area_p)<=0){
+      if(strlen($wr_area_p_all)<=0){
         $response['error'] = true;
         $response['item'] = '평';
         return false;

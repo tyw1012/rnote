@@ -20,27 +20,27 @@ $limitNum = $obj['countPerLoad'];
 if($level == 'emp'){
 
     if($selectedSegment=='임대'){
-        $sql_query = "select * FROM g5_write_$memberID where wr_sold_out != 1 AND wr_sale_type = 1 order by wr_id DESC limit $limitFrom, $limitNum";
+        $sql_query = "select * FROM g5_write_$memberID where board_list = '$selectedOfferingType' and wr_sold_out != 1 AND wr_sale_type = 1 order by wr_id DESC limit $limitFrom, $limitNum";
     }
     else if($selectedSegment=='매매'){
-        $sql_query = "select * FROM g5_write_$memberID where wr_sold_out != 1 AND wr_sale_type = 2 order by wr_id DESC limit $limitFrom, $limitNum";
+        $sql_query = "select * FROM g5_write_$memberID where board_list = '$selectedOfferingType' and wr_sold_out != 1 AND wr_sale_type = 2 order by wr_id DESC limit $limitFrom, $limitNum";
               
     }
     else{
-        $sql_query = "select * FROM g5_write_$memberID where wr_sold_out = 1 order by wr_id DESC limit $limitFrom, $limitNum";
+        $sql_query = "select * FROM g5_write_$memberID where board_list = '$selectedOfferingType' and wr_sold_out = 1 order by wr_id DESC limit $limitFrom, $limitNum";
     }
 
 }
 else{
     if($selectedSegment=='임대'){
-        $sql_query = "select * FROM g5_write_$memberID where wr_writer = '$memberName' AND (wr_office_permission='' or wr_office_permission = 2) and wr_sold_out != 1 AND wr_sale_type = 1 order by wr_id DESC limit $limitFrom, $limitNum";
+        $sql_query = "select * FROM g5_write_$memberID where board_list = '$selectedOfferingType' and wr_writer = '$memberName' AND (wr_office_permission='' or wr_office_permission = 2) and wr_sold_out != 1 AND wr_sale_type = 1 order by wr_id DESC limit $limitFrom, $limitNum";
     }
     else if($selectedSegment=='매매'){
-        $sql_query = "select * FROM g5_write_$memberID where wr_writer = '$memberName' AND (wr_office_permission='' or wr_office_permission = 2) and wr_sold_out != 1 AND wr_sale_type = 2 order by wr_id DESC limit $limitFrom, $limitNum";
+        $sql_query = "select * FROM g5_write_$memberID where board_list = '$selectedOfferingType' and wr_writer = '$memberName' AND (wr_office_permission='' or wr_office_permission = 2) and wr_sold_out != 1 AND wr_sale_type = 2 order by wr_id DESC limit $limitFrom, $limitNum";
        
     }
     else{
-        $sql_query = "select * FROM g5_write_$memberID where wr_writer = '$memberName' AND (wr_office_permission='' or wr_office_permission = 2) and wr_sold_out = 1 order by wr_id DESC limit $limitFrom, $limitNum";
+        $sql_query = "select * FROM g5_write_$memberID where board_list = '$selectedOfferingType' and wr_writer = '$memberName' AND (wr_office_permission='' or wr_office_permission = 2) and wr_sold_out = 1 order by wr_id DESC limit $limitFrom, $limitNum";
     }
 }
 

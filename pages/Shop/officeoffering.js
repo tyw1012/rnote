@@ -514,6 +514,7 @@ static navigationOptions= ({navigation}) =>({
 
       return(
         <Swipeout {...swipeSettings}
+        sensitivity={20}
         backgroundColor='#f1f1f1'>
 
             <ListItem item = {item}

@@ -66,6 +66,7 @@ header("Content-Type: text/html; charset=UTF-8");
 
     $wr_posx = $obj['wr_posx'];
     $wr_posy = $obj['wr_posy'];
+    $wr_code = $obj['wr_code'];
 
     // $wr_datetime = date('Y-m-d H:i:s');
     // $wr_num = get_next_num('g5_write_'.$memberID);
@@ -112,7 +113,7 @@ header("Content-Type: text/html; charset=UTF-8");
   wr_content = '$wr_content',
   
   wr_posx = '$wr_posx',
-  wr_posy = '$wr_posy' WHERE wr_id = '$wr_id'
+  wr_posy = '$wr_posy', wr_code = '$wr_code' WHERE wr_id = '$wr_id'
   ";
 
   function checkValidity(){

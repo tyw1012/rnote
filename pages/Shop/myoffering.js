@@ -115,7 +115,7 @@ static setSelectedOfferingType(type){
       onCheckMode: false,
       onWriteOfferMode: false,
       checkedOffering:[],
-      
+      scrollEnabled:true,
       
     };
     //스태틱 함수용
@@ -465,6 +465,8 @@ static setSelectedOfferingType(type){
         }
       return(
         <Swipeout {...swipeSettings}
+        // scroll={(scrollEnabled) => { this.setState({ scrollEnabled }); }}
+        sensitivity={20}
         backgroundColor='#f1f1f1'>
 
             <ListItem item = {item}
@@ -955,6 +957,7 @@ _showSegmentDialog(){
 
             <FlatList data ={this.state.myoffering}
                 ref={(ref) => { this.flatListRef = ref; }}
+                scrollEnabled={this.state.scrollEnabled}
                 style={{ marginTop:0}}
                 contentContainerStyle={{paddingTop:10,}}
                 keyExtractor ={(x,i)=>i}

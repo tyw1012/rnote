@@ -13,6 +13,7 @@ import SegmentList from '../commonComponents/segmentList';
 import PopupList from '../commonComponents/popupList';
 import FilterModal from './filterModal';
 import getBookmark from './getBookmark';
+import ListItem_bookmark from './listItem_bookmark';
 
 const options = ['임대', '매매', '거래완료'];
 var swipeSettings;
@@ -101,7 +102,7 @@ static navigationOptions= ({navigation}) =>({
       
       }, function(){
          this.state.filteredData[0] == undefined?
-          this.setState({mapCoordX: 126.8739597, mapCoordY: 37.5643456,}):
+          this.setState({mapCoordX: 126.8739597, mapCoordY: 37.5643456, }):
           this.setState({mapCoordX: this.state.filteredData[0].wr_posx, mapCoordY: this.state.filteredData[0].wr_posy})
       })
       
@@ -416,8 +417,17 @@ static navigationOptions= ({navigation}) =>({
     
   }
   _panToSelection(item){
-    this.setState({mapCoordX: item.wr_posx, mapCoordY: item.wr_posy })
-    this.marker[item.wr_id].showCallout();
+    
+      let newRegion = {
+          latitude: parseFloat(item.wr_posy),
+          longitude: parseFloat(item.wr_posx),
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
+        };
+      this.marker[item.wr_id].showCallout();
+      this.mapView.animateToRegion(newRegion, 650)
+     
+   
   }
   _toggle(item){
    
@@ -595,7 +605,7 @@ static navigationOptions= ({navigation}) =>({
         <Swipeout {...swipeSettings}
         backgroundColor='#f1f1f1'>
         
-        <TouchableOpacity style={{ flexDirection: 'row', borderBottomWidth:1, borderTopWidth:1,borderColor:'#ddd',
+        {/* <TouchableOpacity style={{ flexDirection: 'row', borderBottomWidth:1, borderTopWidth:1,borderColor:'#ddd',
        padding: 12, marginBottom: 4, backgroundColor:'#fff', justifyContent:'space-between' }}
           onPress={()=>{ 
             if(this.state.mapVisible){
@@ -633,7 +643,19 @@ static navigationOptions= ({navigation}) =>({
             {this._renderDescription(item)}
           </View>
 
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <ListItem_bookmark
+         item = {item}
+         mapVisible={this.state.mapVisible}
+         memberID = {this.state.memberID}
+         memberName = {this.state.memberName}
+         contact = {this.state.contact}
+         selectedSegment = {this.state.selectedSegment}
+         navigation = {this.props.navigation}
+         panToSelection = {this._panToSelection.bind(this)}
+         
+        />
+        
        
         </Swipeout>
       )
@@ -675,7 +697,7 @@ static navigationOptions= ({navigation}) =>({
   _renderMapView(){
     if(this.state.mapVisible){
       return (
-      <View style={{height:240}}>
+      <View style={{height:220}}>
         <MapView style ={styles.mapView}
         region={{
             latitude: parseFloat(this.state.mapCoordY),
@@ -684,6 +706,7 @@ static navigationOptions= ({navigation}) =>({
             longitudeDelta: 0.005,
             
         }}
+        ref = {c => this.mapView = c}
         >
   
         {this.state.filteredData.map(data => (
@@ -742,13 +765,15 @@ static navigationOptions= ({navigation}) =>({
                           filteredData:filtered,
                           isFiltered:true,
                           mapCoordX: 126.8739597,
-                          mapCoordY: 37.5643456,                       
+                          mapCoordY: 37.5643456,  
+                                              
                         }):
                         this.setState({
                             filteredData:filtered,
                             isFiltered:true,
                             mapCoordX: filtered[0].wr_posx,
-                            mapCoordY: filtered[0].wr_posy
+                            mapCoordY: filtered[0].wr_posy,
+                            
                         })
                         if (input==''){
 
@@ -802,7 +827,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     width:'100%',
     flex:1,
-    height:240,
+    height:220,
 },
   buttonWrapper:{
     flexDirection: 'row',

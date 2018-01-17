@@ -4,7 +4,7 @@ import MapView from 'react-native-maps';
 import call from 'react-native-phone-call'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Header } from 'react-native-elements'
-import ShopDetail from './shopDetail';
+import LandDetail from './landDetail';
 // import StreetView from 'react-native-streetview';
 var self;
 
@@ -36,16 +36,72 @@ static updateInformationFromOutside(params){
         };
     }
     
+_parseBack(address,area_p,area_m){
+    var obj = {};
+
+    for (var i =0; i< arguments.length; i++){
+
+        var data = arguments[i];
+        var dataArray = data.split(',');
+        
+        if(i==0){
+
+            for(var j = 0; j<dataArray.length; j++){
+                if (j==0){
+                    Object.assign(obj,{wr_address_sale:dataArray[j]})
+                }
+                else{
+                    Object.assign(obj,{['wr_address_sale_'+'added'+j]:dataArray[j]})
+
+                }
+            }
+            
+            
+        }
+        if(i==1){
+
+            for(var j = 0; j<dataArray.length; j++){
+                if (j==0){
+                    Object.assign(obj,{wr_area_p:dataArray[j]})
+                }
+                else{
+                    Object.assign(obj,{['wr_area_p_'+'added'+j]:dataArray[j]})
+
+                }
+            }
+
+        }
+        if(i==2){
+            for(var j = 0; j<dataArray.length; j++){
+                if (j==0){
+                    Object.assign(obj,{wr_area_m:dataArray[j]})
+                }
+                else{
+                    Object.assign(obj,{['wr_area_m_'+'added'+j]:dataArray[j]})
+
+                }
+            }
+        }
+        
+
+    }
+
+    this.setState(obj, console.log(obj));
+
+    }
+
+    
     componentWillMount(){
         const {params} = this.props.navigation.state;
         this.setState(params, function(){
 
+            this._parseBack(params.wr_address_sale, params.wr_area_p, params.wr_area_m )
             // console.log('stateCheck',this.state)
            
           })
         this.setState({isLoaded: true});
        
-    self = this;
+         self = this;
        
     }
 
@@ -189,7 +245,7 @@ static updateInformationFromOutside(params){
 
                     </View>
                   
-                    <ShopDetail item = {this.state}/>
+                    <LandDetail item = {this.state}/>
                      
                 </ScrollView>
 

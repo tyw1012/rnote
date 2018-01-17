@@ -26,8 +26,8 @@ static navigationOptions= ({navigation}) =>({
               self.state.wr_rec_sectors.split(' ');
               self.props.navigation.navigate('WriteofferRent',{...self.state, wr_rec_sectors: self.state.wr_rec_sectors.split(' ')})
            }
-           else if(this.state.segment=='매매'){
-              self.props.navigation.navigate('WriteofferSell',selfthis.state)
+           else if(self.state.segment=='매매'){
+              self.props.navigation.navigate('WriteofferSell',self.state)
            }
       }}>                
       <Icon
