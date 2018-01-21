@@ -61,11 +61,17 @@ export default class login extends Component {
 
 							}
 							
-							else{
+							else if(resJson.selectedOfferingType == '1'){
 								console.log(resJson);
-								this.props.navigation.navigate('MainNavigator4',
+								this.props.navigation.navigate('MainNavigator1',
 							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'office', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType  });
 							}
+
+							else{
+								this.props.navigation.navigate('MainNavigator4',
+								{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'office', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType  });
+							}
+							
 						}
 						else{
 							console.log(resJson);
@@ -74,8 +80,12 @@ export default class login extends Component {
 							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'emp', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType });
 
 							}
-							else{
+							else if(resJson.selectedOfferingType == '1'){
 								console.log(resJson);
+								this.props.navigation.navigate('MainNavigator1',
+							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'emp', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType });
+							}
+							else{
 								this.props.navigation.navigate('MainNavigator4',
 							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'emp', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType });
 							}

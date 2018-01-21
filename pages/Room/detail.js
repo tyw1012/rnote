@@ -3,42 +3,43 @@ import { AppRegistry,View,Text,StyleSheet,ActivityIndicator,ScrollView,Touchable
 import MapView from 'react-native-maps';
 import call from 'react-native-phone-call'
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Header } from 'react-native-elements'
-import LandDetail from './landDetail';
+// import { Header } from 'react-native-elements'
+import ShopDetail from './shopDetail';
 // import StreetView from 'react-native-streetview';
 var self;
 
 export default class detail extends Component{
 static navigationOptions= ({navigation}) =>({
-          
-    title: `${navigation.state.params.wr_subject}`,
-    headerTitleStyle: {color:'white',fontSize:18, fontWeight:'bold'},
-    headerStyle: {
-      backgroundColor: '#3b4db7',
-      elevation:0,
-      height: 52,          
-    },
-    headerTintColor: 'white',
-    headerRight:   navigation.state.params.mode=='edit'? <TouchableOpacity
-    style={{width:50,height:50,backgroundColor:'#3b4db7', marginRight:-10,justifyContent:'center', alignItems:'center'}}
-    onPress={()=>{
-        if(self.state.segment=='임대'){
-            self.state.wr_rec_sectors.split(' ');
-            self.props.navigation.navigate('WriteofferRent',{...self.state, wr_rec_sectors: self.state.wr_rec_sectors.split(' ')})
-         }
-         else if(self.state.segment=='매매'){
-            self.props.navigation.navigate('WriteofferSell',self.state)
-         }
-    }}>                
-    <Icon
-    name="md-create"
-    size={25}
-    style={{color:'#fff', marginRight: 20,}}
-    /> 
-    </TouchableOpacity> :   <Icon
-                          name="md-create"
-                          size={25}
-                          style={{color:'rgba(255,255,255,0.3)', marginRight:20}}/> 
+     
+      title: `${navigation.state.params.wr_subject}`,
+      headerTitleStyle: {color:'white',fontSize:18, fontWeight:'bold'},
+      headerStyle: {
+        backgroundColor: '#3b4db7',
+        elevation:0,
+        height: 52,          
+      },
+      headerTintColor: 'white',
+      headerRight:   navigation.state.params.mode=='edit'? <TouchableOpacity
+      style={{width:50,height:50,backgroundColor:'#3b4db7', marginRight:-10,justifyContent:'center', alignItems:'center'}}
+      onPress={()=>{
+          if(self.state.segment=='임대'){
+              self.state.wr_rec_sectors.split(' ');
+              self.props.navigation.navigate('WriteofferRent',{...self.state, wr_rec_sectors: self.state.wr_rec_sectors.split(' ')})
+           }
+           else if(self.state.segment=='매매'){
+              self.props.navigation.navigate('WriteofferSell',self.state)
+           }
+      }}>                
+      <Icon
+      name="md-create"
+      size={25}
+      style={{color:'#fff', marginRight: 20,}}
+      /> 
+      </TouchableOpacity> :   <Icon
+                            name="md-create"
+                            size={25}
+                            style={{color:'rgba(255,255,255,0.3)', marginRight:20}}/> 
+      
 });
 
 static updateInformationFromOutside(params){
@@ -51,74 +52,20 @@ static updateInformationFromOutside(params){
             isLoaded: false,
                         
         };
+
+ self = this;
     }
-    
-_parseBack(address,area_p,area_m){
-    var obj = {};
-
-    for (var i =0; i< arguments.length; i++){
-
-        var data = arguments[i];
-        var dataArray = data.split(',');
-        
-        if(i==0){
-
-            for(var j = 0; j<dataArray.length; j++){
-                if (j==0){
-                    Object.assign(obj,{wr_address_sale:dataArray[j]})
-                }
-                else{
-                    Object.assign(obj,{['wr_address_sale_'+'added'+j]:dataArray[j]})
-
-                }
-            }
-            
-            
-        }
-        if(i==1){
-
-            for(var j = 0; j<dataArray.length; j++){
-                if (j==0){
-                    Object.assign(obj,{wr_area_p:dataArray[j]})
-                }
-                else{
-                    Object.assign(obj,{['wr_area_p_'+'added'+j]:dataArray[j]})
-
-                }
-            }
-
-        }
-        if(i==2){
-            for(var j = 0; j<dataArray.length; j++){
-                if (j==0){
-                    Object.assign(obj,{wr_area_m:dataArray[j]})
-                }
-                else{
-                    Object.assign(obj,{['wr_area_m_'+'added'+j]:dataArray[j]})
-
-                }
-            }
-        }
-        
-
-    }
-
-    this.setState(obj, console.log(obj));
-
-    }
-
     
     componentWillMount(){
         const {params} = this.props.navigation.state;
         this.setState(params, function(){
 
-            this._parseBack(params.wr_address_sale, params.wr_area_p, params.wr_area_m )
             // console.log('stateCheck',this.state)
            
           })
         this.setState({isLoaded: true});
        
-         self = this;
+    
        
     }
 
@@ -149,7 +96,7 @@ _parseBack(address,area_p,area_m){
         )
     }  
 
-   
+
 	render(){
         
         if(!this.state.isLoaded){
@@ -195,7 +142,7 @@ _parseBack(address,area_p,area_m){
 
                     </View>
                   
-                    <LandDetail item = {this.state}/>
+                    <ShopDetail item = {this.state}/>
                      
                 </ScrollView>
 

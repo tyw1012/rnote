@@ -13,12 +13,6 @@ import Agreement_text_2 from './Register/agreement_text_2';
 import FunctionList from './commonComponents/functionList';
 import Employee from './commonComponents/employee';
 
-// import Writeoffer_sell_fourth from './writeoffer_sell_fourth';
-// import Writetest from './writetest';
-
-// import TabBarComponent from './TabBarComponent.js';
-
-
 function getCurrentRouteName(navigationState) {
 	if (!navigationState) {
 	  return null;
@@ -442,6 +436,7 @@ const MyNoteStack_land = StackNavigator({
 	Profile : {screen : Profile_land,
 	   navigationOptions:{tabBarVisible:false,}
    },
+
 	WriteofferSell: {
 	   screen: WriteOfferSellNavigator_land,
 	   navigationOptions:{tabBarVisible:false,}	
@@ -567,104 +562,311 @@ tabBarPosition: 'bottom',
 	}
 })
 ///////////////////////////////////////토지 끝////////////////////////////////////////////////
-		const MainNavigator3 = TabNavigator({
-	
-			MyNote: {
-				screen: MyNoteStack,
-				navigationOptions:{
-					tabBarLabel: '마이노트',
-					tabBarIcon:({ tintColor }) => (
-						<Icon
-						  name='book'
-						  size={25}
-						  style={{color:tintColor,}}
-						/>
-					)
-					
-				},
-			},
-			OfficeNote: {
-				screen: OfficeNoteStack,
-				navigationOptions:{
-					tabBarLabel: '오피스노트',
-					tabBarIcon:({ tintColor }) => (
-						<Icon
-						  name='archive'
-						  size={25}
-						  style={{color:tintColor,}}
-						/>
-					)
-					
-				},
-			},
-			Bookmark: {
-				screen: BookmarkStack,
-				navigationOptions:{
-					tabBarLabel: '즐겨찾기',
-					tabBarIcon:({ tintColor }) => (
-						<Icon
-						  name='star'
-						  size={25}
-						  style={{color:tintColor,}}
-						/>
-					)
-				},
-			},
-			FunctionNote: {
-				
-				screen: FunctionNoteStack,
-				navigationOptions:{
-					tabBarLabel: '설정',
-					tabBarIcon:({ tintColor }) => (
-						<Icon
-						  name='cog'
-						  size={25}
-						  style={{color:tintColor,}}
-						/>
-					)
-				}
-			},
+///////////////////////////////////////원룸 시작/////////////////////////////////////////////
+import Myoffering_room from './Room/myoffering';
+import Officeoffering_room from './Room/officeoffering';
+import GetBookmark_room from './Room/getBookmark';
+import BookmarkList_room from './Room/bookmarkList';
+import Detail_room from './Room/detail';
+import Profile_room from './Room/profile';
+
+import Writeoffer_room from './Room/writeoffer';
+import Writeoffer_second_room from './Room/writeoffer_second';
+import Writeoffer_third_room from './Room/writeoffer_third';
+import Writeoffer_fourth_room from './Room/writeoffer_fourth';
+
+import Writeoffer_sell_room from './Room/writeoffer_sell';
+import Writeoffer_sell_second_room from './Room/writeoffer_sell_second';
+import Writeoffer_sell_third_room from './Room/writeoffer_sell_third';
+import Writeoffer_sell_fourth_room from './Room/writeoffer_sell_fourth';
+
+
+const WriteOfferRentNavigator_room = TabNavigator({
+	Basic: { 
+		screen: Writeoffer_room,
+		navigationOptions:{
 			
-	
-		 },{
+			tabBarLabel: '건물정보',
+			tabBarOnPress: (scene, jumpToIndex) => {
+			  
+		   },
 			
-			swipeEnabled:false,
-			tabBarPosition: 'bottom',
-			 tabBarOptions: {
-				// inactiveBackgroundColor: '#e91e63',
-				
-				showLabel: true,
-				showIcon:true,
-				activeTintColor: '#3b4db7',
-				inactiveTintColor: '#777',
-				labelStyle: {
-					fontSize: 11,
-					fontWeight: 'bold',
-					// color:'#2b3bb5',
-					marginBottom:5,
-				
-				},
-				style: {
-					backgroundColor: '#fafafa',
-					borderTopWidth: 1, borderColor: '#e1e1e1',
-					height:55, 
-					elevation:0,		
-				},
-				tabStyle: {
-					
-				},
-				indicatorStyle:{
-					backgroundColor: '#2b3bb5',
-					height: 0,
-					top:0,
-				},
-				iconStyle:{
-					marginBottom:-5,
-					marginTop:-3,
-				}
-				
-			  }
-			})
+		}
+	},
+	Recommended: {
+		screen: Writeoffer_second_room,
+		navigationOptions:{
+			tabBarLabel: '호실정보',
+			tabBarOnPress: (scene, jumpToIndex) => {
+			   
+			},
+		}
+
+	},
+	Prices:{
+		screen: Writeoffer_third_room,
+		navigationOptions:{
+			tabBarLabel: '공실여부',
+			tabBarOnPress: (scene, jumpToIndex) => {
+			   
+			},
+		}
+
+	},
+	Others:{
+	   screen: Writeoffer_fourth_room,
+	   navigationOptions:{
+		   tabBarLabel: '기타정보',
+		   tabBarOnPress: (scene, jumpToIndex) => {
+			   
+			},
+	   }
+	}
+	
+},{
+   backBehavior:'none',
+   swipeEnabled:false,
+	tabBarOptions: {
+	   // inactiveBackgroundColor: '#e91e63',
+	   
+	   labelStyle: {
+		   fontSize: 10.5,
+		   
+		   color:'#777',
+	   },
+	   style: {
+
+	   height:45,
+	   backgroundColor: '#fff',
+	   borderBottomWidth: 1,
+	   borderColor: '#e1e1e1',
+	   marginTop: -2.5,
+	   elevation:0,
+	   
+	   },
+	   tabStyle: {
+		   
+		   // marginBottom: 3,
+	   },
+	   indicatorStyle:{
+		   backgroundColor: '#2b3bb5',
+		   height: 3,
+		   
+	   }
+	 }
+   })
+
+const WriteOfferSellNavigator_room = TabNavigator({
+	First: { 
+		screen: Writeoffer_sell_room,
+		navigationOptions:{
+			tabBarLabel: '위치/연락처',
+			tabBarOnPress: (scene, jumpToIndex) => {
+			  
+		   },
+			
+		}
+	},
+	Second: {
+		screen: Writeoffer_sell_second_room,
+		navigationOptions:{
+			tabBarLabel: '면적/가격',
+			tabBarOnPress: (scene, jumpToIndex) => {
+			   
+			},
+		}
+
+	},
+	Third:{
+		screen: Writeoffer_sell_third_room,
+		navigationOptions:{
+			tabBarLabel: '대출/임차',
+			tabBarOnPress: (scene, jumpToIndex) => {
+			   
+			},
+		}
+
+	},
+	Fourth:{
+	   screen: Writeoffer_sell_fourth_room,
+	   navigationOptions:{
+		   tabBarLabel: '기타정보',
+		   tabBarOnPress: (scene, jumpToIndex) => {
+			   
+			},
+	   }
+	}
+	
+},{
+   backBehavior:'none',
+   swipeEnabled:false,
+	tabBarOptions: {
+	   // inactiveBackgroundColor: '#e91e63',
+	   
+	   labelStyle: {
+		   fontSize: 10.5,
+		   
+		   color:'#777',
+	   },
+	   style: {
+
+	   height:45,
+	   backgroundColor: '#fff',
+	   borderBottomWidth: 1,
+	   borderColor: '#e1e1e1',
+	   marginTop: -2.5,
+	   elevation:0,
+	   
+	   },
+	   tabStyle: {
+		   
+		   // marginBottom: 3,
+	   },
+	   indicatorStyle:{
+		   backgroundColor: '#2b3bb5',
+		   height: 3,
+		   
+	   }
+	 }
+})
+
+
+const MyNoteStack_room = StackNavigator({
+	Myoffering: {screen: Myoffering_room},
+	Detail: { screen: Detail_room,
+			  navigationOptions:{tabBarVisible:false,}
+   },
+	Profile : {screen : Profile_room,
+	   navigationOptions:{tabBarVisible:false,}
+   },
+   WriteofferRent: {
+	screen: WriteOfferRentNavigator_room,
+	navigationOptions:{tabBarVisible:false,}	
+ },
+	WriteofferSell: {
+	   screen: WriteOfferSellNavigator_room,
+	   navigationOptions:{tabBarVisible:false,}	
+	},
+	
+},)
+
+const OfficeNoteStack_room = StackNavigator({
+   Officeoffering: {screen: Officeoffering_room},
+   Detail:{ screen: Detail_room,
+	   navigationOptions:{tabBarVisible:false,}
+   },
+   Profile : {screen : Profile_room,
+	   navigationOptions:{tabBarVisible:false,}
+   },
+},)
+
+const BookmarkStack_room = StackNavigator({
+   GetBookmark: {screen: GetBookmark_room},
+   BookmarkList : {screen: BookmarkList_room},
+   Detail:{screen: Detail_room,
+	   navigationOptions:{tabBarVisible:false,}
+   },
+
+},)
+
+const MainNavigator_room = TabNavigator({
+
+	MyNote: {
+		screen: MyNoteStack_room,
+		navigationOptions:{
+			tabBarLabel: '마이노트',
+			tabBarIcon:({ tintColor }) => (
+				<Icon
+					name='book'
+					size={25}
+					style={{color:tintColor,}}
+				/>
+			)
+			
+		},
+	},
+	OfficeNote: {
+		screen: OfficeNoteStack_room,
+		navigationOptions:{
+			tabBarLabel: '오피스노트',
+			tabBarIcon:({ tintColor }) => (
+				<Icon
+					name='archive'
+					size={25}
+					style={{color:tintColor,}}
+				/>
+			)
+			
+		},
+	},
+	Bookmark: {
+		screen: BookmarkStack_room,
+		navigationOptions:{
+			tabBarLabel: '즐겨찾기',
+			tabBarIcon:({ tintColor }) => (
+				<Icon
+					name='star'
+					size={25}
+					style={{color:tintColor,}}
+				/>
+			)
+		},
+	},
+	FunctionNote: {
+		
+		screen: FunctionNoteStack,
+		navigationOptions:{
+			tabBarLabel: '설정',
+			tabBarIcon:({ tintColor }) => (
+				<Icon
+					name='cog'
+					size={25}
+					style={{color:tintColor,}}
+				/>
+			)
+		}
+	},
+
+
+	},{
+
+	swipeEnabled:false,
+	tabBarPosition: 'bottom',
+		tabBarOptions: {
+		// inactiveBackgroundColor: '#e91e63',
+		
+		showLabel: true,
+		showIcon:true,
+		activeTintColor: '#3b4db7',
+		inactiveTintColor: '#777',
+		labelStyle: {
+			fontSize: 11,
+			fontWeight: 'bold',
+			// color:'#2b3bb5',
+			marginBottom:5,
+		
+		},
+		style: {
+			backgroundColor: '#fafafa',
+			borderTopWidth: 1, borderColor: '#e1e1e1',
+			height:55, 
+			elevation:0,		
+		},
+		tabStyle: {
+			
+		},
+		indicatorStyle:{
+			backgroundColor: '#2b3bb5',
+			height: 0,
+			top:0,
+		},
+		iconStyle:{
+			marginBottom:-5,
+			marginTop:-3,
+		}
+		
+		}
+})
 
 			const MainNavigator4 = TabNavigator({
 	
@@ -723,22 +925,12 @@ tabBarPosition: 'bottom',
 						)
 					}
 				},
-				
-			
-				// Soldout: {
-				// 	screen: SoldoutStack,
-				// 	navigationOptions:{
-				// 		tabBarLabel: '거래종료',
-				// 		tabBarIcon:'',
-				// 	},
-				// },
-			
+		
 			 },{
 				
 				swipeEnabled:false,
 				tabBarPosition: 'bottom',
 				 tabBarOptions: {
-					// inactiveBackgroundColor: '#e91e63',
 					
 					showLabel: true,
 					showIcon:true,
@@ -781,12 +973,13 @@ tabBarPosition: 'bottom',
 	Agreement_text_2 : {screen : Agreement_text_2},
 	Register: {screen: Register},
 	Register_emp: {screen: Register_emp},
-	MainNavigator3 : {screen: MainNavigator,
+	MainNavigator3 : {screen: MainNavigator,  
 					 navigationOptions:{header:null}, 	},
 	MainNavigator4: {screen: MainNavigator_land,
 					navigationOptions:{header:null}, },
 	MainNavigator2: {screen: MainNavigator},
-	MainNavigator1: {screen: MainNavigator},
+	MainNavigator1: {screen: MainNavigator_room, 
+					navigationOptions:{header:null},},
 	
 },)
 

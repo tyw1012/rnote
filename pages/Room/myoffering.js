@@ -875,7 +875,7 @@ _showSegmentDialog(){
               <FolderListPopup 
               memberID = {this.state.memberID}
               boss ={this.state.boss}
-              folderList = {this.state.folderList==undefined?[]:this.state.folderList}
+              folderList = {folderList}
               selectedFolder = {this.state.selectedFolder}
               selectHandler ={this._chooseFolder.bind(this)}
               submitHandler={this._insertToFolder.bind(this)}

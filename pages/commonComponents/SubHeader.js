@@ -111,7 +111,7 @@ render(){
                         
                     }
                  
-                    this.props.stateHandler({bookmark:parsedRes_folder}, function(){
+                    this.props.stateHandler({bookmark:parsedRes_folder, folderList:folderList}, ()=>{
         
                         this.props.folderListDialog()
         
