@@ -8,14 +8,13 @@ import {
   View,TextInput,TouchableOpacity,KeyboardAvoidingView,ScrollView
 } from 'react-native';
 var self;
-import Icon from 'react-native-vector-icons/Ionicons';
+var previous;
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import PopupDialog from 'react-native-popup-dialog';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import RoomInfoPopup from './roomInfoPopup';
-
-
-
+import RoomListPopup from './roomListPopup';
 
 
 export default class writeoffer_second extends Component {
@@ -27,9 +26,9 @@ export default class writeoffer_second extends Component {
           onPress={()=>{self.props.navigation.goBack(null);  }}
           style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:15}}>
             <Icon
-            name="md-close"
+            name="close"
             size={30}
-            style={{color:'#fff'}}
+            style={{color:'#fff', marginLeft:-6.5}}
             />
           </TouchableOpacity>,
         title:'매물정보 수정',
@@ -50,9 +49,9 @@ export default class writeoffer_second extends Component {
             onPress={()=>{self.props.navigation.goBack(null);  }}
             style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:15}}>
               <Icon
-              name="md-close"
+              name="close"
               size={30}
-              style={{color:'#fff'}}
+              style={{color:'#fff', marginLeft:-6.5}}
               />
             </TouchableOpacity>,
           title: '매물등록 - 임대',
@@ -72,7 +71,10 @@ export default class writeoffer_second extends Component {
 
 static updateFigures(){
 
-  self.setState(self.props.navigation.state.params, function(){
+  self.setState(previousState => {
+    previous = previousState      
+    return self.props.navigation.state.params;
+  }, function(){
     let rooms = []
     let chunk = self._chunk(self._makeRoomArray(parseInt(self.state.bld_floor), parseInt(self.state.bld_roomPerFloor)), parseInt(self.state.bld_roomPerFloor) ) ;
     
@@ -81,14 +83,60 @@ static updateFigures(){
     }
     
     roomsObj = rooms.map(function(el){ return {
-        roomNumber: el
+        roomNumber: el,
+        listChecked : false,
+        options: [
+
+          {name:'TV', wr_o_tv: 0, checked: false},
+          {name:'에어컨', wr_o_air_cond: 0, checked: false},
+          {name:'냉장고', wr_o_fridger: 0, checked: false},
+          {name:'세탁기', wr_o_washer: 0, checked: false},
+          {name:'싱크대', wr_o_sink: 0, checked: false},
+          {name:'인터넷', wr_o_internet: 0, checked: false},
+          {name:'전자렌지', wr_o_microwave: 0, checked: false},
+          {name:'책상', wr_o_desk: 0, checked: false},
+          {name:'침대', wr_o_bed: 0, checked: false},
+          {name:'옷장', wr_o_closet: 0, checked: false},
+          {name:'신발장', wr_o_shoe_rack: 0, checked: false},
+          {name:'책장', wr_o_bookshelf: 0, checked: false},
+
+        ],
+        mt_options: [
+          {name:'전기', wr_mt_elec: 0, checked: false},
+          {name:'수도', wr_mt_water: 0, checked: false},
+          {name:'가스', wr_mt_gas: 0, checked: false},
+          {name:'TV', wr_mt_tv: 0, checked: false},
+          {name:'인터넷', wr_mt_internet: 0, checked: false},
+
+        ]
 
       } 
     })
-    this.setState({rooms:roomsObj, columnChange:2}, function(){console.log(this.state.rooms)});
-
+    !(previous.bld_roomPerFloor === this.state.bld_roomPerFloor && previous.bld_floor === this.state.bld_floor)?
+    this.setState({rooms:roomsObj,rooms_forList:roomsObj, columnChange:2}, function(){console.log(this.state.rooms)})
+    : this.setState({columnChange:2})
 
   })
+
+  // self.setState(self.props.navigation.state.params, function(){
+  //   let rooms = []
+  //   let chunk = self._chunk(self._makeRoomArray(parseInt(self.state.bld_floor), parseInt(self.state.bld_roomPerFloor)), parseInt(self.state.bld_roomPerFloor) ) ;
+    
+  //   for ( let i = 0; i < chunk.length; i ++){
+  //     rooms.push(...chunk[i])
+  //   }
+    
+  //   roomsObj = rooms.map(function(el){ return {
+  //       roomNumber: el,
+  //       listChecked : false,
+
+  //     } 
+  //   })
+  //   this.state.rooms ==undefined?
+  //   this.setState({rooms:roomsObj,rooms_forList:roomsObj, columnChange:2}, function(){console.log(this.state.rooms)})
+  //   : this.setState({columnChange:2})
+
+  // })
   
 }
 
@@ -102,8 +150,9 @@ static updateFigures(){
 
             columnChange:1,
             selectedRoom:{},
-            rooms:[],
+            // rooms:[],
             scrollEnabled:true,
+            inActiveMode: false,
     }
     self=this;
     
@@ -166,6 +215,14 @@ static updateFigures(){
     }
   }
 
+  booleanConverter(bool){
+    if(bool===true){
+      return 1
+    }
+    if(bool===false){
+      return 0
+    }
+  }
   _makeRoomArray(floor,roomPerFloor){
     let rooms = [];
     for (let i = 0; i < floor; i ++){
@@ -240,11 +297,102 @@ onSwipeRight(gestureState) {
   
 }
 
+_roomStyle(item){
+
+  if (this.state.inActiveMode){
+
+    if(item.inActive){
+      return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
+    }
+    else{
+      return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',backgroundColor:'#f1f1f1'}
+    }
+    
+  }
+  else{
+    if (item.inActive){
+       return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
+    }
+    else{
+
+      if(item.wr_room_type=='원룸'){
+        return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#3b9bcc', justifyContent:'center', alignItems:'center'}
+    
+      }
+      else if(item.wr_room_type=='투룸'){
+        return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#cc3f3f', justifyContent:'center', alignItems:'center'}
+      }
+      else if(item.wr_room_type=='쓰리룸'){
+        return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#db9e25', justifyContent:'center', alignItems:'center'}
+      }
+      else{
+        return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center'}
+      }
+    }
+
+  }
+  
+}
+_roomTextStyle(item){
+
+  if (this.state.inActiveMode){
+
+    if(item.inActive){
+      return {fontSize:11, color:'#d1d1d1'}
+    }
+    else{
+      return {fontSize:11}
+    }
+    
+  }
+  else{
+
+      if (item.inActive){
+          return {fontSize:11, color:'#d1d1d1'}
+      }
+      else{
+
+        if(item.wr_room_type=='원룸'){
+          return {fontSize:11}
+      
+        }
+        else if(item.wr_room_type=='투룸'){
+          return {fontSize:11}
+        }
+        else if(item.wr_room_type=='쓰리룸'){
+          return {fontSize:11}
+        }
+        else{
+          return {fontSize:11}
+        }
+        
+      }
+
+
+  }
+  
+}
+_inActiveToggle(item){
+  var clone = this.state.rooms.slice(0);
+  clone[this._findRoomIndex(item)]['inActive'] = !clone[this._findRoomIndex(item)]['inActive']
+  this.setState({rooms:clone})
+}
+_inputHandler(name,input,state){
+  var clone = this.state.rooms.slice(0);
+  clone[this._findRoomIndex(state)][name] = input;
+  this.setState({rooms: clone})
+}
+_chooseRoomType(type, state){
+  var clone = this.state.rooms.slice(0);
+  clone[this._findRoomIndex(state)]['wr_room_type'] = type
+  this.setState({rooms: clone})
+
+}
 _saveRoomInfo(itemState){
   var clone = this.state.rooms.slice(0);
   clone[this._findRoomIndex(itemState)] = itemState;
-  this.setState({rooms: clone}, function(){console.log(this.state.rooms)});
-  this.roomInfoPopup.dismiss();
+  this.setState({rooms: clone}, function(){this.roomInfoPopup.dismiss();});
+  
 
 }
 _findRoomIndex(itemState){
@@ -257,11 +405,59 @@ _findRoomIndex(itemState){
   }
 }
 _applyRoomInfoToOthers(itemState){
-  // var clone = this.state.rooms.slice(0);
-  // for ( var i = 0; i < this.state.rooms.length; i ++){
-  //   clone[i] = {...clone[i],...itemState}
+  var clone = this.state.rooms.slice(0);
+  
+  for ( var i = 0; i < clone.length; i ++){
+    if(clone[i].listChecked){ 
+     clone[i] = {...itemState, roomNumber: clone[i].roomNumber} 
+     clone[i].listChecked = false     
+    }
+  }
+
+  this.setState({rooms:clone}, function(){
+    this.roomListPopup.dismiss();
+  })
+
+  // for ( var i = 0; i < checkList.length; i ++){
+  //   let index = this._findRoomIndex(checkList[i])
+  //   clone[index] = {...itemState,...checkList[i]}
   // }
-  // this.setState({rooms:clone})
+  // let index = this._findRoomIndex(itemState)
+  // clone[index] = itemState
+  // this.setState({rooms:clone}, function(){
+  //   this.roomListPopup.dismiss();
+  //   console.log(this.state.rooms)
+  // })
+}
+_showRoomList(itemState){
+  let clone = {...itemState}
+  clone.listChecked = true;
+  let temp = this.state.rooms.slice(0);
+  for (let i = 0; i < temp.length; i++){
+    temp[i].listChecked = false;
+  }
+  temp[this._findRoomIndex(clone)] = clone;
+  this.setState({savedData: clone, rooms:temp},
+    function(){
+     
+      this.roomListPopup.show();
+    }
+  )
+ 
+}
+
+_checkboxHandler(optionItem,optionIndex, roomItem, optionType){
+  let optionClone = {...optionItem};
+  optionClone.checked = !optionClone.checked;
+  optionClone[Object.keys(optionClone)[1]] == 1?
+  optionClone[Object.keys(optionClone)[1]] = 0 : optionClone[Object.keys(optionClone)[1]] = 1
+  
+  let temp = [...this.state.rooms];
+  let roomClone = {...roomItem};
+  roomClone[optionType][optionIndex] = optionClone;
+  temp[this._findRoomIndex(roomClone)] = roomClone;
+  this.setState({rooms:temp}, function(){console.log(this.state.rooms)} );
+
 }
 _cancelHandler(){
   this.roomInfoPopup.dismiss();
@@ -277,18 +473,45 @@ _cancelHandler(){
     
     >
 
-  <PopupDialog
-              ref={(popupDialog) => { this.roomInfoPopup = popupDialog; }}            
-              dialogStyle ={{elevation:2, width: '85%', position:'absolute', height:350, top: 30, }}
-              onDismissed ={()=>this.setState({scrollEnabled:true})}
-              >
+    <PopupDialog
+    // dismissOnTouchOutside={false}
+    // haveOverlay = {false}
+    
+    ref={(popupDialog) => { this.roomInfoPopup = popupDialog; }}            
+    dialogStyle ={{elevation:2, width: '90%', position:'absolute', height:400, top: 30, }}
+    onDismissed ={()=>this.setState({scrollEnabled:true})}
+    >
               <RoomInfoPopup
               item = {this.state.selectedRoom}
+              inputHandler = {this._inputHandler.bind(this)}
+              chooseRoomType = {this._chooseRoomType.bind(this)}
               saveRoomInfo = {this._saveRoomInfo.bind(this)}
+              showRoomList = {this._showRoomList.bind(this)}
+              checkboxHandler = {this._checkboxHandler.bind(this)}
               applyRoomInfoToOthers = {this._applyRoomInfoToOthers.bind(this)}
               cancelHandler= {()=>this.roomInfoPopup.dismiss()}
               />
-              </PopupDialog>
+
+    </PopupDialog>
+
+    <PopupDialog
+    // haveOverlay = {false}
+    // dismissOnTouchOutside={false}
+    ref={(popupDialog) => { this.roomListPopup = popupDialog; }}            
+    dialogStyle ={{elevation:2, width: '90%', position:'absolute', height:400, top: 30, }}
+    // onDismissed ={()=>this.roomInfoPopup.show()}
+    >
+              <RoomListPopup
+              rooms = {this.state.rooms}
+              columnChange= {this.state.columnChange}
+              bld_roomPerFloor = {this.state.bld_roomPerFloor}
+              savedData = {this.state.savedData}
+              applyRoomInfoToOthers = {this._applyRoomInfoToOthers.bind(this)}
+              cancelHandler= {()=>this.roomListPopup.dismiss()}
+              />
+
+    </PopupDialog>
+
     <ScrollView 
     keyboardShouldPersistTaps="always"
     scrollEnabled={this.state.scrollEnabled}
@@ -299,8 +522,15 @@ _cancelHandler(){
       
        {/* <Text style={{marginBottom:10, fontSize:12}}>선택해주세요</Text> */}
            <View style={styles.inputContainer}>
-              <Text style={{marginBottom:10, }}>호실을 선택하여 정보를 입력해주세요</Text>
-              
+              <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                <Text style={{marginBottom:20, fontSize:13, marginLeft:2,}}>{this.state.inActiveMode?'선택한 호실을 비활성화 할 수 있습니다.':'호실 선택 후 정보를 입력해주세요.'}</Text>
+                <Icon
+                name = "grid-off"
+                size = {23}
+                style={this.state.inActiveMode?{color:'#3b4db7', marginRight:1}:{color:'#888', marginRight:1}}
+                onPress={()=>{this.setState({inActiveMode:!this.state.inActiveMode})}}
+                />
+              </View>  
                       <FlatList data ={this.state.rooms}
                       style={{margin: 0, padding:0,}}
                       extraData={this.state}
@@ -309,13 +539,23 @@ _cancelHandler(){
                       numColumns={this.state.bld_roomPerFloor}
                       renderItem ={
                       ({item}) => <TouchableOpacity
-                       style={{flex:1,margin:2.5, height:60,padding:10, borderWidth:1, borderColor:'#e1e1e1', justifyContent:'center', alignItems:'center'}}
-                       onPress = {()=>{this.setState({selectedRoom:item, scrollEnabled:false}, function(){
-                         this.roomInfoPopup.show()
-                      })}}
-                       >
+                       style={this._roomStyle(item)}
+                       onPress = {()=>{
+                         if(this.state.inActiveMode){
+                           this._inActiveToggle(item);
+                         }
+                         else{
+                           if(!item.inActive){
+                            this.setState({selectedRoom:item, scrollEnabled:false}, function(){
+                              this.roomInfoPopup.show();
+                            })
+                           }
+                          
+                         }
+                      }}
+                    >
                       
-                        <Text style={{fontSize:12}}>{item.roomNumber}호</Text>
+                        <Text style={this._roomTextStyle(item)}>{item.inActive? '없음':item.roomNumber+'호'}</Text>
 
 
                       </TouchableOpacity>}
@@ -333,7 +573,50 @@ _cancelHandler(){
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={()=>{
-                  this._goNext();
+                  console.log(this.state)
+                  fetch('http://real-note.co.kr/app3/writeOffer_room.php',{
+                      method:'post',
+                      header:{
+                        'Accept': 'application/json',
+                        'Content-type': 'application/json'
+                      },
+                      body:JSON.stringify({
+                        memberID : this.state.memberID,
+                        memberName: this.state.memberName,
+                        contact: this.state.contact,
+                      
+                        bld_name : this.state.bld_name,
+                        bld_address : this.state.bld_address,
+                        bld_contact : this.state.bld_contact,
+                        bld_floor: this.state.bld_floor,
+                        bld_roomPerFloor: this.state.bld_roomPerFloor,
+                        bld_posx: this.state.bld_posx,
+                        bld_posy: this.state.bld_posy,
+                        bld_hasElev: this.booleanConverter(this.state.bld_hasElev),
+                        bld_hasParking: this.booleanConverter(this.state.bld_hasParking),
+                        
+                        rooms: this.state.rooms.filter(function(el){return !el.inActive}),
+
+                       
+                      })
+                    })
+                    .then((res)=>{console.log(res); return res.json()})
+                    .then((json) =>{
+                      // if (json.error){
+                        
+                      //   alert("'"+json.item +"'" +' 정보를 입력해주세요.' )
+
+                      // }
+                      // else{
+                        
+                      //   alert("매물 등록이 완료되었습니다.")
+                      //   this.props.navigation.goBack(null);   
+                      //   myoffering.refreshFromOutside();
+                      //   myoffering.setSelectedSaleTypeFromOutside(this.state.segment)                     
+                        
+                      // }
+                      
+                    })
                 }}
                 style={{flex:1,marginBottom:40,marginTop: 40,backgroundColor:'#3b4db7', height: 45, justifyContent:'center', alignItems:'center'}}>
                 <Text style={{color:'white', fontSize: 13,}}>다음</Text>

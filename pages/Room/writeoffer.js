@@ -217,7 +217,7 @@ export default class writeoffer extends Component {
                   <TouchableOpacity
                     
                     onPress={()=>{
-                        fetch(`http://www.juso.go.kr/addrlink/addrLinkApi.do?currentPage=1&countPerPage=15&keyword=${this.state.wr_address}&confmKey=U01TX0FVVEgyMDE3MTExNTIwNTg0NDEwNzQ4NjI=&resultType=json`)
+                        fetch(`http://www.juso.go.kr/addrlink/addrLinkApi.do?currentPage=1&countPerPage=15&keyword=${this.state.bld_address}&confmKey=U01TX0FVVEgyMDE3MTExNTIwNTg0NDEwNzQ4NjI=&resultType=json`)
                         .then((res)=>res.json())
                         .then((text)=>{
                           this.setState({wr_addressList: text.results.juso});
@@ -293,6 +293,7 @@ export default class writeoffer extends Component {
 
           </View>
 
+          
           <View style={{flexDirection: 'row',}}>
 
             <View style = {[styles.row]}>    
@@ -300,7 +301,7 @@ export default class writeoffer extends Component {
                 <Text style={styles.itemName}>건물층수 <Text style={{color: 'red', fontSize:12, marginTop:5}}> * </Text></Text>
 
                 <TextInput
-                placeholder="예) 2, -1"
+                placeholder=""
                 placeholderTextColor='#aaa'
                 blurOnSubmit={false}
                 onSubmitEditing={(event) => { 
@@ -336,7 +337,7 @@ export default class writeoffer extends Component {
 
             <View style = {[styles.row,]}>    
 
-                    <Text style={styles.itemName}>층당 호실수 <Text style={{color: 'red', fontSize:12, marginTop:5}}> * </Text></Text>
+                    <Text style={styles.itemName}>층당 최대 호실수 <Text style={{color: 'red', fontSize:12, marginTop:5}}> * </Text></Text>
 
                 
                     <TextInput
@@ -371,14 +372,66 @@ export default class writeoffer extends Component {
                     />   
                   </TouchableOpacity>
 
-                  <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>평</Text>
+                  <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>개</Text>
 
             </View>
 
 
             </View>
 
-         
+            <View style={{flexDirection:'row', marginTop:20}}>
+
+            <CheckBox
+            checkedColor='#3b4db7'
+            // uncheckedIcon={null}
+            // checkedIcon={null}            
+            title={'주차가능'}
+            containerStyle={{backgroundColor:'#fff',borderWidth:0, height:35, marginTop:-7, paddingRight:0, marginRight:0, paddingLeft:0, marginLeft: 0}}
+            textStyle={{color:'#666', fontSize: 13, marginTop:-2}}
+            checked={this.state.bld_hasParking}
+            onPress={()=>{
+             this.setState({bld_hasParking : !this.state.bld_hasParking})
+                    
+            }}/> 
+
+            <CheckBox
+            checkedColor='#3b4db7'
+            // uncheckedIcon={null}
+            // checkedIcon={null}            
+            title={'엘리베이터'}
+            containerStyle={{backgroundColor:'#fff',borderWidth:0, height:35, marginTop:-7, paddingRight:0, marginRight:0,}}
+            textStyle={{color:'#666', fontSize: 13, marginTop:-2}}
+            checked={this.state.bld_hasElev}
+            onPress={()=>{
+             this.setState({bld_hasElev : !this.state.bld_hasElev})
+                  
+            }}/> 
+
+          </View>
+
+          <View style = {[styles.row,]}> 
+          <Text style={styles.itemName}>기타사항 </Text> 
+          <TextInput
+          placeholder=" 기타내용"
+          placeholderTextColor='#aaa'
+          ref='FifthInput'
+          onSubmitEditing={(event) => { 
+            this.refs.SixthInput.focus(); 
+          }}
+          blurOnSubmit={false}
+          returnKeyType = {"next"}
+          multiline = {true}
+          numberOfLines = {5}
+          style={[styles.itemInput, {borderWidth:1,height:75, padding:10,paddingLeft:5, textAlignVertical:'top'}]}
+          underlineColorAndroid="transparent"
+          onChangeText= {bld_memo => this.setState({bld_memo})}
+          value={this.state.bld_memo}
+          onFocus={(event: Event) => {
+              // `bind` the function if you're using ES6 classes
+              this.scroll.props.scrollToPosition(0, 100)
+          }}
+          />
+          </View>
 
             </View>
 

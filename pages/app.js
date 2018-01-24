@@ -603,25 +603,25 @@ const WriteOfferRentNavigator_room = TabNavigator({
 		}
 
 	},
-	Prices:{
-		screen: Writeoffer_third_room,
-		navigationOptions:{
-			tabBarLabel: '공실여부',
-			tabBarOnPress: (scene, jumpToIndex) => {
+	// Prices:{
+	// 	screen: Writeoffer_third_room,
+	// 	navigationOptions:{
+	// 		tabBarLabel: '공실여부',
+	// 		tabBarOnPress: (scene, jumpToIndex) => {
 			   
-			},
-		}
+	// 		},
+	// 	}
 
-	},
-	Others:{
-	   screen: Writeoffer_fourth_room,
-	   navigationOptions:{
-		   tabBarLabel: '기타정보',
-		   tabBarOnPress: (scene, jumpToIndex) => {
+	// },
+	// Others:{
+	//    screen: Writeoffer_fourth_room,
+	//    navigationOptions:{
+	// 	   tabBarLabel: '기타정보',
+	// 	   tabBarOnPress: (scene, jumpToIndex) => {
 			   
-			},
-	   }
-	}
+	// 		},
+	//    }
+	// }
 	
 },{
    backBehavior:'none',
