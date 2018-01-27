@@ -24,6 +24,27 @@ shouldComponentUpdate(nextProps, nextState) {
 _sum(a,b){
     return parseInt(a)+parseInt(b)
 }
+_bldSaleTypeConverter(number){
+
+    if(number==0){
+        return '방 임대'
+    }
+    if(number==1){
+        return '매매'
+    }
+
+}
+_roomTypeConverter(number){
+    if(number==1){
+        return '원룸'
+    }
+    if(number==2){
+        return '투룸'
+    }
+    if(number==3){
+        return '쓰리룸'
+    }
+}
 number2Kor(num, type, delimChar) {
     (function() {
         var fnEach = String.prototype.each ;
@@ -156,44 +177,48 @@ render() {
     >
       <View>
         <View style={{flexDirection: 'row'}}>
-          <Text style={{fontSize: 15, fontWeight: 'bold', }}>{item.wr_subject}</Text>
+          <Text style={{fontSize: 15, fontWeight: 'bold', }}>
+          {this.props.selectedSegment=='건물'?item.bld_name: item.bld_name + ' ' + item.wr_room_number+'호'
+            }
+          </Text>
          
         </View>
         <Text style={{fontSize: 12.5, marginTop:1}}>
-            {this.props.selectedSegment=='임대'?item.wr_sale_area:
-            this.props.selectedSegment=='매매'?item.wr_address:
-            item.wr_address}
+           {item.bld_address}
         </Text>
-        <Text style={ this.props.from=='officeoffering'?{fontSize: 12.5, marginTop:1}:{display:'none'}}>
-        담당자: {item.wr_writer}
+        <Text style={{fontSize: 12.5, marginTop:1}}>
+        {this.props.selectedSegment=='건물'?this._bldSaleTypeConverter(item.bld_sale_type): this._roomTypeConverter(item.wr_room_type)
+            }
         </Text>
       
       </View>
       
       <View>
         <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
-          {/* 임대 */}
-          <Text style={this.props.selectedSegment=='임대'?{fontSize: 13, color:'#555', marginTop:2,}:{display:'none'}}>
-            {item.wr_floor}층·{item.wr_area_p}평
+          {/* 건물 */}
+          <Text style={this.props.selectedSegment=='건물'?{fontSize: 13, color:'#555', marginTop:2,}:{display:'none'}}>
+            {item.bld_floor}층 건물
           </Text>
-          {/* 매매 */}
-          <Text style={this.props.selectedSegment=='매매'?{fontSize: 13, color:'#555', textAlign:'right'}:{display:'none'}}>
-            {item.wr_area_p_all}평 
-          </Text>
-          <Text style={this.props.selectedSegment=='매매'?{fontSize: 13, textAlign:'right', color:'#3b4db7', fontWeight:'bold'}:{display:'none'}}> {this.number2Kor(`${item.wr_sale_price.toString()}0000`, "LOW").trim()}</Text>
-          {/* 임대 */}
-          <View style={this.props.selectedSegment=='임대'?{flexDirection:'row',}:{display:'none'}}>
+          {/* 방 */}
+          <View style={this.props.selectedSegment=='공실'?{flexDirection:'row',}:{display:'none'}}>
             <Text style={{fontSize: 15, fontWeight:'bold', color:'#2b3bb5', textAlign:'right',}}> {item.wr_rent_deposit}/{item.wr_m_rate}</Text>
             <Text style={{fontSize:12, fontWeight:'100', color:'#444', marginTop:2, marginLeft:1,}}>만</Text>
           </View>
+          {/* 방 */}
+         
+          {/* <Text style={this.props.selectedSegment=='매매'?{fontSize: 13, textAlign:'right', color:'#3b4db7', fontWeight:'bold'}:{display:'none'}}> {this.number2Kor(`${item.wr_sale_price.toString()}0000`, "LOW").trim()}</Text> */}
+          {/* 임대 */}
+          
         </View>
-        {/* 임대 */}
-        <Text style={this.props.selectedSegment=='임대'?{fontSize: 13, fontWeight: 'bold',textAlign:'right',}:{display:'none'}}> 권 {item.wr_premium_o} 합 {this._sum(item.wr_premium_o,item.wr_rent_deposit)}</Text>  
-        <Text style={this.props.selectedSegment=='임대'?{fontSize: 13, textAlign:'right',}:{display:'none'}}> {item.wr_code}</Text>      
-        {/* 매매 */}
+       
+        <Text style={this.props.selectedSegment=='건물'?{fontSize: 13, textAlign:'right',}:{display:'none'}}> 호실 총 {item.rooms==undefined?0:item.rooms.length}개</Text>  
+        <Text style={this.props.selectedSegment=='공실'?{fontSize: 13, textAlign:'right',}:{display:'none'}}> {item.wr_area_p+'평 ('+item.wr_area_m+'㎡)'}</Text>      
         
-        <Text style={this.props.selectedSegment=='매매'?{fontSize: 13, textAlign:'right',}:{display:'none'}}>
-        평당 {item.wr_p_sale_price}만
+        <Text style={this.props.selectedSegment=='건물'?{fontSize: 13, textAlign:'right',}:{display:'none'}}>
+        공실 총 {item.rooms==undefined?0:item.rooms.filter(function(el){return el.wr_o_vacant==1}).length}개
+        </Text>
+        <Text style={this.props.selectedSegment=='공실'?{fontSize: 13, textAlign:'right',}:{display:'none'}}>
+         {item.wr_mt_separate==0?'관리비 월세에 포함':'관리비 별도'}
         </Text>
     
       </View>

@@ -43,6 +43,12 @@ _checkBoxTextStyle(item){
 
 }
 
+_parseBFloor(number){
+
+    return (number.toString()).replace('-', 'B')
+
+  }
+
     renderOption(option, selected, onSelect, index){
         const style = selected ? { fontWeight: 'bold', fontSize:13, margin:12, color: 'white'} : {fontSize:13,margin:12,};
         const style2 = selected ? { backgroundColor: '#3b4db7', alignItems:'center', justifyContent:'center', height: 35,} : {backgroundColor:'#f1f1f1',alignItems:'center', justifyContent:'center', height:35} ;
@@ -80,7 +86,7 @@ _checkBoxTextStyle(item){
         uncheckedIcon={null}
         checkedIcon={null}
         
-        title={item.roomNumber.toString()}
+        title={this._parseBFloor(item.roomNumber.toString())}
         containerStyle={this._checkBoxStyle(item.listChecked)}
         textStyle={this._checkBoxTextStyle(item.listChecked)}
         checked={item.listChecked}

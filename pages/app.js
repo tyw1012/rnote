@@ -966,7 +966,7 @@ const MainNavigator_room = TabNavigator({
 				})
 
 
- export const RootNavigator = StackNavigator({
+const RootNavigator = StackNavigator({
 	Login: { screen: Login },
 	Agreement: {screen: Agreement},
 	Agreement_text_1 : {screen : Agreement_text_1},

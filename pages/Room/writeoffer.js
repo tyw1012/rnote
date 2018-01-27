@@ -254,8 +254,8 @@ export default class writeoffer extends Component {
                 </TouchableOpacity>} />
           </View>
      
-
-          <View style = {styles.row}>    
+          <View style={{flexDirection: 'row',}}>
+          <View style = {[styles.row,{marginRight:20}]}>    
 
               <Text style={styles.itemName}>건물주연락처</Text>
 
@@ -293,10 +293,50 @@ export default class writeoffer extends Component {
 
           </View>
 
+          <View style = {styles.row}>    
+
+            <Text style={styles.itemName}>인근 지하철역</Text>
+
+            <TextInput
+            placeholder=" 숫자만 입력해주세요"
+            placeholderTextColor='#aaa'
+            keyboardType='phone-pad'
+            ref='FifthInput'
+            onSubmitEditing={(event) => { 
+              this.props.navigation.navigate('Recommended',this.state)                
+            }}
+            blurOnSubmit={false}
+            returnKeyType = {"next"}
+            style={styles.itemInput}
+            underlineColorAndroid="transparent"
+            onChangeText= {bld_subway => this.setState({bld_subway})}
+            value={this.state.bld_subway}
+            onFocus={(event: Event) => {
+              // `bind` the function if you're using ES6 classes
+              this.scroll.props.scrollToPosition(0, 240)
+            }}
+            />
+
+            <TouchableOpacity
+                style={{position:'absolute', top:5, right:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                onPress={()=>{this.setState({bld_contact:''})}}
+                >
+                <Icon 
+                name="md-close-circle"
+                size={20}
+                style={{ marginTop: 27,color: '#ddd', }}
+                                      
+                />   
+            </TouchableOpacity>
+
+            </View>
+
+          </View>
+
           
           <View style={{flexDirection: 'row',}}>
 
-            <View style = {[styles.row]}>    
+            <View style = {[styles.row, {marginRight:20}]}>    
 
                 <Text style={styles.itemName}>건물층수 <Text style={{color: 'red', fontSize:12, marginTop:5}}> * </Text></Text>
 
@@ -378,6 +418,81 @@ export default class writeoffer extends Component {
 
 
             </View>
+
+            <View style={{flexDirection: 'row',}}>
+
+            <View style = {[styles.row, {marginRight:20}]}>    
+
+                <Text style={styles.itemName}>지하층수 </Text>
+
+                <TextInput
+                placeholder=""
+                placeholderTextColor='#aaa'
+                blurOnSubmit={false}
+                onSubmitEditing={(event) => { 
+                  this.refs.SecondInput.focus(); 
+                }}
+                returnKeyType = {"next"}
+                style={[styles.itemInput,{textAlign:'right',paddingRight: 35, paddingBottom:0}]}
+                keyboardType='phone-pad'
+                underlineColorAndroid="transparent"
+                onChangeText= {bld_Bfloor => this.setState({bld_Bfloor})}
+                value={this.state.bld_Bfloor}
+                onFocus={(event: Event) => {
+                    // `bind` the function if you're using ES6 classes
+                    this.scroll.props.scrollToPosition(0, 0)
+                }}
+                />
+                <TouchableOpacity
+                  style={{position:'absolute', top:5, left:5, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                  onPress={()=>{this.setState({bld_Bfloor:''})}}
+                  >
+                  <Icon 
+                  name="md-close-circle"
+                  size={20}
+                  style={{ marginTop: 27,color: '#ddd', }}
+                                        
+                  />   
+                </TouchableOpacity>
+                <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text>
+
+            </View>
+
+
+
+            <View style = {[styles.row,]}>    
+
+                    <Text style={styles.itemName}>첫호실 숫자 </Text>
+
+                
+                    <TextInput
+                    placeholder="미입력시 1"
+                    placeholderTextColor='#aaa'
+                    style={[styles.itemInput,{}]}
+                    ref='SecondInput'
+                    onSubmitEditing={(event) => { 
+                      this.refs.ThirdInput.focus(); 
+                    }}
+                    blurOnSubmit={false}
+                    returnKeyType = {"next"}                            
+                    keyboardType='phone-pad'
+                    underlineColorAndroid="transparent"
+                    onChangeText= {bld_firstRoomNumber => this.setState({bld_firstRoomNumber})}
+                    value={this.state.bld_firstRoomNumber}
+                    onFocus={(event: Event) => {
+                    // `bind` the function if you're using ES6 classes
+                    this.scroll.props.scrollToPosition(0, 0)
+                    }}
+                    />                      
+
+                  
+
+            </View>
+
+
+            </View>
+
+            
 
             <View style={{flexDirection:'row', marginTop:20}}>
 

@@ -14,7 +14,7 @@ import FilterModal from './filterModal';
 import ListItem from './listItem';
 import SubHeader from '../commonComponents/SubHeader';
 
-const options = ['임대', '매매', '거래완료'];
+const options = ['건물', '공실' ];
 var folderList = [];
 var swipeSettings;
 var previous;
@@ -98,7 +98,7 @@ static setSelectedOfferingType(type){
       myoffering_all:[],
       myoffering_num:30,
       modalVisible: false,
-      selectedSegment: '임대',
+      selectedSegment: '건물',
       selectedSegment_before:'',
       selectedIndex:0,
       isFiltered:false,
@@ -172,7 +172,7 @@ static setSelectedOfferingType(type){
           const {memberID, memberName, countPerLoad, myoffering_from, selectedSegment, level, selectedOfferingType} = this.state;
           
        
-          fetch('http://real-note.co.kr/app3/getMyOfferingMerged.php',{
+          fetch('http://real-note.co.kr/app3/getMyOffering_room.php',{
             method:'post',
             header:{
               'Accept': 'application/json',
@@ -190,13 +190,43 @@ static setSelectedOfferingType(type){
             })
           })
           .then((res)=>{
-         
-            var parsedRes = JSON.parse(res._bodyText).data;
-            var parsedRes_count = JSON.parse(res._bodyText).count.count;
-            for(var i =0; i<=parsedRes.length-1; i++){
-              parsedRes[i].isChecked = false;
+            if(this.state.selectedSegment == '건물'){
+
+              var parsedRes_bld_count = JSON.parse(res._bodyText).bld_count.count;
+              var parsedRes_bld_data = JSON.parse(res._bodyText).bld_data;
+              var parsedRes_room_data = JSON.parse(res._bodyText).room_data;
+              // for(var i =0; i<=parsedRes.length-1; i++){
+              //   parsedRes[i].isChecked = false;
+              // }
+              for(var i =0; i<=parsedRes_bld_data.length-1; i++){
+              
+              
+                parsedRes_bld_data[i].rooms = [];
+                
+                for(var j = 0; j<=parsedRes_room_data.length-1; j++){
+        
+                   
+                  if(parsedRes_bld_data[i].bld_id == parsedRes_room_data[j].wr_bld_match_id){
+        
+                    parsedRes_bld_data[i].rooms.push(parsedRes_room_data[j])
+        
+                  }
+        
+                }
+        
+              }
+      
+              this.setState({myoffering:parsedRes_bld_data, myoffering_all:parsedRes_bld_data, offering_count: parsedRes_bld_count,isSegmentChanging:false,});
+      
             }
-            this.setState({myoffering:parsedRes, myoffering_all:parsedRes, offering_count: parsedRes_count, isSegmentChanging:false,});
+            else{
+      
+              var parsedRes_room_count = JSON.parse(res._bodyText).room_count.count;
+              var parsedRes_room_data = JSON.parse(res._bodyText).room_data;
+      
+              this.setState({myoffering:parsedRes_room_data, myoffering_all:parsedRes_room_data, offering_count: parsedRes_room_count,isSegmentChanging:false,});
+      
+            }
             
           })
 
@@ -209,7 +239,7 @@ static setSelectedOfferingType(type){
 
     const {memberID, memberName, selectedSegment,level,myoffering_from, countPerLoad,selectedOfferingType} = this.state;
 
-    fetch('http://real-note.co.kr/app3/getMyOfferingMerged.php',{
+    fetch('http://real-note.co.kr/app3/getMyOffering_room.php',{
       method:'post',
       header:{
         'Accept': 'application/json',
@@ -227,23 +257,50 @@ static setSelectedOfferingType(type){
       })
     })
     .then((res)=>{
-    
-      var parsedRes = JSON.parse(res._bodyText).data;
-      var parsedRes_count = JSON.parse(res._bodyText).count.count;
-      for(var i =0; i<=parsedRes.length-1; i++){
-        parsedRes[i].isChecked = false;
+      if(this.state.selectedSegment == '건물'){
+
+        var parsedRes_bld_count = JSON.parse(res._bodyText).bld_count.count;
+        var parsedRes_bld_data = JSON.parse(res._bodyText).bld_data;
+        var parsedRes_room_data = JSON.parse(res._bodyText).room_data;
+        // for(var i =0; i<=parsedRes.length-1; i++){
+        //   parsedRes[i].isChecked = false;
+        // }
+        for(var i =0; i<=parsedRes_bld_data.length-1; i++){
+        
+        
+          parsedRes_bld_data[i].rooms = [];
+          
+          for(var j = 0; j<=parsedRes_room_data.length-1; j++){
+  
+             
+            if(parsedRes_bld_data[i].bld_id == parsedRes_room_data[j].wr_bld_match_id){
+  
+              parsedRes_bld_data[i].rooms.push(parsedRes_room_data[j])
+  
+            }
+  
+          }
+  
+        }
+
+        this.setState({myoffering:parsedRes_bld_data, myoffering_all:parsedRes_bld_data, offering_count: parsedRes_bld_count,isLoaded: true}, function(){console.log('check',this.state)});
+
       }
-      this.setState({myoffering:parsedRes, myoffering_all:parsedRes, offering_count: parsedRes_count,isLoaded: true});
-      
+      else{
+
+        var parsedRes_room_count = JSON.parse(res._bodyText).room_count.count;
+        var parsedRes_room_data = JSON.parse(res._bodyText).room_data;
+
+        this.setState({myoffering:parsedRes_room_data, myoffering_all:parsedRes_room_data, offering_count: parsedRes_room_count,isLoaded: true});
+
+      }
+    
 
     })
     
   }
 
-  numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
+  
   _renderClose(){
 
     return (
@@ -345,65 +402,7 @@ static setSelectedOfferingType(type){
   _sum(a,b){
     return parseInt(a)+parseInt(b)
   }
-  _officeStyle(item){
-    if(item==1){
 
-      return {
-        backgroundColor:'#3b4db7',
-        marginLeft: 5, borderRadius:5, width:40, height: 20, justifyContent: 'center', alignItems: 'center'
-      }
-
-    }
-    else{
-      return{
-        display:'none'
-      }
-    }
-      
-
-  }
-  _touchStyle(item){
-
-    if(this.state.onCheckMode){
-            if(item==true){ 
-               
-              return {
-                flexDirection: 'row', borderBottomWidth:1, borderTopWidth:1,borderColor:'#ddd',
-                padding: 12, marginBottom: 4, backgroundColor:'#3b4cb766', justifyContent:'space-between'
-              }
-        
-            }
-            else{
-        
-              return {
-                flexDirection: 'row', borderBottomWidth:1, borderTopWidth:1,borderColor:'#ddd',
-                padding: 12, marginBottom: 4, backgroundColor:'#aaacae54', justifyContent:'space-between'
-              }
-            }
-    }
-    else{
-
-      return {flexDirection: 'row', borderBottomWidth:1, borderTopWidth:1,borderColor:'#ddd',
-       padding: 12, marginBottom: 4, backgroundColor:'#fff', justifyContent:'space-between'}
-
-    }
-  
-  }
-  _checkStyle(item){
-    if(this.state.onCheckMode){
-      if(item==true){
-        return {color: '#fff', marginLeft: 35, marginTop: 15,}
-      }
-      else{
-        return {color: '#92939594',marginLeft: 35, marginTop: 15,}
-      }
-
-    }
-    else{
-      return {display:'none'}
-    }
-    
-  }
   _toggle(item){
    
     var offering = this.state.myoffering.slice(0);
@@ -491,7 +490,7 @@ static setSelectedOfferingType(type){
         const {memberID, memberName, countPerLoad, myoffering_from,selectedSegment,level, selectedOfferingType} = this.state;
         this.setState({myoffering_from: 0, isRefreshing: true, }, function(){
 
-          fetch('http://real-note.co.kr/app3/getMyOfferingMerged.php',{
+          fetch('http://real-note.co.kr/app3/getMyOffering_room.php',{
             method:'post',
             header:{
               'Accept': 'application/json',
@@ -537,7 +536,7 @@ static setSelectedOfferingType(type){
                        isAdding: true,
                       }, function(){
           
-                    fetch('http://real-note.co.kr/app3/getMyOfferingMerged.php',{
+                    fetch('http://real-note.co.kr/app3/getMyOffering_room.php',{
                       method:'post',
                       header:{
                         'Accept': 'application/json',

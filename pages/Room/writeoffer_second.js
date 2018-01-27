@@ -76,7 +76,7 @@ static updateFigures(){
     return self.props.navigation.state.params;
   }, function(){
     let rooms = []
-    let chunk = self._chunk(self._makeRoomArray(parseInt(self.state.bld_floor), parseInt(self.state.bld_roomPerFloor)), parseInt(self.state.bld_roomPerFloor) ) ;
+    let chunk = self._chunk(self._makeRoomArray(parseInt(self.state.bld_floor), parseInt(self.state.bld_roomPerFloor), self.state.bld_Bfloor, self.state.bld_firstRoomNumber), parseInt(self.state.bld_roomPerFloor) ) ;
     
     for ( let i = 0; i < chunk.length; i ++){
       rooms.push(...chunk[i])
@@ -85,6 +85,7 @@ static updateFigures(){
     roomsObj = rooms.map(function(el){ return {
         roomNumber: el,
         listChecked : false,
+        inActive: false,
         options: [
 
           {name:'TV', wr_o_tv: 0, checked: false},
@@ -112,7 +113,7 @@ static updateFigures(){
 
       } 
     })
-    !(previous.bld_roomPerFloor === this.state.bld_roomPerFloor && previous.bld_floor === this.state.bld_floor)?
+    !(previous.bld_roomPerFloor === this.state.bld_roomPerFloor && previous.bld_floor === this.state.bld_floor && previous.bld_firstRoomNumber === this.state.bld_firstRoomNumber && previous.bld_Bfloor === this.state.bld_Bfloor)?
     this.setState({rooms:roomsObj,rooms_forList:roomsObj, columnChange:2}, function(){console.log(this.state.rooms)})
     : this.setState({columnChange:2})
 
@@ -223,12 +224,24 @@ static updateFigures(){
       return 0
     }
   }
-  _makeRoomArray(floor,roomPerFloor){
+  _parseBFloor(number){
+
+    return (number.toString()).replace('-', 'B')
+
+  }
+ _makeRoomArray(floor,roomPerFloor,Bfloor = 0, firstRoomNumber = 1){
     let rooms = [];
-    for (let i = 0; i < floor; i ++){
+    for (let i = 0; i < floor+parseInt(Bfloor); i ++){
         
         for ( let j = 0; j < roomPerFloor; j ++){
-            rooms.push(parseInt(`${i+1}0${j+1}`))
+
+            if( i < parseInt(Bfloor)){
+              rooms.push(parseInt(`-${i+1}0${parseInt(firstRoomNumber)+j}`))
+            }
+            else{
+              rooms.push(parseInt(`${i-parseInt(Bfloor)+1}0${parseInt(firstRoomNumber)+j}`))
+            }
+           
         }
     
     }
@@ -555,7 +568,7 @@ _cancelHandler(){
                       }}
                     >
                       
-                        <Text style={this._roomTextStyle(item)}>{item.inActive? '없음':item.roomNumber+'호'}</Text>
+                        <Text style={this._roomTextStyle(item)}>{item.inActive? '없음':this._parseBFloor(item.roomNumber)+'호'}</Text>
 
 
                       </TouchableOpacity>}
@@ -595,7 +608,7 @@ _cancelHandler(){
                         bld_hasElev: this.booleanConverter(this.state.bld_hasElev),
                         bld_hasParking: this.booleanConverter(this.state.bld_hasParking),
                         
-                        rooms: this.state.rooms.filter(function(el){return !el.inActive}),
+                        rooms: this.state.rooms,
 
                        
                       })

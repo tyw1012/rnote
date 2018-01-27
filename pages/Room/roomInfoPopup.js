@@ -132,7 +132,8 @@ _findOptionIndex(optionItem){
                 renderOption={ this.renderOption }
                 renderContainer={ this.renderContainer }
 
-            />  
+            /> 
+
             </View>
 
             <CheckBox
@@ -442,7 +443,7 @@ _findOptionIndex(optionItem){
             onPress={()=>{this.setState(previousState => {previous = previousState;      
                             return this.default}, function(){
 
-                this.props.showRoomList({...previous, roomNumber: item.roomNumber}); 
+                this.props.showRoomList(this.props.item); 
 
             })
                           }}>
@@ -455,7 +456,7 @@ _findOptionIndex(optionItem){
             <TouchableOpacity style={{padding:15, justifyContent:'center', alignItems:'center', width:65, }}
              onPress={()=>{this.setState(previousState => {previous = previousState;      
                 return this.default}, function(){
-                    this.props.saveRoomInfo({...previous, roomNumber: item.roomNumber})
+                    this.props.saveRoomInfo(this.props.item)
 })
               }}
             >

@@ -36,6 +36,15 @@ header("Content-Type: text/html; charset=UTF-8");
     }
  }
 
+ function boolConvert($bool){
+    if($bool == true){
+        return 1;
+    }
+    if($bool == false){
+        return 0;
+   }
+  
+}
 //  function get_next_parent($table)
 //  {
 //      // 가장 작은 번호를 얻어
@@ -101,7 +110,7 @@ header("Content-Type: text/html; charset=UTF-8");
         $wr_rent_deposit = $rooms[$i]['wr_rent_deposit'];
         $wr_m_rate = $rooms[$i]['wr_m_rate'];
         $wr_mt_cost = $rooms[$i]['wr_mt_cost'];
-        $wr_mt_separate = $rooms[$i]['wr_mt_separate'];
+        $wr_mt_separate = boolConvert($rooms[$i]['wr_mt_separate']);
         $wr_o_vacant = $rooms[$i]['wr_o_vacant'];
 
         $wr_mt_elec = $rooms[$i]['mt_options'][0]['wr_mt_elec'];
@@ -122,6 +131,8 @@ header("Content-Type: text/html; charset=UTF-8");
         $wr_o_closet = $rooms[$i]['options'][9]['wr_o_closet'];
         $wr_o_shoe_rack = $rooms[$i]['options'][10]['wr_o_shoe_rack'];
         $wr_o_bookshelf = $rooms[$i]['options'][11]['wr_o_bookshelf'];
+
+        $wr_room_inactive = boolConvert($rooms[$i]['inActive']);
 
         $sql_query2 = "INSERT IGNORE INTO g5_write_$memberID SET
     
@@ -155,7 +166,9 @@ header("Content-Type: text/html; charset=UTF-8");
         wr_o_bookshelf = '$wr_o_bookshelf',
 
         wr_datetime= '$bld_datetime',
-        wr_bld_match_id = '$wr_bld_match_id'
+        wr_bld_match_id = '$wr_bld_match_id',
+        wr_room_inactive = '$wr_room_inactive',
+        board_list = 1
 
         ";
          $result= mysqli_query($con, $sql_query2) or die("Error in Selecting " . mysqli_error($con));
