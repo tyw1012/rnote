@@ -113,6 +113,12 @@ class RoomDetail extends Component{
         }
       }
 
+    _parseBFloor(number){
+
+    return (number.toString()).replace('-', 'B')
+
+    }
+
     componentWillMount(){
         this.setState({rooms: this.props.data.rooms, bld_roomPerFloor: this.props.data.bld_roomPerFloor})
     }
@@ -122,13 +128,21 @@ class RoomDetail extends Component{
         // const {data} = this.props
         // let roomsClone = [...this.props.data.rooms];
         let roomsClone = [...this.state.rooms];
+        console.log(roomsClone);
         // let chunk = this._chunk(roomsClone, parseInt(this.props.data.bld_roomPerFloor))
         let chunk = this._chunk(roomsClone, parseInt(this.state.bld_roomPerFloor))
+        console.log(chunk);
         // console.log('chunk',chunk, 'roomsClone', roomsClone)
         let rooms = [];
              
         for ( let i = 0; i < chunk.length; i ++){
-          rooms.push(...chunk[i])
+            if(chunk[i][0]['wr_room_number'][0] == '-'){
+                rooms.push(...(chunk[i].sort(function(a,b){return b['wr_room_number']-a['wr_room_number']})))
+            }
+            else{
+                rooms.push(...chunk[i])
+            }
+          
         }
 
         // console.log('rendering', rooms, roomsClone)
@@ -182,7 +196,7 @@ class RoomDetail extends Component{
                         }}
                         >
                       
-                        <Text style={this._roomTextStyle(item)}>{item.wr_room_inactive==1?'없음':item.wr_room_number}</Text>
+                        <Text style={this._roomTextStyle(item)}>{item.wr_room_inactive==1?'없음':this._parseBFloor(item.wr_room_number)}</Text>
                         <View style={item.wr_o_vacant==1?{position:'absolute', top:0, right:0, zIndex:10, borderLeftWidth:1, borderBottomWidth:1, borderColor:'#d1d1d1', padding:2,}:{display:'none'}}>
                         <Text style={{fontSize:10.5, color:'#3b4db7'}}>공실</Text>
                         </View>

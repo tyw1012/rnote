@@ -141,10 +141,20 @@ static updateFigures(){
 
         let chunk = self._chunkObj(temp, parseInt(params.bld_roomPerFloor))
         let roomsClone = [];
-            
+
         for ( let i = 0; i < chunk.length; i ++){
-          roomsClone.push(...chunk[i])
+          if(chunk[i][0]['wr_room_number'][0] == '-'){
+              roomsClone.push(...(chunk[i].sort(function(a,b){return b['wr_room_number']-a['wr_room_number']})))
+          }
+          else{
+              roomsClone.push(...chunk[i])
+          }
+        
         }
+            
+        // for ( let i = 0; i < chunk.length; i ++){
+        //   roomsClone.push(...chunk[i])
+        // }
         return {...params, rooms: roomsClone}
 
     }
@@ -155,6 +165,8 @@ static updateFigures(){
     let rooms = []
     let chunk = self._chunk(self._makeRoomArray(parseInt(self.state.bld_floor), parseInt(self.state.bld_roomPerFloor), self.state.bld_Bfloor, self.state.bld_firstRoomNumber), parseInt(self.state.bld_roomPerFloor) ) ;
     console.log(chunk)
+
+
     for ( let i = 0; i < chunk.length; i ++){
       rooms.push(...chunk[i])
     }
@@ -679,6 +691,9 @@ _cancelHandler(){
                         bld_contact : this.state.bld_contact,
                         bld_floor: this.state.bld_floor,
                         bld_roomPerFloor: this.state.bld_roomPerFloor,
+                        bld_Bfloor: this.state.bld_Bfloor,
+                        bld_firstRoomNumber: this.state.bld_firstRoomNumber,
+                        bld_subway: this.state.bld_subway,
                         bld_posx: this.state.bld_posx,
                         bld_posy: this.state.bld_posy,
                         bld_hasElev: this._booleanConverter(this.state.bld_hasElev),
