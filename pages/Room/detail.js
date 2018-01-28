@@ -30,13 +30,13 @@ static navigationOptions= ({navigation}) =>({
       headerRight:   navigation.state.params.mode=='edit'? <TouchableOpacity
       style={{width:50,height:50,backgroundColor:'#3b4db7', marginRight:-10,justifyContent:'center', alignItems:'center'}}
       onPress={()=>{
-          if(self.state.segment=='임대'){
-              self.state.wr_rec_sectors.split(' ');
-              self.props.navigation.navigate('WriteofferRent',{...self.state, wr_rec_sectors: self.state.wr_rec_sectors.split(' ')})
-           }
-           else if(self.state.segment=='매매'){
-              self.props.navigation.navigate('WriteofferSell',self.state)
-           }
+        //   if(self.state.segment=='임대'){
+        //       self.state.wr_rec_sectors.split(' ');
+              self.props.navigation.navigate('WriteofferRent',{...self.state})
+        //    }
+        //    else if(self.state.segment=='매매'){
+        //       self.props.navigation.navigate('WriteofferSell',self.state)
+        //    }
       }}>                
       <Icon
       name="md-create"
@@ -59,6 +59,7 @@ static updateInformationFromOutside(params){
         this.state={ 
             isLoaded: false,
             selectedRoom : {},
+            // onEditMode:false,
                         
         };
 
@@ -111,24 +112,40 @@ static updateInformationFromOutside(params){
         ()=>{ this.roomDetailPopup.show()})
     }
 
+    // _updateVacancy(item, index){
+    //     let roomsClone = this.state.rooms.slice(0);
+    //     let clone = {...item}
+    //     clone.wr_o_vacant == 1? clone.wr_o_vacant = 0 :
+    //     clone.wr_o_vacant = 1;
+    //     roomsClone[index] = clone;
+    //     this.setState({rooms:roomsClone})
+    // }
+    // _editModeToggle(){
+    //     this.setState({onEditMode: !this.state.onEditMode})
+    // }
 	render(){
 
         const RoomMapNavigator = TabNavigator({
 
-            Rooms: { screen : ()=><RoomDetail data = {this.state}
-                                  showRoomDetailPopup ={this._showRoomDetailPopup.bind(this)}   />, 
-                   
-                    navigationOptions:{
-                    
-                        tabBarLabel: '호실정보',
-                                                
-                    }},
+           
             MapInfo: { screen : ()=><MapDetail data = {this.state}/>,
                     navigationOptions:{
                             
-                        tabBarLabel: '위치정보',
+                        tabBarLabel: '건물정보',
                                                 
                     }},
+
+            Rooms: { screen : ()=><RoomDetail data = {this.state}
+                    //   onEditMode = {this.state.onEditMode}
+                    //   editModeToggle = {this._editModeToggle.bind(this)}
+                    //   updateVacancy = {this._updateVacancy.bind(this)}
+                      showRoomDetailPopup ={this._showRoomDetailPopup.bind(this)}   />, 
+       
+                    navigationOptions:{
+        
+            tabBarLabel: '호실정보',
+                                    
+        }},        
         
         }, {
             backBehavior:'none',            
@@ -172,7 +189,7 @@ static updateInformationFromOutside(params){
 
         else{
             return(
-             <View style={styles.container}>
+             <ScrollView contentContainerStyle={styles.container}>
 
                     <PopupDialog
                      ref={(popupDialog) => { this.roomDetailPopup = popupDialog; }}            
@@ -182,19 +199,17 @@ static updateInformationFromOutside(params){
                         item = {this.state.selectedRoom}/>
                      </PopupDialog>
 
-                <View style={{height:350, backgroundColor:'#fff'}}>
+                {/* <ScrollView contentContainerStyle={{height:300, backgroundColor:'#fff', borderBottomWidth:1, borderColor:'#d1d1d1', }}> */}
                     
-                    
-                  
                      <RoomMapNavigator/>
-                  
-                     
-                </View>
+                    
+                {/* </ScrollView> */}
 
                 {/* {this.state.mode!='edit'?this._renderFooter():null} */}
+
                 
-          </View>
-         
+            </ScrollView>
+
                   );
         }
        
@@ -203,25 +218,17 @@ static updateInformationFromOutside(params){
 const styles = StyleSheet.create({
 	container:{
         flex:1,
-        backgroundColor: '#eee'	,	
+        backgroundColor: '#fff'	,	
         
 	},
-    map:{  
-        flex:1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    mapView:{
-        position: 'relative',
-        width:'100%',
-        height:280,
-    },
+  
     content:{
         flex:1,       
         
         
     },
+
+
 
     contactFooter:{
         position:'absolute',

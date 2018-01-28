@@ -88,7 +88,7 @@ return <View style={{flexDirection:'row', }}>{optionNodes}</View>;
 }
     
 _chooseRoomType(type){
-    this.setState({wr_room_type: type}, function(){this.props.chooseRoomType(type, {roomNumber:this.props.item.roomNumber})});
+    this.setState({wr_room_type: type}, function(){this.props.chooseRoomType(type, {wr_room_number:this.props.item.wr_room_number})});
 }
 _findOptionIndex(optionItem){
     for (var i = 0; i < this.state.options.length; i++){
@@ -114,7 +114,7 @@ _findOptionIndex(optionItem){
       return(
     <View>
     <View style ={{backgroundColor:'#3b4db7', height:40, width:'100%', justifyContent:'center', alignItems:'center'}}>
-        <Text style={{fontSize:14, color:'#fff', fontWeight:'bold'}}>{item.roomNumber}호 상세 </Text>
+        <Text style={{fontSize:14, color:'#fff', fontWeight:'bold'}}>{item.wr_room_number}호 상세 </Text>
     
     </View>
     <KeyboardAwareScrollView enableOnAndroid={true}
@@ -171,7 +171,7 @@ _findOptionIndex(optionItem){
                 // style={[styles.itemInput,{textAlign:'right',paddingRight: 35, paddingBottom:0}]}
                 keyboardType='phone-pad'
                 underlineColorAndroid="transparent"
-                onChangeText= {wr_rent_deposit => {this.setState({wr_rent_deposit}, this.props.inputHandler('wr_rent_deposit',wr_rent_deposit,{...this.state, roomNumber: item.roomNumber}))}}
+                onChangeText= {wr_rent_deposit => {this.setState({wr_rent_deposit}, this.props.inputHandler('wr_rent_deposit',wr_rent_deposit,{...this.state, wr_room_number: item.wr_room_number}))}}
                 value={item.wr_rent_deposit}
                 onFocus={(event: Event) => {
                     // `bind` the function if you're using ES6 classes
@@ -204,7 +204,7 @@ _findOptionIndex(optionItem){
                     returnKeyType = {"next"}                            
                     keyboardType='phone-pad'
                     underlineColorAndroid="transparent"
-                    onChangeText= {wr_m_rate => {this.setState({wr_m_rate}, this.props.inputHandler('wr_m_rate',wr_m_rate,{...this.state, roomNumber: item.roomNumber}))}}
+                    onChangeText= {wr_m_rate => {this.setState({wr_m_rate}, this.props.inputHandler('wr_m_rate',wr_m_rate,{...this.state, wr_room_number: item.wr_room_number}))}}
                     value={item==undefined?'':item.wr_m_rate}
                     // value='hhhh'
                     onFocus={(event: Event) => {
@@ -243,8 +243,8 @@ _findOptionIndex(optionItem){
             underlineColorAndroid="transparent"
             onChangeText= {wr_area_p => {this.setState({wr_area_p: wr_area_p, wr_area_m: (wr_area_p*3.3058).toFixed(2)}, 
             function(){
-                this.props.inputHandler('wr_area_p',wr_area_p,{...this.state, roomNumber: item.roomNumber})
-                this.props.inputHandler('wr_area_m',this.state.wr_area_m,{...this.state, roomNumber: item.roomNumber})
+                this.props.inputHandler('wr_area_p',wr_area_p,{...this.state, wr_room_number: item.wr_room_number})
+                this.props.inputHandler('wr_area_m',this.state.wr_area_m,{...this.state, wr_room_number: item.wr_room_number})
             }
             )}}
             value={item.wr_area_p}
@@ -280,8 +280,8 @@ _findOptionIndex(optionItem){
                 keyboardType='phone-pad'
                 underlineColorAndroid="transparent"
                 onChangeText= {wr_area_m => {this.setState({wr_area_m:wr_area_m, wr_area_p: (wr_area_m * 0.3025).toFixed(2)}, function(){
-                    this.props.inputHandler('wr_area_m',wr_area_m,{...this.state, roomNumber: item.roomNumber})
-                    this.props.inputHandler('wr_area_p',this.state.wr_area_p,{...this.state, roomNumber: item.roomNumber})
+                    this.props.inputHandler('wr_area_m',wr_area_m,{...this.state, wr_room_number: item.wr_room_number})
+                    this.props.inputHandler('wr_area_p',this.state.wr_area_p,{...this.state, wr_room_number: item.wr_room_number})
                 })}}
                 value={item==undefined?'':item.wr_area_m}
                 // value='hhhh'
@@ -335,7 +335,7 @@ _findOptionIndex(optionItem){
             returnKeyType = {"next"}                            
             keyboardType='phone-pad'
             underlineColorAndroid="transparent"
-            onChangeText= {wr_mt_cost => {this.setState({wr_mt_cost}, this.props.inputHandler('wr_mt_cost',wr_mt_cost,{...this.state, roomNumber: item.roomNumber}))}}
+            onChangeText= {wr_mt_cost => {this.setState({wr_mt_cost}, this.props.inputHandler('wr_mt_cost',wr_mt_cost,{...this.state, wr_room_number: item.wr_room_number}))}}
             value={item==undefined?'':item.wr_mt_cost}
             onFocus={(event: Event) => {
             // `bind` the function if you're using ES6 classes
@@ -345,7 +345,7 @@ _findOptionIndex(optionItem){
 
 
 
-            <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-21, right:10}}>만</Text>
+            <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-23, right:10}}>만</Text>
 
             </View>
         </View>

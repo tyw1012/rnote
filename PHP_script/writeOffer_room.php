@@ -77,6 +77,9 @@ header("Content-Type: text/html; charset=UTF-8");
     $bld_contact = $obj['bld_contact'];
     $bld_floor= $obj['bld_floor'];
     $bld_roomPerFloor= $obj['bld_roomPerFloor'];
+    $bld_subway = $obj['bld_subway'];
+    $bld_Bfloor = $obj['bld_Bfloor'];
+    $bld_firstRoomNumber = $obj['bld_firstRoomNumber'];
     $bld_posx= $obj['bld_posx'];
     $bld_posy= $obj['bld_posy'];
     $bld_hasElev= $obj['bld_hasElev'];
@@ -92,6 +95,9 @@ header("Content-Type: text/html; charset=UTF-8");
     bld_contact = '$bld_contact',
     bld_floor = '$bld_floor',
     bld_roomPerFloor = '$bld_roomPerFloor',
+    bld_subway = '$bld_subway',
+    bld_Bfloor = '$bld_Bfloor',
+    bld_firstRoomNumber = '$bld_firstRoomNumber',
     bld_posx = '$bld_posx',
     bld_posy = '$bld_posy',
     bld_hasElev = '$bld_hasElev',
@@ -103,7 +109,7 @@ header("Content-Type: text/html; charset=UTF-8");
     $wr_bld_match_id = mysqli_insert_id($con);
     for ( $i = 0,  $size = count($rooms); $i < $size; ++$i){
 
-        $wr_room_number = $rooms[$i]['roomNumber'];
+        $wr_room_number = $rooms[$i]['wr_room_number'];
         $wr_room_type = roomTypeConvert($rooms[$i]['wr_room_type']);
         $wr_area_p = $rooms[$i]['wr_area_p'];
         $wr_area_m = $rooms[$i]['wr_area_m'];
@@ -132,7 +138,7 @@ header("Content-Type: text/html; charset=UTF-8");
         $wr_o_shoe_rack = $rooms[$i]['options'][10]['wr_o_shoe_rack'];
         $wr_o_bookshelf = $rooms[$i]['options'][11]['wr_o_bookshelf'];
 
-        $wr_room_inactive = boolConvert($rooms[$i]['inActive']);
+        $wr_room_inactive = boolConvert($rooms[$i]['wr_room_inactive']);
 
         $sql_query2 = "INSERT IGNORE INTO g5_write_$memberID SET
     

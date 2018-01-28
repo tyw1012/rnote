@@ -86,7 +86,7 @@ _parseBFloor(number){
         uncheckedIcon={null}
         checkedIcon={null}
         
-        title={this._parseBFloor(item.roomNumber.toString())}
+        title={this._parseBFloor(item.wr_room_number.toString())}
         containerStyle={this._checkBoxStyle(item.listChecked)}
         textStyle={this._checkBoxTextStyle(item.listChecked)}
         checked={item.listChecked}

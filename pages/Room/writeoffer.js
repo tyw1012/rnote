@@ -96,12 +96,17 @@ export default class writeoffer extends Component {
       bld_address: params.bld_address,
       bld_contact: params.bld_contact,
       bld_floor: params.bld_floor,
+      bld_Bfloor: params.bld_Bfloor,
+      bld_subway: params.bld_subway,
+      bld_firstRoomNumber: params.bld_firstRoomNumber,
       bld_roomPerFloor: params.bld_roomPerFloor,
       bld_posx: params.bld_posx,
       bld_posy: params.bld_posy,
       
     }, function(){
+      console.log('1',params)
       this.props.navigation.state.params={};
+      
    })
 
   }

@@ -72,20 +72,98 @@ export default class writeoffer_second extends Component {
 static updateFigures(){
 
   self.setState(previousState => {
-    previous = previousState      
-    return self.props.navigation.state.params;
+    previous = previousState 
+    const {params} = self.props.navigation.state;
+    
+    // if 수정모드
+    if(params.rooms != undefined  ){
+
+
+    // 호실정보 수정 후 건물정보로 갔다가 다시 오는경우  
+      if(self.state.rooms != undefined) {
+        if(self.state.rooms[0].options != undefined){
+
+          if(previous.bld_roomPerFloor === params.bld_roomPerFloor 
+            && previous.bld_floor === params.bld_floor 
+            && previous.bld_firstRoomNumber === params.bld_firstRoomNumber 
+            && previous.bld_Bfloor === params.bld_Bfloor){
+              return
+            }
+          // else{
+          //   // let chunk = self._chunk([...params.rooms], parseInt(params.bld_roomPerFloor))
+          //   // let roomsClone = [];
+                
+          //   // for ( let i = 0; i < chunk.length; i ++){
+          //   //   roomsClone.push(...chunk[i])
+          //   // }
+          //     return params 
+          // }
+             
+        }     
+      
+          
+      }
+    // 처음 넘어갈때: Object에서 Array 형태로 다시 파싱
+      let temp = [...params.rooms];
+     
+      for ( let i = 0; i< temp.length; i++){
+        temp[i] = {...params.rooms[i]}
+        temp[i].options= [];
+        temp[i].options.push(
+          {name:'TV', wr_o_tv: temp[i].wr_o_tv, checked: self._stringConverter(temp[i].wr_o_tv)},
+          {name:'에어컨', wr_o_air_cond:  temp[i].wr_o_air_cond, checked: self._stringConverter(temp[i].wr_o_air_cond)},
+          {name:'냉장고', wr_o_fridger: temp[i].wr_o_fridger, checked: self._stringConverter(temp[i].wr_o_fridger)},
+          {name:'세탁기', wr_o_washer: temp[i].wr_o_washer, checked: self._stringConverter(temp[i].wr_o_washer)},
+          {name:'싱크대', wr_o_sink: temp[i].wr_o_sink, checked: self._stringConverter(temp[i].wr_o_sink)},
+          {name:'인터넷', wr_o_internet: temp[i].wr_o_internet, checked: self._stringConverter(temp[i].wr_o_internet)},
+          {name:'전자렌지', wr_o_microwave: temp[i].wr_o_microwave, checked: self._stringConverter(temp[i].wr_o_microwave)},
+          {name:'책상', wr_o_desk: temp[i].wr_o_desk, checked: self._stringConverter(temp[i].wr_o_desk)},
+          {name:'침대', wr_o_bed: temp[i].wr_o_bed, checked: self._stringConverter(temp[i].wr_o_bed)},
+          {name:'옷장', wr_o_closet: temp[i].wr_o_closet, checked: self._stringConverter(temp[i].wr_o_closet)},
+          {name:'신발장', wr_o_shoe_rack: temp[i].wr_o_shoe_rack, checked: self._stringConverter(temp[i].wr_o_shoe_rack)},
+          {name:'책장', wr_o_bookshelf: temp[i].wr_o_bookshelf, checked: self._stringConverter(temp[i].wr_o_bookshelf)},
+        )
+        temp[i].mt_options= [];
+        temp[i].mt_options.push(
+
+          {name:'전기', wr_mt_elec: temp[i].wr_mt_elec, checked: self._stringConverter(temp[i].wr_mt_elec)},
+          {name:'수도', wr_mt_water: temp[i].wr_mt_water, checked: self._stringConverter(temp[i].wr_mt_water)},
+          {name:'가스', wr_mt_gas: temp[i].wr_mt_gas, checked: self._stringConverter(temp[i].wr_mt_gas)},
+          {name:'TV', wr_mt_tv: temp[i].wr_mt_tv, checked: self._stringConverter(temp[i].wr_mt_tv)},
+          {name:'인터넷', wr_mt_internet: temp[i].wr_mt_internet, checked: self._stringConverter(temp[i].wr_mt_internet)},
+
+        )
+        
+        temp[i].wr_room_type = self._typeConverter(temp[i].wr_room_type);
+        temp[i].wr_mt_separate = self._stringConverter(temp[i].wr_mt_separate);
+        temp[i].wr_room_inactive = self._stringConverter(temp[i].wr_room_inactive);
+      }
+
+        let chunk = self._chunkObj(temp, parseInt(params.bld_roomPerFloor))
+        let roomsClone = [];
+            
+        for ( let i = 0; i < chunk.length; i ++){
+          roomsClone.push(...chunk[i])
+        }
+        return {...params, rooms: roomsClone}
+
+    }
+      
+    return params;
+    
   }, function(){
     let rooms = []
     let chunk = self._chunk(self._makeRoomArray(parseInt(self.state.bld_floor), parseInt(self.state.bld_roomPerFloor), self.state.bld_Bfloor, self.state.bld_firstRoomNumber), parseInt(self.state.bld_roomPerFloor) ) ;
-    
+    console.log(chunk)
     for ( let i = 0; i < chunk.length; i ++){
       rooms.push(...chunk[i])
     }
     
-    roomsObj = rooms.map(function(el){ return {
-        roomNumber: el,
+    //초기화된 호실 정보 오브젝트
+    let roomsObj = rooms.map(function(el){ return {
+        wr_room_number: el,
         listChecked : false,
-        inActive: false,
+        wr_room_inactive: false,
         options: [
 
           {name:'TV', wr_o_tv: 0, checked: false},
@@ -113,31 +191,16 @@ static updateFigures(){
 
       } 
     })
+
+   //층수, 최대호실수, 지하층수, 시작번호 정보가 변경되면 
     !(previous.bld_roomPerFloor === this.state.bld_roomPerFloor && previous.bld_floor === this.state.bld_floor && previous.bld_firstRoomNumber === this.state.bld_firstRoomNumber && previous.bld_Bfloor === this.state.bld_Bfloor)?
+   //roomsObj로 초기화
     this.setState({rooms:roomsObj,rooms_forList:roomsObj, columnChange:2}, function(){console.log(this.state.rooms)})
-    : this.setState({columnChange:2})
+   //변경없을경우 -> state 그대로
+    : this.setState({columnChange:2}, function(){console.log('case2', this.state)})
 
   })
 
-  // self.setState(self.props.navigation.state.params, function(){
-  //   let rooms = []
-  //   let chunk = self._chunk(self._makeRoomArray(parseInt(self.state.bld_floor), parseInt(self.state.bld_roomPerFloor)), parseInt(self.state.bld_roomPerFloor) ) ;
-    
-  //   for ( let i = 0; i < chunk.length; i ++){
-  //     rooms.push(...chunk[i])
-  //   }
-    
-  //   roomsObj = rooms.map(function(el){ return {
-  //       roomNumber: el,
-  //       listChecked : false,
-
-  //     } 
-  //   })
-  //   this.state.rooms ==undefined?
-  //   this.setState({rooms:roomsObj,rooms_forList:roomsObj, columnChange:2}, function(){console.log(this.state.rooms)})
-  //   : this.setState({columnChange:2})
-
-  // })
   
 }
 
@@ -145,9 +208,6 @@ static updateFigures(){
 		super(props)
 		this.state={
            
-      wr_rec_sectors:[],
-      wr_rec_full:['음식점','고깃집','횟집','퓨전주점','소주방','휴게음식점','카페','테이크아웃','분식','미용','네일','뷰티','판매','휴대폰','화장품','의류','잡화','편의점','마트','오락스포츠','헬스','골프','당구장','노래연습장','단란유흥','BAR','스포츠마사지','자동차','학원','병원','사무실','다용도','숙박','양도양수','프렌차이즈','대형매장'],
-      wr_rec_full_bool:[],
 
             columnChange:1,
             selectedRoom:{},
@@ -159,51 +219,26 @@ static updateFigures(){
     
 	}
  
+  
   componentWillMount(){
-    var clone = this.state.wr_rec_full_bool.slice(0);
-    for(var i=0; i<=this.state.wr_rec_full.length-1; i++){
-        clone.push(false)
-       }
-    this.setState({wr_rec_full_bool: clone})
-
-    const {params} = this.props.navigation.state;
-
-    this.setState(
+    
+    const {params} = self.props.navigation.state;
+     this.setState(
      {
       mode: params.mode,
       memberID: params.memberID,
       memberName: params.memberName,
-      contact:params.contact,
-      bld_name: params.bld_name,
-      bld_address: params.bld_address,
-      bld_contact: params.bld_contact,
       bld_floor: params.bld_floor,
       bld_roomPerFloor: params.bld_roomPerFloor,
-      bld_posx: params.bld_posx,
-      bld_posy: params.bld_posy,
+      bld_Bfloor: params.bld_Bfloor,
+      bld_firstRoomNumber: params.bld_firstRoomNumber,
+      
+     
      }
       , function(){
 
-      if(this.state.mode=='edit'){
-        this.setState({wr_rec_sectors: params.wr_rec_sectors},
-
-          function(){
-            var temp = this.state.wr_rec_full_bool.slice(0);
-            
-              for(var i =0; i<=this.state.wr_rec_sectors.length-1; i++){
-                var index = this.state.wr_rec_full.indexOf(this.state.wr_rec_sectors[i])
-                temp[index] = !temp[index]
-              }
-      
-            this.setState({wr_rec_full_bool : temp})
-            this.props.navigation.state.params={};
-            // console.log(this.props.navigation.state.params)
-          }
-        
-        
-        )
-      }
-
+        console.log('secondState', this.state)
+ 
       
     })
    
@@ -216,7 +251,18 @@ static updateFigures(){
     }
   }
 
-  booleanConverter(bool){
+  _typeConverter(string){
+    if(string=="1"){
+      return '원룸'
+    }
+    if(string=="2"){
+      return '투룸'
+    }
+    if(string=="3"){
+      return '쓰리룸'
+    }
+  }
+  _booleanConverter(bool){
     if(bool===true){
       return 1
     }
@@ -224,6 +270,16 @@ static updateFigures(){
       return 0
     }
   }
+
+  _stringConverter(string){
+    if(string == "1"){
+      return true
+    }
+    if(string == "0"){
+      return false
+    }
+  }
+
   _parseBFloor(number){
 
     return (number.toString()).replace('-', 'B')
@@ -236,10 +292,10 @@ static updateFigures(){
         for ( let j = 0; j < roomPerFloor; j ++){
 
             if( i < parseInt(Bfloor)){
-              rooms.push(parseInt(`-${i+1}0${parseInt(firstRoomNumber)+j}`))
+              rooms.push(parseInt(`-${(i+1)*100+parseInt(firstRoomNumber)+j}`))
             }
             else{
-              rooms.push(parseInt(`${i-parseInt(Bfloor)+1}0${parseInt(firstRoomNumber)+j}`))
+              rooms.push(parseInt(`${(i-parseInt(Bfloor)+1)*100+parseInt(firstRoomNumber)+j}`))
             }
            
         }
@@ -261,6 +317,18 @@ static updateFigures(){
     }
   
     return chunks.sort(function(a,b){return b[0]- a[0]} )
+  }
+  _chunkObj(arr, len) {
+  
+    var chunks = [],
+        i = 0,
+        n = arr.length;
+  
+    while (i < n) {
+      chunks.push(arr.slice(i, i += len));
+    }
+  
+    return chunks.sort(function(a,b){return b[0]['wr_room_number']- a[0]['wr_room_number']} )
   }
 
   _checkBoxStyle(item){
@@ -299,47 +367,47 @@ _goPrevious(){
   : this.props.navigation.navigate('Basic');
 }
 
-onSwipeLeft(gestureState) {
+// onSwipeLeft(gestureState) {
   
-  this._goNext();
+//   this._goNext();
   
-}
-onSwipeRight(gestureState) {
+// }
+// onSwipeRight(gestureState) {
   
-  this._goPrevious();
+//   this._goPrevious();
   
-}
+// }
 
 _roomStyle(item){
 
   if (this.state.inActiveMode){
 
-    if(item.inActive){
-      return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
+    if(item.wr_room_inactive==1){
+      return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
     }
     else{
-      return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',backgroundColor:'#f1f1f1'}
+      return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',backgroundColor:'#f1f1f1'}
     }
     
   }
   else{
-    if (item.inActive){
-       return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
+    if (item.wr_room_inactive==1){
+       return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
     }
     else{
 
       if(item.wr_room_type=='원룸'){
-        return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#3b9bcc', justifyContent:'center', alignItems:'center'}
+        return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#3b9bcc', justifyContent:'center', alignItems:'center'}
     
       }
       else if(item.wr_room_type=='투룸'){
-        return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#cc3f3f', justifyContent:'center', alignItems:'center'}
+        return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#cc3f3f', justifyContent:'center', alignItems:'center'}
       }
       else if(item.wr_room_type=='쓰리룸'){
-        return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#db9e25', justifyContent:'center', alignItems:'center'}
+        return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#db9e25', justifyContent:'center', alignItems:'center'}
       }
       else{
-        return {flex:1,margin:2.5, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center'}
+        return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center'}
       }
     }
 
@@ -350,33 +418,33 @@ _roomTextStyle(item){
 
   if (this.state.inActiveMode){
 
-    if(item.inActive){
-      return {fontSize:11, color:'#d1d1d1'}
+    if(item.wr_room_inactive==1){
+      return {fontSize:11, color:'#d1d1d1', fontWeight:'bold'}
     }
     else{
-      return {fontSize:11}
+      return {fontSize:11, fontWeight:'bold'}
     }
     
   }
   else{
 
-      if (item.inActive){
-          return {fontSize:11, color:'#d1d1d1'}
+      if (item.wr_room_inactive==1){
+          return {fontSize:11, color:'#d1d1d1', fontWeight:'bold'}
       }
       else{
 
         if(item.wr_room_type=='원룸'){
-          return {fontSize:11}
+          return {fontSize:11, fontWeight:'bold'}
       
         }
         else if(item.wr_room_type=='투룸'){
-          return {fontSize:11}
+          return {fontSize:11, fontWeight:'bold'}
         }
         else if(item.wr_room_type=='쓰리룸'){
-          return {fontSize:11}
+          return {fontSize:11, fontWeight:'bold'}
         }
         else{
-          return {fontSize:11}
+          return {fontSize:11, fontWeight:'bold'}
         }
         
       }
@@ -387,7 +455,7 @@ _roomTextStyle(item){
 }
 _inActiveToggle(item){
   var clone = this.state.rooms.slice(0);
-  clone[this._findRoomIndex(item)]['inActive'] = !clone[this._findRoomIndex(item)]['inActive']
+  clone[this._findRoomIndex(item)]['wr_room_inactive'] = !clone[this._findRoomIndex(item)]['wr_room_inactive']
   this.setState({rooms:clone})
 }
 _inputHandler(name,input,state){
@@ -410,7 +478,7 @@ _saveRoomInfo(itemState){
 }
 _findRoomIndex(itemState){
   for (var i = 0; i < this.state.rooms.length; i++){
-    if(itemState.roomNumber==this.state.rooms[i].roomNumber){
+    if(itemState.wr_room_number==this.state.rooms[i].wr_room_number){
 
       return i
 
@@ -422,7 +490,7 @@ _applyRoomInfoToOthers(itemState){
   
   for ( var i = 0; i < clone.length; i ++){
     if(clone[i].listChecked){ 
-     clone[i] = {...itemState, roomNumber: clone[i].roomNumber} 
+     clone[i] = {...itemState, wr_room_number: clone[i].wr_room_number} 
      clone[i].listChecked = false     
     }
   }
@@ -481,8 +549,8 @@ _cancelHandler(){
     return (
     
     <GestureRecognizer
-    onSwipeLeft={(state) => this.onSwipeLeft(state)}
-    onSwipeRight={(state) => this.onSwipeRight(state)}
+    // onSwipeLeft={(state) => this.onSwipeLeft(state)}
+    // onSwipeRight={(state) => this.onSwipeRight(state)}
     
     >
 
@@ -544,6 +612,11 @@ _cancelHandler(){
                 onPress={()=>{this.setState({inActiveMode:!this.state.inActiveMode})}}
                 />
               </View>  
+               <ScrollView
+               contentContainerStyle={{ flexGrow: 1}}
+               horizontal={true}
+               showsVerticalScrollIndicator
+               >
                       <FlatList data ={this.state.rooms}
                       style={{margin: 0, padding:0,}}
                       extraData={this.state}
@@ -558,7 +631,7 @@ _cancelHandler(){
                            this._inActiveToggle(item);
                          }
                          else{
-                           if(!item.inActive){
+                           if(item.wr_room_inactive!=1){
                             this.setState({selectedRoom:item, scrollEnabled:false}, function(){
                               this.roomInfoPopup.show();
                             })
@@ -568,11 +641,14 @@ _cancelHandler(){
                       }}
                     >
                       
-                        <Text style={this._roomTextStyle(item)}>{item.inActive? '없음':this._parseBFloor(item.roomNumber)+'호'}</Text>
-
+                        <Text style={this._roomTextStyle(item)}>{item.wr_room_inactive==1? '없음':this._parseBFloor(item.wr_room_number)}</Text>
+                        <View style={item.wr_o_vacant==1?{position:'absolute', top:0, right:0, zIndex:10, borderLeftWidth:1, borderBottomWidth:1, borderColor:'#d1d1d1', padding:1,}:{display:'none'}}>
+                        <Text style={{fontSize:10.5, color:'#3b4db7'}}>공실</Text>
+                        </View>
 
                       </TouchableOpacity>}
                         />
+              </ScrollView>
              
         </View>
 
@@ -605,8 +681,8 @@ _cancelHandler(){
                         bld_roomPerFloor: this.state.bld_roomPerFloor,
                         bld_posx: this.state.bld_posx,
                         bld_posy: this.state.bld_posy,
-                        bld_hasElev: this.booleanConverter(this.state.bld_hasElev),
-                        bld_hasParking: this.booleanConverter(this.state.bld_hasParking),
+                        bld_hasElev: this._booleanConverter(this.state.bld_hasElev),
+                        bld_hasParking: this._booleanConverter(this.state.bld_hasParking),
                         
                         rooms: this.state.rooms,
 

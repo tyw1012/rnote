@@ -52,7 +52,7 @@ class RoomDetailPopup extends Component{
 
 
 _checkBoxStyle(item){
-    if(item){
+    if(item==1){
         return {flex:1, height:50, justifyContent:'center', alignItems:'center',margin:0,marginLeft:0,marginRight:0,borderRadius:0, backgroundColor:'#3b4db7',borderWidth:0.7, paddingLeft:2, paddingRight:2}
 
     }
@@ -62,7 +62,7 @@ _checkBoxStyle(item){
 
 }
 _checkBoxTextStyle(item){
-    if(item){
+    if(item==1){
         return {fontSize:11, color:'white'}
 
     }
@@ -122,7 +122,7 @@ _findOptionIndex(optionItem){
     innerRef={ref => {this.scroll = ref}}
     style={styles.container}>
 
-        <View style={{flexDirection:'row', marginBottom:25, justifyContent:'space-between'}}>
+        <View style={{flexDirection:'row', marginBottom:10, justifyContent:'space-between'}}>
             <View style={{flexDirection:'row'}}>
             <Text style={styles.itemName}>구분: </Text>
             
@@ -135,7 +135,7 @@ _findOptionIndex(optionItem){
             // uncheckedIcon={null}
             // checkedIcon={null}            
             title={'공실'}
-            containerStyle={{backgroundColor:'#fff',borderWidth:0, height:35, marginTop:-7, paddingRight:0, marginRight:0,}}
+            containerStyle={{backgroundColor:'#fff',borderWidth:0, height:35, marginTop:-12, paddingRight:0, marginRight:0, marginLeft:15,}}
             textStyle={{color:'#666', fontSize: 13, marginTop:-2}}
             checked={item.wr_o_vacant==1?true:false}
            />
@@ -145,8 +145,8 @@ _findOptionIndex(optionItem){
         <View style={{flexDirection: 'row', marginBottom:15, justifyContent: 'space-between'}}>
 
 
-            <Text style={styles.itemName}>보증금/월세 </Text>
-            <Text style={styles.itemDesc}>{item.wr_rent_deposit+ ' / '+item.wr_m_rate + ' 만'}</Text>
+            <Text style={styles.itemName}>보증금 / 월세 </Text>
+            <Text style={styles.itemDesc}><Text style={{fontWeight:'bold', color:'#3b4db7',}}>{item.wr_rent_deposit+ ' / '+item.wr_m_rate }</Text> 만</Text>
       
 
         </View>
@@ -169,8 +169,8 @@ _findOptionIndex(optionItem){
 
         </View>
 
-        <View>
-            <Text style={styles.itemName}>관리비 포함 항목</Text>
+        <View style={{marginBottom:15,}}>
+            <Text style={[styles.itemName, {marginBottom:15}]}>관리비 포함 항목</Text>
 
             <FlatList data ={[{checked: item.wr_mt_elec, name:'전기'},{checked: item.wr_mt_water, name:'수도'},{checked: item.wr_mt_gas, name:'가스'},{checked: item.wr_mt_tv, name:'TV'},{checked: item.wr_mt_internet, name:'인터넷'} ]}
             style={{margin: 0, padding:0,}}
@@ -187,8 +187,46 @@ _findOptionIndex(optionItem){
             textStyle={this._checkBoxTextStyle(item.checked)}
             checked={item.checked==1?true:false}
             onPress={()=>{
+                console.log(item)
 
-        
+            }}/>}
+            />
+        </View>
+
+        <View style={{marginBottom:15,}}>
+            <Text style={[styles.itemName, {marginBottom:15}]}>옵션</Text>
+   
+            <FlatList data ={[
+                {checked: item.wr_o_tv, name:'TV'},
+                {checked: item.wr_o_air_cond, name:'에어컨'},
+                {checked: item.wr_o_fridger, name:'냉장고'},
+                {checked: item.wr_o_washer, name:'세탁기'},
+                {checked: item.wr_o_sink, name:'싱크대'},
+                {checked: item.wr_o_internet, name:'인터넷'},
+                {checked: item.wr_o_microwave, name:'전자렌지'},
+                {checked: item.wr_o_desk, name:'책상'},
+                {checked: item.wr_o_bed, name:'침대'},
+                {checked: item.wr_o_closet, name:'옷장'},
+                {checked: item.wr_o_shoe_rack, name:'신발장'},
+                {checked: item.wr_o_bookshelf, name:'책장'},
+
+             ]}
+            style={{marginBottom: 70, padding:0,}}
+            extraData={this.props.item}
+            key={(this.props.columnChange)}
+            keyExtractor ={(x,i)=>i}
+            numColumns={4}
+            renderItem ={
+            ({item}) =><CheckBox
+            uncheckedIcon={null}
+            checkedIcon={null}        
+            title={item.name}
+            containerStyle={this._checkBoxStyle(item.checked)}
+            textStyle={this._checkBoxTextStyle(item.checked)}
+            checked={item.checked==1?true:false}
+            onPress={()=>{
+                console.log(item)
+
             }}/>}
             />
         </View>
@@ -215,6 +253,7 @@ const styles = StyleSheet.create({
     itemName : {
         fontSize:13,
         fontWeight:'bold',
+        marginBottom:5,
     },
     itemDesc :{
 
