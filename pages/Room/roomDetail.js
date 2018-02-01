@@ -3,6 +3,8 @@ import { AppRegistry,View,Text,StyleSheet,ScrollView,TouchableOpacity,FlatList }
 import MapView from 'react-native-maps';
 import call from 'react-native-phone-call'
 import Icon from 'react-native-vector-icons/Ionicons';
+import PopupDialog from 'react-native-popup-dialog';
+import RoomDetailPopup from './roomDetailPopup';
 
 class RoomDetail extends Component{
 
@@ -10,6 +12,7 @@ class RoomDetail extends Component{
         super(props);
         this.state = {
             // columnChange:1
+            selectedRoom: {},
         }
     }
 
@@ -20,32 +23,21 @@ class RoomDetail extends Component{
         // if (this.props.onEditMode){
       
           if(item.wr_room_inactive==1){
-            return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
+            return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
           }
           else{
-            return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',backgroundColor:'#f1f1f1'}
+            return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',backgroundColor:'#f1f1f1'}
           }
           
         }
         else{
           if (item.wr_room_inactive==1){
-             return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
+             return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
           }
           else{
       
-            if(item.wr_room_type=='원룸'){
-              return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#3b9bcc', justifyContent:'center', alignItems:'center'}
-          
-            }
-            else if(item.wr_room_type=='투룸'){
-              return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#cc3f3f', justifyContent:'center', alignItems:'center'}
-            }
-            else if(item.wr_room_type=='쓰리룸'){
-              return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#db9e25', justifyContent:'center', alignItems:'center'}
-            }
-            else{
-              return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center'}
-            }
+              return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center'}
+            
           }
       
         }
@@ -56,33 +48,23 @@ class RoomDetail extends Component{
     if (this.state.inActiveMode){
     
         if(item.wr_room_inactive==1){
-        return {fontSize:11, color:'#d1d1d1', fontWeight:'bold'}
+        return {fontSize:12, color:'#d1d1d1', fontWeight:'bold'}
         }
         else{
-        return {fontSize:11}
+        return {fontSize:12}
         }
         
     }
     else{
     
         if (item.wr_room_inactive==1){
-            return {fontSize:11, color:'#d1d1d1', fontWeight:'bold'}
+            return {fontSize:12, color:'#d1d1d1', fontWeight:'bold'}
         }
         else{
     
-            if(item.wr_room_type=='원룸'){
-            return {fontSize:11, fontWeight:'bold'}
-        
-            }
-            else if(item.wr_room_type=='투룸'){
-            return {fontSize:11, fontWeight:'bold'}
-            }
-            else if(item.wr_room_type=='쓰리룸'){
-            return {fontSize:11, fontWeight:'bold'}
-            }
-            else{
-            return {fontSize:11, fontWeight:'bold'}
-            }
+         
+            return {fontSize:12, fontWeight:'bold'}
+            
             
         }
     
@@ -119,6 +101,12 @@ class RoomDetail extends Component{
 
     }
 
+    _showRoomDetailPopup(item){
+
+        this.setState({selectedRoom: item},
+        ()=>{ this.roomDetailPopup.show()})
+    }
+
     componentWillMount(){
         this.setState({rooms: this.props.data.rooms, bld_roomPerFloor: this.props.data.bld_roomPerFloor})
     }
@@ -148,6 +136,15 @@ class RoomDetail extends Component{
         // console.log('rendering', rooms, roomsClone)
             return(
                     <View style={{padding:10}}> 
+
+                    <PopupDialog
+                     ref={(popupDialog) => { this.roomDetailPopup = popupDialog; }}            
+                     dialogStyle ={{elevation:2, width: '90%', position:'absolute', height:400, top: 30, }}
+                     > 
+                        <RoomDetailPopup
+                        item = {this.state.selectedRoom}/>
+                     </PopupDialog>
+
                     
                     <View style={{flexDirection:'row', justifyContent:'space-between', marginBottom:10}}>
                         <Text style={{marginLeft:2, fontSize:13, }}>{this.state.onEditMode?'호실을 선택하면 공실여부를 변경합니다':'호실을 선택하면 상세정보를 볼 수 있습니다.'}</Text>
@@ -188,7 +185,7 @@ class RoomDetail extends Component{
                             else{
 
                                 if(item.wr_room_inactive!=1){
-                                    this.props.showRoomDetailPopup(item)
+                                    this._showRoomDetailPopup(item)
                                  }
                             
                             }
@@ -197,8 +194,15 @@ class RoomDetail extends Component{
                         >
                       
                         <Text style={this._roomTextStyle(item)}>{item.wr_room_inactive==1?'없음':this._parseBFloor(item.wr_room_number)}</Text>
-                        <View style={item.wr_o_vacant==1?{position:'absolute', top:0, right:0, zIndex:10, borderLeftWidth:1, borderBottomWidth:1, borderColor:'#d1d1d1', padding:2,}:{display:'none'}}>
-                        <Text style={{fontSize:10.5, color:'#3b4db7'}}>공실</Text>
+                        <View style={item.wr_o_vacant==1?{position:'absolute', top:0, right:0, zIndex:10,  padding:2,}:{display:'none'}}>
+                        <Text style={item.wr_room_inactive==1?{display:'none'}:{fontSize:11, color:'#3b4db7', marginRight:2, marginTop:1, fontWeight:'bold'}}>공실</Text>
+                        </View>
+                        <View style={{position:'absolute', bottom:0, left:0, zIndex:10, padding:1,}}>
+                        <Text style={item.wr_room_inactive==1?{display:'none'}:{fontSize:11, color:'#c1c1c1', marginLeft:2, marginBottom:1, fontWeight:'bold'}}>
+                         {item.wr_room_type=='1'?'원룸':item.wr_room_type=='2'?'투룸':item.wr_room_type=='3'?'쓰리룸':item.wr_room_type=='4'?'1.5룸':''                           
+                         }
+                        
+                        </Text>
                         </View>
                         </TouchableOpacity>
                         }

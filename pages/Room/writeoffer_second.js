@@ -15,6 +15,8 @@ import PopupDialog from 'react-native-popup-dialog';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import RoomInfoPopup from './roomInfoPopup';
 import RoomListPopup from './roomListPopup';
+import myoffering from './myoffering';
+import detail from './detail';
 
 
 export default class writeoffer_second extends Component {
@@ -68,7 +70,9 @@ export default class writeoffer_second extends Component {
     }
 
 };
-
+static getState(name){
+  return self.state[name]
+}
 static updateFigures(){
 
   self.setState(previousState => {
@@ -207,7 +211,7 @@ static updateFigures(){
    //층수, 최대호실수, 지하층수, 시작번호 정보가 변경되면 
     !(previous.bld_roomPerFloor === this.state.bld_roomPerFloor && previous.bld_floor === this.state.bld_floor && previous.bld_firstRoomNumber === this.state.bld_firstRoomNumber && previous.bld_Bfloor === this.state.bld_Bfloor)?
    //roomsObj로 초기화
-    this.setState({rooms:roomsObj,rooms_forList:roomsObj, columnChange:2}, function(){console.log(this.state.rooms)})
+    this.setState({rooms:roomsObj,rooms_forList:roomsObj, columnChange:2}, function(){console.log(this.state)})
    //변경없을경우 -> state 그대로
     : this.setState({columnChange:2}, function(){console.log('case2', this.state)})
 
@@ -273,6 +277,9 @@ static updateFigures(){
     if(string=="3"){
       return '쓰리룸'
     }
+    if(string=="4"){
+      return '1.5룸'
+    }
   }
   _booleanConverter(bool){
     if(bool===true){
@@ -290,6 +297,54 @@ static updateFigures(){
     if(string == "0"){
       return false
     }
+  }
+
+  _parseRooms(rooms){
+    
+
+    let roomsClone = [...rooms]
+    for ( let i = 0; i< roomsClone.length; i++){
+      roomsClone[i] = {...roomsClone[i]}
+
+      roomsClone[i].wr_o_tv = roomsClone[i].options[0].wr_o_tv;
+      roomsClone[i].wr_o_air_cond = roomsClone[i].options[1].wr_o_air_cond;
+      roomsClone[i].wr_o_fridger = roomsClone[i].options[2].wr_o_fridger;
+      roomsClone[i].wr_o_washer = roomsClone[i].options[3].wr_o_washer;
+      roomsClone[i].wr_o_sink = roomsClone[i].options[4].wr_o_sink;
+      roomsClone[i].wr_o_internet = roomsClone[i].options[5].wr_o_internet;
+      roomsClone[i].wr_o_microwave = roomsClone[i].options[6].wr_o_microwave;
+      roomsClone[i].wr_o_desk = roomsClone[i].options[7].wr_o_desk;
+      roomsClone[i].wr_o_bed = roomsClone[i].options[8].wr_o_bed;
+      roomsClone[i].wr_o_closet = roomsClone[i].options[9].wr_o_closet;
+      roomsClone[i].wr_o_shoe_rack = roomsClone[i].options[10].wr_o_shoe_rack;
+      roomsClone[i].wr_o_bookshelf = roomsClone[i].options[11].wr_o_bookshelf;
+     
+      roomsClone[i].wr_mt_elec = roomsClone[i].mt_options[0].wr_mt_elec
+      roomsClone[i].wr_mt_water = roomsClone[i].mt_options[1].wr_mt_water
+      roomsClone[i].wr_mt_gas = roomsClone[i].mt_options[2].wr_mt_gas
+      roomsClone[i].wr_mt_tv = roomsClone[i].mt_options[3].wr_mt_tv
+      roomsClone[i].wr_mt_internet = roomsClone[i].mt_options[4].wr_mt_internet
+      
+      if(roomsClone[i].wr_room_type == '원룸'){
+        roomsClone[i].wr_room_type = "1"
+      }
+      if(roomsClone[i].wr_room_type == '투룸'){
+        roomsClone[i].wr_room_type = "2"
+      }
+      if(roomsClone[i].wr_room_type == '쓰리룸'){
+        roomsClone[i].wr_room_type = "3"
+      }
+      if(roomsClone[i].wr_room_type == '1.5룸'){
+        roomsClone[i].wr_room_type = "4"
+      }
+
+      roomsClone[i].options = undefined;
+      roomsClone[i].mt_options = undefined;
+
+    }
+
+    return roomsClone
+    
   }
 
   _parseBFloor(number){
@@ -390,37 +445,29 @@ _goPrevious(){
   
 // }
 
+
+
 _roomStyle(item){
 
   if (this.state.inActiveMode){
 
     if(item.wr_room_inactive==1){
-      return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
+      return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
     }
     else{
-      return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',backgroundColor:'#f1f1f1'}
+      return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',backgroundColor:'#f1f1f1'}
     }
     
   }
   else{
     if (item.wr_room_inactive==1){
-       return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
+       return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
     }
     else{
 
-      if(item.wr_room_type=='원룸'){
-        return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#3b9bcc', justifyContent:'center', alignItems:'center'}
     
-      }
-      else if(item.wr_room_type=='투룸'){
-        return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#cc3f3f', justifyContent:'center', alignItems:'center'}
-      }
-      else if(item.wr_room_type=='쓰리룸'){
-        return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#db9e25', justifyContent:'center', alignItems:'center'}
-      }
-      else{
-        return {flex:1,margin:2.5,minWidth:50, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center'}
-      }
+        return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center'}
+      
     }
 
   }
@@ -431,34 +478,22 @@ _roomTextStyle(item){
   if (this.state.inActiveMode){
 
     if(item.wr_room_inactive==1){
-      return {fontSize:11, color:'#d1d1d1', fontWeight:'bold'}
+      return {fontSize:12, color:'#d1d1d1', fontWeight:'bold'}
     }
     else{
-      return {fontSize:11, fontWeight:'bold'}
+      return {fontSize:12, fontWeight:'bold'}
     }
     
   }
   else{
 
       if (item.wr_room_inactive==1){
-          return {fontSize:11, color:'#d1d1d1', fontWeight:'bold'}
+          return {fontSize:12, color:'#d1d1d1', fontWeight:'bold'}
       }
       else{
-
-        if(item.wr_room_type=='원룸'){
-          return {fontSize:11, fontWeight:'bold'}
-      
-        }
-        else if(item.wr_room_type=='투룸'){
-          return {fontSize:11, fontWeight:'bold'}
-        }
-        else if(item.wr_room_type=='쓰리룸'){
-          return {fontSize:11, fontWeight:'bold'}
-        }
-        else{
-          return {fontSize:11, fontWeight:'bold'}
-        }
-        
+       
+          return {fontSize:12, fontWeight:'bold'}
+                
       }
 
 
@@ -478,6 +513,12 @@ _inputHandler(name,input,state){
 _chooseRoomType(type, state){
   var clone = this.state.rooms.slice(0);
   clone[this._findRoomIndex(state)]['wr_room_type'] = type
+  this.setState({rooms: clone})
+
+}
+_chooseRentType(type, state){
+  var clone = this.state.rooms.slice(0);
+  clone[this._findRoomIndex(state)]['wr_rent_type'] = type
   this.setState({rooms: clone})
 
 }
@@ -578,6 +619,7 @@ _cancelHandler(){
               item = {this.state.selectedRoom}
               inputHandler = {this._inputHandler.bind(this)}
               chooseRoomType = {this._chooseRoomType.bind(this)}
+              chooseRentType = {this._chooseRentType.bind(this)}
               saveRoomInfo = {this._saveRoomInfo.bind(this)}
               showRoomList = {this._showRoomList.bind(this)}
               checkboxHandler = {this._checkboxHandler.bind(this)}
@@ -654,8 +696,15 @@ _cancelHandler(){
                     >
                       
                         <Text style={this._roomTextStyle(item)}>{item.wr_room_inactive==1? '없음':this._parseBFloor(item.wr_room_number)}</Text>
-                        <View style={item.wr_o_vacant==1?{position:'absolute', top:0, right:0, zIndex:10, borderLeftWidth:1, borderBottomWidth:1, borderColor:'#d1d1d1', padding:1,}:{display:'none'}}>
-                        <Text style={{fontSize:10.5, color:'#3b4db7'}}>공실</Text>
+                        <View style={item.wr_o_vacant==1?{position:'absolute', top:0, right:0, zIndex:10, padding:1,}:{display:'none'}}>
+                        <Text style={item.wr_room_inactive==1?{display:'none'}:{fontSize:11, color:'#3b4db7', marginRight:2, marginTop:1, fontWeight:'bold'}}>공실</Text>
+                        </View>
+                        <View style={{position:'absolute', bottom:0, left:0, zIndex:10, padding:1,}}>
+                        <Text style={item.wr_room_inactive==1?{display:'none'}:{fontSize:11, color:'#c1c1c1', marginLeft:2, marginBottom:1, fontWeight:'bold'}}>
+                         {item.wr_room_type=='원룸'?'원룸':item.wr_room_type=='1.5룸'?'1.5룸':item.wr_room_type=='투룸'?'투룸':item.wr_room_type=='쓰리룸'?'쓰리룸':''                           
+                         }
+                        
+                        </Text>
                         </View>
 
                       </TouchableOpacity>}
@@ -674,8 +723,73 @@ _cancelHandler(){
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={()=>{
-                  console.log(this.state)
-                  fetch('http://real-note.co.kr/app3/writeOffer_room.php',{
+                  
+                  if(this.state.mode == 'edit'){
+
+                      
+                      fetch('http://real-note.co.kr/app3/editOffer_room.php',{
+                        method:'post',
+                        header:{
+                          'Accept': 'application/json',
+                          'Content-type': 'application/json'
+                        },
+                        body:JSON.stringify({
+                          memberID : this.state.memberID,
+                          memberName: this.state.memberName,
+                          contact: this.state.contact,
+                          roomsShouldBeInserted: this.state.roomsShouldBeInserted,
+                          
+                          bld_id : this.state.bld_id,
+                          bld_name : this.state.bld_name,
+                          bld_address : this.state.bld_address,
+                          bld_contact : this.state.bld_contact,
+                          bld_floor: parseInt(this.state.bld_floor),
+                          bld_roomPerFloor: parseInt(this.state.bld_roomPerFloor),
+                          bld_Bfloor: parseInt(this.state.bld_Bfloor),
+                          bld_firstRoomNumber: parseInt(this.state.bld_firstRoomNumber),
+                          bld_subway: this.state.bld_subway,
+                          bld_posx: this.state.bld_posx,
+                          bld_posy: this.state.bld_posy,
+                          bld_hasElev: this._booleanConverter(this.state.bld_hasElev),
+                          bld_hasParking: this._booleanConverter(this.state.bld_hasParking),
+                          bld_memo: this.state.bld_memo,
+                          
+                          rooms: this.state.rooms,
+
+                        
+                        })
+                      })
+                      .then((res)=>{console.log(res); return res.json()})
+                      .then((json) =>{
+                        if (json.error){
+                          if(json.typeError){
+
+                            alert("'"+json.item +"'" + ' 의 입력값이 유효하지 않습니다.')
+
+                          }
+                          else{
+                            alert("'"+json.item +"'" +' 정보를 입력해주세요.' )
+                          }
+                          
+
+                        }
+                        else{
+                          
+                          detail.updateInformationFromOutside({rooms:this._parseRooms(this.state.rooms)});
+
+                          alert("매물 수정이 완료되었습니다.")
+                          this.props.navigation.goBack(null);   
+                          myoffering.refreshFromOutside();
+                          myoffering.setSelectedSaleTypeFromOutside(this.state.segment)                     
+                          
+                        }
+                        
+                      })
+
+                  }
+                  else{
+
+                    fetch('http://real-note.co.kr/app3/writeOffer_room.php',{
                       method:'post',
                       header:{
                         'Accept': 'application/json',
@@ -689,15 +803,16 @@ _cancelHandler(){
                         bld_name : this.state.bld_name,
                         bld_address : this.state.bld_address,
                         bld_contact : this.state.bld_contact,
-                        bld_floor: this.state.bld_floor,
-                        bld_roomPerFloor: this.state.bld_roomPerFloor,
-                        bld_Bfloor: this.state.bld_Bfloor,
-                        bld_firstRoomNumber: this.state.bld_firstRoomNumber,
+                        bld_floor: parseInt(this.state.bld_floor),
+                        bld_roomPerFloor: parseInt(this.state.bld_roomPerFloor),
+                        bld_Bfloor: parseInt(this.state.bld_Bfloor),
+                        bld_firstRoomNumber: parseInt(this.state.bld_firstRoomNumber),
                         bld_subway: this.state.bld_subway,
                         bld_posx: this.state.bld_posx,
                         bld_posy: this.state.bld_posy,
                         bld_hasElev: this._booleanConverter(this.state.bld_hasElev),
                         bld_hasParking: this._booleanConverter(this.state.bld_hasParking),
+                        bld_memo: this.state.bld_memo,
                         
                         rooms: this.state.rooms,
 
@@ -706,21 +821,31 @@ _cancelHandler(){
                     })
                     .then((res)=>{console.log(res); return res.json()})
                     .then((json) =>{
-                      // if (json.error){
-                        
-                      //   alert("'"+json.item +"'" +' 정보를 입력해주세요.' )
+                        if (json.error){
+                          if(json.typeError){
 
-                      // }
-                      // else{
-                        
-                      //   alert("매물 등록이 완료되었습니다.")
-                      //   this.props.navigation.goBack(null);   
-                      //   myoffering.refreshFromOutside();
-                      //   myoffering.setSelectedSaleTypeFromOutside(this.state.segment)                     
-                        
-                      // }
+                            alert("'"+json.item +"'" + ' 의 입력값이 유효하지 않습니다.')
+
+                          }
+                          else{
+                            alert("'"+json.item +"'" +' 정보를 입력해주세요.' )
+                          }
+                          
+
+                        }
+                        else{
+                          
+                          alert("매물 등록이 완료되었습니다.")
+                          this.props.navigation.goBack(null);   
+                          myoffering.refreshFromOutside();
+                          myoffering.setSelectedSaleTypeFromOutside(this.state.segment)                     
+                          
+                        }
                       
                     })
+
+                  }
+                  
                 }}
                 style={{flex:1,marginBottom:40,marginTop: 40,backgroundColor:'#3b4db7', height: 45, justifyContent:'center', alignItems:'center'}}>
                 <Text style={{color:'white', fontSize: 13,}}>다음</Text>

@@ -4,13 +4,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { CheckBox } from 'react-native-elements'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // import { SegmentedControls } from 'react-native-radio-buttons';
+import { RadioButtons } from 'react-native-radio-buttons';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import RecCheckBox from './RecCheckBox'
 // import myoffering from './myoffering';
 
 
-var options = ['임대', '매매', '거래완료'];
+var options = ['공실', '건물'];
 var previous;
 let {width, height} = Dimensions.get('window');
 
@@ -21,7 +21,7 @@ constructor(props){
     
     this.state={
         onEditMode:false,
-        selectedSegment: '임대',
+        selectedSegment: '공실',
         isSearching:false,
         depositSliderValue:[0,999999],
         mrateSliderValue:[0,999999],
@@ -492,68 +492,131 @@ this.setState({
 });
 
 }
-
-_recCheckHandler(state){
-    this.setState(state);
+_convertToBool(string){
+    if (string =='0'){
+        return false
+    }
+    if (string =='1'){
+        return true
+    }
 }
-_renderForm_rent(){
+_chooseRoomType(type){
+    if (type =='원룸'){
+        this.props.inputHandler('roomTypeFilter', "1")
+    }
+    if (type =='투룸'){
+        this.props.inputHandler('roomTypeFilter', "2")
+    }
+    if (type =='쓰리룸'){
+        this.props.inputHandler('roomTypeFilter', "3")
+    }
+    if (type =='1.5룸'){
+        this.props.inputHandler('roomTypeFilter', "4")
+    }
+    if (type =='전체'){
+        this.props.inputHandler('roomTypeFilter', "0")
+    }
+    
+}
+_parseBackRoomType(string){
+    if (string =='1'){
+        return '원룸'
+    }
+    if (string =='2'){
+        return '투룸'
+    }
+    if (string =='3'){
+        return '쓰리룸'
+    }
+    if (string =='4'){
+        return '1.5룸'
+    }
+    if (string =='0'){
+        return '전체'
+    }
+    if (string == undefined){
+        return '전체'
+    }
+}
+
+_chooseRentType(type){
+    if (type =='월세'){
+        this.props.inputHandler('rentTypeFilter', "1")
+    }
+    if (type =='전세'){
+        this.props.inputHandler('rentTypeFilter', "2")
+    }
+    if (type =='전체'){
+        this.props.inputHandler('rentTypeFilter', "0")
+    }
+  
+}
+_parseBackRentType(string){
+    if (string =='1'){
+        return '월세'
+    }
+    if (string =='2'){
+        return '전세'
+    }
+    if (string =='0'){
+        return '전체'
+    }
+    if (string == undefined){
+        return '전체'
+    }
+ 
+}
+renderOption(option, selected, onSelect, index){
+    const style = selected ? { fontWeight: 'bold', fontSize:13, margin:12, color: 'white'} : {fontSize:13,margin:12,};
+    const style2 = selected ? { backgroundColor: '#3b4db7', alignItems:'center', justifyContent:'center', height: 35,} : {backgroundColor:'#f1f1f1',alignItems:'center', justifyContent:'center', height:35} ;
+    return (
+        <TouchableOpacity onPress={onSelect} key={index} style={style2} >
+        <Text style={style}>{option}</Text>
+        </TouchableOpacity>
+    );
+    }
+
+renderContainer(optionNodes){
+return <View style={{flexDirection:'row', }}>{optionNodes}</View>;
+}
+_renderForm_room(){
     return (
             
        <ScrollView keyboardShouldPersistTaps="always">     
 
            <View style={styles.segment}>
 
-                <View style={{flexDirection: 'row',}}>
+                <View>
 
-                    <View style = {{flex:1, marginRight:20}}>    
+                    <View style = {{flexDirection: 'row', justifyContent:'space-between', marginBottom:15}}>    
             
-                            <Text style={[styles.itemName,{marginTop:0}]}>매물명</Text>
-                    
-                            <TextInput
-                            placeholder=""
-                            placeholderTextColor='#aaa'
-                            onSubmitEditing={(event) => { 
-                            this.refs.SecondInput.focus(); 
-                            }}
-                            blurOnSubmit={false}
-                            returnKeyType = {"next"}
-                            style={styles.itemInput}
-                            underlineColorAndroid="transparent"
-                            value={ this.props.getFilterValue('nameFilter')}
-                            onChangeText= {input => this.props.inputHandler('nameFilter',input)}
-                            onFocus={(event: Event) => {
-                              
-                              this.scroll.props.scrollToPosition(0, 0)
-                            }}
-                            />
-                        {/* <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text> */}
+                            <Text style={[styles.itemName,{marginTop:0}]}>매물형태</Text>                    
+                         
+                            <RadioButtons
+                            options={ ['월세','전세','전체'] }
+                            onSelection={ this._chooseRentType.bind(this) }
+                            selectedOption={this._parseBackRentType(this.props.getFilterValue('rentTypeFilter'))}
+                            renderOption={ this.renderOption }
+                            renderContainer={ this.renderContainer }
+                            /> 
                     
                     </View>
             
                     
 
-                    <View style = {{flex:1}}>    
+                    <View style = {{flexDirection: 'row', justifyContent:'space-between',marginBottom:10}}>       
             
-                            <Text style={[styles.itemName,{marginTop:0}]}>상권명</Text>
-                    
-                            <TextInput
-                            placeholder=""
-                            placeholderTextColor='#aaa'
-                            ref='SecondInput'
-                            onSubmitEditing={(event) => { 
-                            this.refs.ThirdInput.focus(); 
-                            }}
-                            blurOnSubmit={false}
-                            returnKeyType = {"next"}
-                            style={styles.itemInput}
-                            underlineColorAndroid="transparent"
-                            value={ this.props.getFilterValue('saleAreaFilter')}
-                            onChangeText= {input => this.props.inputHandler('saleAreaFilter',input)}
-                            onFocus={(event: Event) => {
-                              
-                              this.scroll.props.scrollToPosition(0, 0)
-                            }}
-                            />
+                            <Text style={[styles.itemName,{marginTop:0}]}>방구분</Text>
+
+                            <RadioButtons
+                            options={ ['원룸','1.5룸','투룸','쓰리룸','전체'] }
+                            onSelection={ this._chooseRoomType.bind(this) }
+                            selectedOption={this._parseBackRoomType(this.props.getFilterValue('roomTypeFilter'))}
+                            renderOption={ this.renderOption }
+                            renderContainer={ this.renderContainer }
+
+            /> 
+                            
                            {/* <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>평</Text> */}
                     
                     </View>
@@ -563,7 +626,7 @@ _renderForm_rent(){
 
               <View style={{flexDirection: 'row',}}>
 
-                    <View style = {{flex:1,}}>    
+                    <View style = {{flex:1, marginRight:20}}>    
             
                             <Text style={styles.itemName}>주소</Text>
                     
@@ -585,9 +648,31 @@ _renderForm_rent(){
                               this.scroll.props.scrollToPosition(0, 0)
                             }}
                             />
+                    
+                    </View>
+
+                    <View style = {{flex:1,}}>    
+            
+                            <Text style={styles.itemName}>인근지하철역</Text>
+                    
+                            <TextInput
+                            placeholder=""
+                            placeholderTextColor='#aaa'
+                            ref='ThirdInput'
+                            onSubmitEditing={(event) => { 
+                            this.refs.FourthInput.focus(); 
+                            }}
+                            blurOnSubmit={false}
+                            returnKeyType = {"next"}
+                            style={styles.itemInput}
+                            underlineColorAndroid="transparent"
+                            value={ this.props.getFilterValue('subwayFilter')}
+                            onChangeText= {input => this.props.inputHandler('subwayFilter',input)}
+                            onFocus={(event: Event) => {
                             
-                         
-                        {/* <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text> */}
+                            this.scroll.props.scrollToPosition(0, 0)
+                            }}
+                            />
                     
                     </View>
           
@@ -596,194 +681,6 @@ _renderForm_rent(){
            {/* </View> */}
        
 
-                <View style={{flexDirection: 'row', marginBottom:10, marginTop:10,}}>
-
-                        <Text style={[styles.itemName,{marginTop:12}]}>층수</Text>
-            
-                        <View style = {[styles.row2, {marginTop:6,}]}>    
-                
-                            
-                
-                            <TextInput
-                            placeholder="최소"
-                            placeholderTextColor='#aaa'
-                            ref='FourthInput'
-                            onSubmitEditing={(event) => { 
-                            this.refs.FifthInput.focus(); 
-                            }}
-                            blurOnSubmit={false}
-                            returnKeyType = {"next"}
-                            style={[styles.itemInput, {}]}
-                            keyboardType='phone-pad'
-                            underlineColorAndroid="transparent"
-                            value={ this.props.getFilterValue('floorMinFilter')}
-                            onChangeText= {input => this.props.inputHandler('floorMinFilter',input)}
-                            onFocus={(event: Event) => {
-                                
-                                this.scroll.props.scrollToPosition(0, 50)
-                            }}
-                            />
-                            <Text style={{ marginTop: 34, marginLeft: 3, fontSize:12, position: 'absolute', top:-25, right:15}}>층</Text>
-                        
-                        </View>
-                
-                        <Text style={{marginTop:12,fontSize: 16,}}> ~ </Text>
-        
-                        <View style = {[styles.row2, {marginTop:6}]}>    
-                
-                                {/* <Text style={styles.itemName}> </Text> */}
-                
-                            
-                                <TextInput
-                                placeholder="최대"
-                                placeholderTextColor='#aaa'
-                                ref='FifthInput'
-                                onSubmitEditing={(event) => { 
-                                this.refs.SixthInput.focus(); 
-                                }}
-                                blurOnSubmit={false}
-                                returnKeyType = {"next"}
-                                style={[styles.itemInput, {}]}
-                                keyboardType='phone-pad'
-                                underlineColorAndroid="transparent"
-                                value={ this.props.getFilterValue('floorMaxFilter')}
-                                onChangeText= {input => this.props.inputHandler('floorMaxFilter',input)}
-                                onFocus={(event: Event) => {
-                                
-                                this.scroll.props.scrollToPosition(0, 50)
-                                }}
-                                />                      
-                            
-                                <Text style={{ marginTop: 34, marginLeft: 3, fontSize:12, position: 'absolute', top:-25, right:15}}>층</Text>
-                        
-                        </View>
-        
-                        
-            </View>
-        
-            <View style={{flexDirection: 'row', marginBottom:15, marginTop:10,}}>
-
-                    <Text style={[styles.itemName,{marginTop:12}]}>면적</Text>
-            
-                        <View style = {[styles.row2, {marginTop:6,}]}>    
-                
-                            
-                
-                            <TextInput
-                            placeholder="최소"
-                            placeholderTextColor='#aaa'
-                            ref='SixthInput'
-                            onSubmitEditing={(event) => { 
-                            this.refs.SeventhInput.focus(); 
-                            }}
-                            blurOnSubmit={false}
-                            returnKeyType = {"next"}
-                            style={[styles.itemInput, {position:'relative'}]}
-                            keyboardType='phone-pad'
-                            underlineColorAndroid="transparent"
-                            value={ this.props.getFilterValue('areaMinFilter')}
-                            onChangeText= {input => this.props.inputHandler('areaMinFilter',input)}
-                            onFocus={(event: Event) => {
-                                
-                                this.scroll.props.scrollToPosition(0, 100)
-                            }}
-                            />
-                            <Text style={{ marginTop: 34, marginLeft: 3, fontSize:12, position: 'absolute', top:-25, right:15}}>평</Text>
-                        
-                        </View>
-                
-                        <Text style={{marginTop:12,fontSize: 16,}}> ~ </Text>
-        
-                        <View style = {[styles.row2, {marginTop:6}]}>    
-                
-                                {/* <Text style={styles.itemName}> </Text> */}
-                
-                            
-                                <TextInput
-                                placeholder="최대"
-                                placeholderTextColor='#aaa'
-                                ref='SeventhInput'
-                                style={[styles.itemInput, {}]}
-                                keyboardType='phone-pad'
-                                underlineColorAndroid="transparent"
-                                value={ this.props.getFilterValue('areaMaxFilter')}
-                                onChangeText= {input => this.props.inputHandler('areaMaxFilter',input)}
-                                onFocus={(event: Event) => {
-                                
-                                this.scroll.props.scrollToPosition(0, 100)
-                                }}
-                                />                      
-                            
-                                <Text style={{ marginTop: 34, marginLeft: 3, fontSize:12, position: 'absolute', top:-25, right:15}}>평</Text>
-                        
-                        </View>
-        
-                        
-                </View>
-           
-
-            </View>
-        
-            <View style={styles.segment_rec}>
-                <TouchableOpacity style={{flexDirection:'row', justifyContent:'space-between', padding:20,}}
-                onPress={()=>{this.setState({flatListVisible:!this.state.flatListVisible})}}>
-               
-                    <Text style={[styles.itemName,{ marginTop:0}]}>추천업종</Text>
-                    <Icon
-                    name="ios-arrow-down"
-                    size={22}
-                    style={{color: '#3b4db7',}}
-                    onPress={()=>{this.setState({flatListVisible:!this.state.flatListVisible})}}
-                    />      
-                </TouchableOpacity>
-              
-                <View style={this.state.flatListVisible?styles.flatListWrapper: {height:0}}>
-                <FlatList data ={this.state.wr_rec_full}
-                style={{margin: 0, padding:0,}}
-                extraData={this.state}
-                keyExtractor ={(x,i)=>i}
-                numColumns={3}
-                renderItem ={
-                ({item}) =>
-                
-                <RecCheckBox
-                item={item}
-                checked={this.state.wr_rec_full_bool[this.state.wr_rec_full.indexOf(item)]}
-                wr_rec_full_bool={this.state.wr_rec_full_bool}
-                wr_rec_full={this.state.wr_rec_full}
-                wr_rec_sectors={this.state.wr_rec_sectors}
-                recCheckHandler = {this._recCheckHandler.bind(this)}
-                
-                />
-                // <CheckBox
-                // uncheckedIcon={null}
-                // checkedIcon={null}
-                
-                // title={item}
-                // containerStyle={this._checkBoxStyle(this.state.wr_rec_full_bool[this.state.wr_rec_full.indexOf(item)])}
-                // textStyle={this._checkBoxTextStyle(this.state.wr_rec_full_bool[this.state.wr_rec_full.indexOf(item)])}
-                // checked={this.state.wr_rec_full_bool[this.state.wr_rec_full.indexOf(item)]}
-                // onPress={()=>{
-                                       
-                //     if(!this.include(this.state.wr_rec_sectors,item)){
-                //         this.setState({wr_rec_sectors : [...this.state.wr_rec_sectors,item]})
-                //     }else{ 
-                //         var index = this.state.wr_rec_sectors.indexOf(item);
-                //         var temp = this.state.wr_rec_sectors.slice(0);
-                //         temp.splice(index,1);                       
-                //         this.setState({wr_rec_sectors : temp})
-                //     }
-                //     var temp2 = this.state.wr_rec_full_bool.slice(0);
-                //     var index_full = this.state.wr_rec_full.indexOf(item);
-                //     temp2[index_full] = !temp2[index_full];
-                //     this.setState({wr_rec_full_bool : temp2})
-                
-            
-                // }}/>
-            }
-                /> 
-                </View>
-                                  
             </View>
 
             <View style={styles.segment}>
@@ -822,17 +719,17 @@ _renderForm_rent(){
             </View>
 
             <View style={{flexDirection:'row', flex:1, justifyContent:'space-between'}}>  
-                <Text style={[styles.itemName,{ marginBottom:25}]}>임대료</Text>
+                <Text style={[styles.itemName,{ marginBottom:25}]}>월세</Text>
                 <Text style={{marginTop:15,fontSize:12,fontWeight:'bold'}}>
                 {
                     this.state.onMrateEditMode?
                         this.state.mrateSliderValue[0]==this.state.mrateSliderValue[1]?
                             this.state.mrateSliderValue[1]==999999?
-                                '2000만 이상'
+                                '300만 이상'
                             :this.state.mrateSliderValue[1]+'만'
                         :
                             this.state.mrateSliderValue[1]==999999?
-                                 this.state.mrateSliderValue[0]+'만 - 2000만 이상'
+                                 this.state.mrateSliderValue[0]+'만 - 300만 이상'
                             :this.state.mrateSliderValue[0]+'만 - '+ this.state.mrateSliderValue[1]+'만'
                     :'전체'} 
                 </Text>
@@ -847,7 +744,7 @@ _renderForm_rent(){
                 max={999999}
                 containerStyle={{height:30,marginBottom: -10,}}
                 // step={500}
-                optionsArray={[0,10,20,30,40,50,60,70,80,90,100,120,140,160,180,200,250,300,350,400,500,600,700,800,900,1000,1500,2000,999999]}
+                optionsArray={[0,10,20,30,40,50,60,70,80,90,100,120,140,160,180,200,250,300,999999]}
                 allowOverlap={true}
                 snapped={true}
                 touchDimensions	={ {height: 60, width: 100, borderRadius: 35, slipDisplacement: 70} }
@@ -856,78 +753,198 @@ _renderForm_rent(){
             />
             </View>
 
-            <View style={{flexDirection:'row', flex:1, justifyContent:'space-between'}}>  
-                <Text style={[styles.itemName,{ marginBottom:25}]}>권리금</Text>
-                <Text style={{marginTop:15,fontSize:12,fontWeight:'bold'}}>
-                {
-                    this.state.onPremoEditMode?
-                        this.state.premoSliderValue[0]==this.state.premoSliderValue[1]?
-                            this.state.premoSliderValue[1]==999999?
-                                '100000만 이상'
-                            :this.state.premoSliderValue[1]+'만'
-                        :
-                            this.state.premoSliderValue[1]==999999?
-                                 this.state.premoSliderValue[0]+'만 - 100000만 이상'
-                            :this.state.premoSliderValue[0]+'만 - '+ this.state.premoSliderValue[1]+'만'
-                    :'전체'} 
-                 </Text>
-              
-            </View>
-            <View style={{alignItems:'center'}}>
-            <MultiSlider
-                values={[this.state.premoSliderValue[0], this.state.premoSliderValue[1]]}
-                sliderLength={width-65}
-                onValuesChange={this._premoSliderValuesChange}
-                min={0}
-                max={999999}
-                containerStyle={{height:30, marginBottom: -10,}}
-                // step={500}
-                optionsArray={[0,200,500,1000,1500,2000,2500,3000,3500,4000,4500,5000,6000,7000,8000,9000,10000,12000,14000,16000,18000,20000,25000,30000,40000,50000,100000,999999]}
-                allowOverlap={true}
-                snapped={true}
-                touchDimensions	={ {height: 60, width: 100, borderRadius: 35, slipDisplacement: 70} }
-                markerStyle={{ height:25, width: 25, borderRadius: 22.5, backgroundColor:'#fff', borderWidth: 1, borderColor: '#3b4db7'}}
-                selectedStyle={{backgroundColor:'#3b4db7'}}
-            />
-            </View>
-
-            <View style={{flexDirection:'row', flex:1, justifyContent:'space-between'}}>  
-                <Text style={[styles.itemName,{ marginBottom:25}]}>합예산</Text>
-                <Text style={{marginTop:15,fontSize:12,fontWeight:'bold'}}>
-                {
-                    this.state.onSumEditMode?
-                        this.state.sumSliderValue[0]==this.state.sumSliderValue[1]?
-                            this.state.sumSliderValue[1]==999999?
-                                '150000만 이상'
-                            :this.state.sumSliderValue[1]+'만'
-                        :
-                            this.state.sumSliderValue[1]==999999?
-                                 this.state.sumSliderValue[0]+'만 - 150000만 이상'
-                            :this.state.sumSliderValue[0]+'만 - '+ this.state.sumSliderValue[1]+'만'
-                    :'전체'} 
-                </Text>
-              
-            </View>
-            <View style={{alignItems:'center'}}>
-            <MultiSlider
-                values={[this.state.sumSliderValue[0], this.state.sumSliderValue[1]]}
-                sliderLength={width-65}
-                onValuesChange={this._sumSliderValuesChange}
-                min={0}
-                max={999999}
-                containerStyle={{height:30,marginBottom: 100,}}
-                // step={500}
-                optionsArray={[0,200,500,1000,1500,2000,2500,3000,3500,4000,4500,5000,6000,7000,8000,9000,10000,12000,14000,16000,18000,20000,25000,30000,40000,50000,100000,150000,999999]}
-                allowOverlap={true}
-                snapped={true}
-                touchDimensions	={ {height: 60, width:100, borderRadius: 35, slipDisplacement: 70} }
-                markerStyle={{ height:25, width: 25, borderRadius: 22.5, backgroundColor:'#fff', borderWidth: 1, borderColor: '#3b4db7',}}
-                selectedStyle={{backgroundColor:'#3b4db7'}}
-            />
-            </View>
-          </View>
+ 
+        </View>
         
-        </ScrollView>
+            <View style={styles.segment_rec}>
+                <TouchableOpacity style={{flexDirection:'row', justifyContent:'space-between', padding:20,}}
+                onPress={()=>{this.setState({flatListVisible:!this.state.flatListVisible})}}>
+               
+                    <Text style={[styles.itemName,{ marginTop:0}]}>층수/면적</Text>
+                    <Icon
+                    name="ios-arrow-down"
+                    size={22}
+                    style={{color: '#3b4db7',}}
+                    onPress={()=>{this.setState({flatListVisible:!this.state.flatListVisible})}}
+                    />      
+                </TouchableOpacity>
+
+              <View style={this.state.flatListVisible?{padding:20, paddingTop:5}:{display:'none'}}>
+                <View style={{flexDirection: 'row', marginBottom:10}}>
+
+                    <Text style={[styles.itemName,{marginTop:12}]}>층수</Text>
+
+                    <View style = {[styles.row2, {marginTop:6,}]}>    
+
+                        <TextInput
+                        placeholder="최소"
+                        placeholderTextColor='#aaa'
+                        ref='FourthInput'
+                        onSubmitEditing={(event) => { 
+                        this.refs.FifthInput.focus(); 
+                        }}
+                        blurOnSubmit={false}
+                        returnKeyType = {"next"}
+                        style={[styles.itemInput, {}]}
+                        keyboardType='phone-pad'
+                        underlineColorAndroid="transparent"
+                        value={ this.props.getFilterValue('floorMinFilter')}
+                        onChangeText= {input => this.props.inputHandler('floorMinFilter',input)}
+                        onFocus={(event: Event) => {
+                            
+                            this.scroll.props.scrollToPosition(0, 50)
+                        }}
+                        />
+                        <Text style={{ marginTop: 34, marginLeft: 3, fontSize:12, position: 'absolute', top:-25, right:15}}>층</Text>
+
+                    </View>
+
+                    <Text style={{marginTop:12,fontSize: 16,}}> ~ </Text>
+
+                    <View style = {[styles.row2, {marginTop:6}]}>    
+
+                            {/* <Text style={styles.itemName}> </Text> */}
+
+                        
+                            <TextInput
+                            placeholder="최대"
+                            placeholderTextColor='#aaa'
+                            ref='FifthInput'
+                            onSubmitEditing={(event) => { 
+                            this.refs.SixthInput.focus(); 
+                            }}
+                            blurOnSubmit={false}
+                            returnKeyType = {"next"}
+                            style={[styles.itemInput, {}]}
+                            keyboardType='phone-pad'
+                            underlineColorAndroid="transparent"
+                            value={ this.props.getFilterValue('floorMaxFilter')}
+                            onChangeText= {input => this.props.inputHandler('floorMaxFilter',input)}
+                            onFocus={(event: Event) => {
+                            
+                            this.scroll.props.scrollToPosition(0, 50)
+                            }}
+                            />                      
+                        
+                            <Text style={{ marginTop: 34, marginLeft: 3, fontSize:12, position: 'absolute', top:-25, right:15}}>층</Text>
+
+                    </View>
+
+
+            </View>
+
+            <View style={{flexDirection: 'row', marginBottom:15, marginTop:10,}}>
+
+                    <Text style={[styles.itemName,{marginTop:12}]}>면적</Text>
+
+                    <View style = {[styles.row2, {marginTop:6,}]}>    
+
+                        
+
+                        <TextInput
+                        placeholder="최소"
+                        placeholderTextColor='#aaa'
+                        ref='SixthInput'
+                        onSubmitEditing={(event) => { 
+                        this.refs.SeventhInput.focus(); 
+                        }}
+                        blurOnSubmit={false}
+                        returnKeyType = {"next"}
+                        style={[styles.itemInput, {position:'relative'}]}
+                        keyboardType='phone-pad'
+                        underlineColorAndroid="transparent"
+                        value={ this.props.getFilterValue('areaMinFilter')}
+                        onChangeText= {input => this.props.inputHandler('areaMinFilter',input)}
+                        onFocus={(event: Event) => {
+                            
+                            this.scroll.props.scrollToPosition(0, 100)
+                        }}
+                        />
+                        <Text style={{ marginTop: 34, marginLeft: 3, fontSize:12, position: 'absolute', top:-25, right:15}}>평</Text>
+
+                    </View>
+
+                    <Text style={{marginTop:12,fontSize: 16,}}> ~ </Text>
+
+                    <View style = {[styles.row2, {marginTop:6}]}>    
+
+                            {/* <Text style={styles.itemName}> </Text> */}
+
+                        
+                            <TextInput
+                            placeholder="최대"
+                            placeholderTextColor='#aaa'
+                            ref='SeventhInput'
+                            style={[styles.itemInput, {}]}
+                            keyboardType='phone-pad'
+                            underlineColorAndroid="transparent"
+                            value={ this.props.getFilterValue('areaMaxFilter')}
+                            onChangeText= {input => this.props.inputHandler('areaMaxFilter',input)}
+                            onFocus={(event: Event) => {
+                            
+                            this.scroll.props.scrollToPosition(0, 100)
+                            }}
+                            />                      
+                        
+                            <Text style={{ marginTop: 34, marginLeft: 3, fontSize:12, position: 'absolute', top:-25, right:15}}>평</Text>
+
+                    </View>
+
+
+                </View>
+            </View>
+              
+                
+                                  
+        </View>
+
+        <View style={[styles.segment_rec, {marginBottom:50}]}>
+                <TouchableOpacity style={{flexDirection:'row', justifyContent:'space-between', padding:20,}}
+                onPress={()=>{this.setState({flatListVisible2:!this.state.flatListVisible2})}}>
+               
+                    <Text style={[styles.itemName,{ marginTop:0}]}>추가옵션</Text>
+                    <Icon
+                    name="ios-arrow-down"
+                    size={22}
+                    style={{color: '#3b4db7',}}
+                    onPress={()=>{this.setState({flatListVisible2:!this.state.flatListVisible2})}}
+                    />      
+                </TouchableOpacity>
+
+                <View style={this.state.flatListVisible2?{padding:20, paddingTop:5, flexDirection:'row', justifyContent:'space-between'}:{display:'none'}}>
+
+                    <CheckBox
+                    checkedColor='#3b4db7'
+                    title={'주차가능'}
+                    containerStyle={{backgroundColor:'#fff',borderWidth:0, height:35, marginTop:-7, paddingRight:0, marginRight:0, paddingLeft:0, marginLeft: 0}}
+                    textStyle={{color:'#666', fontSize: 13, marginTop:-2}}
+                    checked={this._convertToBool(this.props.getFilterValue('parkingFilter'))}
+                    onPress={()=>{
+                        this.props.getFilterValue('parkingFilter') == "1"?
+                        this.props.inputHandler('parkingFilter', "0") :
+                        this.props.inputHandler('parkingFilter', "1")
+                                                
+                    }}/> 
+
+                    <CheckBox
+                    checkedColor='#3b4db7'
+                    title={'엘리베이터'}
+                    containerStyle={{backgroundColor:'#fff',borderWidth:0, height:35, marginTop:-7, paddingRight:0, marginRight:30,}}
+                    textStyle={{color:'#666', fontSize: 13, marginTop:-2}}
+                    checked={this._convertToBool(this.props.getFilterValue('elevFilter'))}
+                    onPress={()=>{
+                        this.props.getFilterValue('elevFilter') == "1"?
+                        this.props.inputHandler('elevFilter', "0") :
+                        this.props.inputHandler('elevFilter', "1")
+                        
+                    }}/>
+                     
+                 </View>           
+
+        </View>
+        
+        
+    </ScrollView>
               
     )
 
@@ -949,9 +966,6 @@ _resetHandler(){
         premoSliderValue: [0, 999999],
         sumSliderValue:[0,999999],
 
-        wr_rec_sectors : [],
-        wr_rec_full_bool:[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
-   
         onSalePriceEditMode:false,
         onPsalePriceEditMode:false,
         onSilinsuEditMode:false,
@@ -1037,8 +1051,8 @@ style={styles.modalContainer}
     // style={styles.inputContainer}
     >         
 
-            {this.state.selectedSegment=='임대'?this._renderForm_rent() : 
-             this.state.selectedSegment=='매매'?this._renderForm_sell() :
+            {this.state.selectedSegment=='공실'?this._renderForm_room() : 
+             this.state.selectedSegment=='건물'?this._renderForm_sell() :
              this._renderForm_fin()
             }
 
@@ -1054,7 +1068,7 @@ style={styles.modalContainer}
     this.setState({isSearching:true});
     this.props.segmentChange(options[options.indexOf(this.state.selectedSegment)]);  
       
-    fetch('http://real-note.co.kr/app3/searchByFilterMerged.php', {
+    fetch('http://real-note.co.kr/app3/searchByFilter_room.php', {
       method: 'POST',
       headers:{
         'Accept': 'application/json',
@@ -1071,26 +1085,23 @@ style={styles.modalContainer}
         // selectedIndex: this.state.selectedIndex,
         myoffering_from: 0,
         countPerLoad: this.props.countPerLoad,
-
-        name: this.props.getFilterValue('nameFilter'),
+        
+        rentType : this.props.getFilterValue('rentTypeFilter'),
+        roomType : this.props.getFilterValue('roomTypeFilter'),
         addr: this.props.getFilterValue('addrFilter'),
-        writer: this.props.getFilterValue('writerFilter'),
-        saleArea: this.props.getFilterValue('saleAreaFilter'),
+        subway: this.props.getFilterValue('subwayFiler'),
         floorMin: this.props.getFilterValue('floorMinFilter'),
         floorMax: this.props.getFilterValue('floorMaxFilter'),
         areaMin: this.props.getFilterValue('areaMinFilter'),
         areaMax: this.props.getFilterValue('areaMaxFilter'),   
+        parking: this.props.getFilterValue('parkingFilter'),
+        elev: this.props.getFilterValue('elevFilter'),
         
-        wr_rec_sectors: this.state.wr_rec_sectors,
                                
         depositMin: this.state.onDepositEditMode? this.state.depositSliderValue[0] : '',
         depositMax: this.state.onDepositEditMode? this.state.depositSliderValue[1] : '',
         mrateMin: this.state.onMrateEditMode? this.state.mrateSliderValue[0] : '',
         mrateMax: this.state.onMrateEditMode? this.state.mrateSliderValue[1] : '',
-        premoMin: this.state.onPremoEditMode? this.state.premoSliderValue[0] : '',
-        premoMax: this.state.onPremoEditMode? this.state.premoSliderValue[1] : '',
-        sumMin: this.state.onSumEditMode? this.state.sumSliderValue[0] : '',
-        sumMax: this.state.onSumEditMode? this.state.sumSliderValue[1] : '',
 
         name_sell: this.props.getFilterValue('nameFilter_sell'),
         addr_sell: this.props.getFilterValue('addrFilter_sell'),
@@ -1114,21 +1125,43 @@ style={styles.modalContainer}
     })
     .then((res)=>{
 
-      console.log(res);
-      var parsedRes = JSON.parse(res._bodyText).data;
-      var parsedRes_count = JSON.parse(res._bodyText).count.count;
+      if(this.state.selectedSegment=='공실'){
+
+        var parsedRes_room_count = JSON.parse(res._bodyText).room_count.count;
+        var parsedRes_room_data = JSON.parse(res._bodyText).room_data;
+        var parsedRes_room_extra_data = JSON.parse(res._bodyText).room_extra_data;
+
+        for(var i =0; i<=parsedRes_room_data.length-1; i++){
+        
+        
+            parsedRes_room_data[i].clone =  {...parsedRes_room_data[i]};
+            parsedRes_room_data[i].clone.rooms = [];
+            
+            for(var j = 0; j<=parsedRes_room_extra_data.length-1; j++){
+    
+               
+              if(parsedRes_room_data[i].wr_bld_match_id == parsedRes_room_extra_data[j].wr_bld_match_id){
+    
+                parsedRes_room_data[i].clone.rooms.push(parsedRes_room_extra_data[j])
+    
+              }
+    
+            }
+    
+          }
+
+          this.props.offeringHandler(parsedRes_room_data, parsedRes_room_count);
+
+      }
+    //   var parsedRes = JSON.parse(res._bodyText).data;
+    //   var parsedRes_count = JSON.parse(res._bodyText).count.count;
       
       this.setState({isSearching:false});
       this.state.onDepositEditMode?this.props.inputHandler('depositMinFilter',this.state.depositSliderValue[0]):null
       this.state.onDepositEditMode?this.props.inputHandler('depositMaxFilter',this.state.depositSliderValue[1]):null
       this.state.onMrateEditMode?this.props.inputHandler('mrateMinFilter',this.state.mrateSliderValue[0]):null
       this.state.onMrateEditMode?this.props.inputHandler('mrateMaxFilter',this.state.mrateSliderValue[1]):null
-      this.state.onPremoEditMode? this.props.inputHandler('premoMinFilter',this.state.premoSliderValue[0]):null
-      this.state.onPremoEditMode?this.props.inputHandler('premoMaxFilter',this.state.premoSliderValue[1]):null
-      this.state.onSumEditMode?this.props.inputHandler('sumMinFilter',this.state.sumSliderValue[0]):null
-      this.state.onSumEditMode?this.props.inputHandler('sumMaxFilter',this.state.sumSliderValue[1]):null
 
-      this.props.recHandler(this.state.wr_rec_sectors)
 
       this.state.onSalePriceEditMode? this.props.inputHandler('salePriceMinFilter',this.state.salePriceSliderValue[0]) : null
       this.state.onSalePriceEditMode? this.props.inputHandler('salePriceMaxFilter',this.state.salePriceSliderValue[1]) : null
@@ -1139,7 +1172,7 @@ style={styles.modalContainer}
       this.state.onProfitEditMode? this.props.inputHandler('profitMinFilter',this.state.profitSliderValue[0]) : null
       this.state.onProfitEditMode? this.props.inputHandler('profitMaxFilter',this.state.profitSliderValue[1]) : null
       
-      this.props.offeringHandler(parsedRes, parsedRes_count);
+    //   this.props.offeringHandler(parsedRes, parsedRes_count);
     //   this.props.fromHandler();
     //   this.setState({modalVisible:false, myoffering:parsedRes, isFiltered:true, filterText:'필터해제'})
     })

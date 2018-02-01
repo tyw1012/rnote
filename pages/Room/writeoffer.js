@@ -5,7 +5,7 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View,TextInput,TouchableOpacity,KeyboardAvoidingView,
+  View,TextInput,TouchableOpacity,KeyboardAvoidingView,Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Button, CheckBox } from 'react-native-elements'
@@ -104,7 +104,6 @@ export default class writeoffer extends Component {
       bld_posy: params.bld_posy,
       
     }, function(){
-      console.log('1',params)
       this.props.navigation.state.params={};
       
    })
@@ -120,20 +119,67 @@ export default class writeoffer extends Component {
 
   _goNext(){
 
-    var renter_dash = this.state.wr_renter_contact!=undefined?
-    this.state.wr_renter_contact.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"):'';
-    var lessor_dash = this.state.wr_lessor_contact!=undefined?
-    this.state.wr_lessor_contact.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"):'';
-    this.setState({
-      wr_renter_contact: renter_dash,
-      wr_lessor_contact: lessor_dash,
-    },
-    function(){
-      this.props.navigation.navigate('Recommended',this.state)
-      setTimeout(function(){
-        writeoffer_second.updateFigures();
-      },200)
-    })            
+   
+    var contact_dash = this.state.bld_contact!=undefined?
+    this.state.bld_contact.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"):'';
+
+    if(
+      (writeoffer_second.getState('bld_roomPerFloor') === this.state.bld_roomPerFloor || writeoffer_second.getState('bld_roomPerFloor') ==undefined)
+   && (writeoffer_second.getState('bld_floor') === this.state.bld_floor || writeoffer_second.getState('bld_floor') ==undefined)
+   && (writeoffer_second.getState('bld_Bfloor') === this.state.bld_Bfloor || writeoffer_second.getState('bld_Bfloor') ==undefined)
+   && (writeoffer_second.getState('bld_firstRoomNumber') === this.state.bld_firstRoomNumber|| writeoffer_second.getState('bld_firstRoomNumber') ==undefined)
+ )
+   {
+      this.setState( {bld_contact: contact_dash},
+      function(){
+        this.props.navigation.navigate('Recommended',this.state)
+        setTimeout(function(){
+          writeoffer_second.updateFigures();
+        }, 200)
+      }) 
+    
+   }
+ else{
+
+   Alert.alert(
+     '해당 정보 중 일부가 수정되어 호실정보가 초기화됩니다.',
+     '건물층수, 층당 최대 호실 수, 지하층수, 첫호실번호',
+     [
+       
+       {text: '취소', onPress: () => {}, style: 'cancel'},
+       {text: '확인', onPress: () => {
+
+        //수정모드에서 호실이 초기화 되면 Insert 되어야함 
+         if(this.state.mode == 'edit'){
+
+          this.setState( {bld_contact: contact_dash, roomsShouldBeInserted: true,},
+            function(){
+              this.props.navigation.navigate('Recommended',this.state)
+              setTimeout(function(){
+                writeoffer_second.updateFigures();
+              }, 200)
+            }) 
+
+         }
+         else{
+          this.setState( {bld_contact: contact_dash},
+            function(){
+              this.props.navigation.navigate('Recommended',this.state)
+              setTimeout(function(){
+                writeoffer_second.updateFigures();
+              }, 200)
+            }) 
+
+         }
+            
+
+       } },
+     ],
+     { cancelable: false }
+   )
+
+ }
+        
  
 
   }

@@ -9,7 +9,6 @@ import { TabNavigator} from 'react-navigation';
 // import StreetView from 'react-native-streetview';
 import MapDetail from './mapDetail';
 import RoomDetail from './roomDetail';
-import RoomDetailPopup from './roomDetailPopup';
 import PopupDialog from 'react-native-popup-dialog';
 
 var self;
@@ -106,12 +105,6 @@ static updateInformationFromOutside(params){
         )
     }  
 
-    _showRoomDetailPopup(item){
-
-        this.setState({selectedRoom: item},
-        ()=>{ this.roomDetailPopup.show()})
-    }
-
     // _updateVacancy(item, index){
     //     let roomsClone = this.state.rooms.slice(0);
     //     let clone = {...item}
@@ -139,11 +132,11 @@ static updateInformationFromOutside(params){
                     //   onEditMode = {this.state.onEditMode}
                     //   editModeToggle = {this._editModeToggle.bind(this)}
                     //   updateVacancy = {this._updateVacancy.bind(this)}
-                      showRoomDetailPopup ={this._showRoomDetailPopup.bind(this)}   />, 
+                      />, 
        
                     navigationOptions:{
         
-            tabBarLabel: '호실정보',
+                        tabBarLabel: '호실정보',
                                     
         }},        
         
@@ -190,23 +183,8 @@ static updateInformationFromOutside(params){
         else{
             return(
              <ScrollView contentContainerStyle={styles.container}>
-
-                    <PopupDialog
-                     ref={(popupDialog) => { this.roomDetailPopup = popupDialog; }}            
-                     dialogStyle ={{elevation:2, width: '90%', position:'absolute', height:400, top: 30, }}
-                     > 
-                        <RoomDetailPopup
-                        item = {this.state.selectedRoom}/>
-                     </PopupDialog>
-
-                {/* <ScrollView contentContainerStyle={{height:300, backgroundColor:'#fff', borderBottomWidth:1, borderColor:'#d1d1d1', }}> */}
                     
                      <RoomMapNavigator/>
-                    
-                {/* </ScrollView> */}
-
-                {/* {this.state.mode!='edit'?this._renderFooter():null} */}
-
                 
             </ScrollView>
 

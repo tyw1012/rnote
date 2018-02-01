@@ -44,6 +44,24 @@ _roomTypeConverter(number){
     if(number==3){
         return '쓰리룸'
     }
+    if(number==4){
+        return '1.5룸'
+    }
+    if(number==undefined || number == null){
+        return ''
+    }
+}
+_rentTypeConverter(number){
+    if(number==1){
+        return '월세'
+    }
+    if(number==2){
+        return '전세'
+    }
+    if(number==undefined || number == null){
+        return ''
+    }
+    
 }
 number2Kor(num, type, delimChar) {
     (function() {
@@ -165,11 +183,13 @@ render() {
     activeOpacity={1}
     style={this._touchStyle(item.isChecked)}
     onPress={()=>{ this.props.onCheckMode? this.props.toggleHandler(item) :
-      this.props.from == 'myoffering'?
+      this.props.selectedSegment == '건물'?
       this.props.navigation.navigate('Detail',
        {...item, memberID: this.props.memberID, memberName: this.props.memberName, contact: this.props.contact, segment:this.props.selectedSegment, mode:'edit'}
       ) :
-      this.props.navigation.navigate('Detail', {...item, memberID: this.props.memberID});
+      this.props.navigation.navigate('Detail',
+       {...item.clone, memberID: this.props.memberID, memberName: this.props.memberName, contact: this.props.contact, segment:this.props.selectedSegment, mode:'edit'}
+      );
     }}
     onLongPress={()=>{
         this.props.longPressHandler(item);     
@@ -187,7 +207,7 @@ render() {
            {item.bld_address}
         </Text>
         <Text style={{fontSize: 12.5, marginTop:1}}>
-        {this.props.selectedSegment=='건물'?this._bldSaleTypeConverter(item.bld_sale_type): this._roomTypeConverter(item.wr_room_type)
+        {this.props.selectedSegment=='건물'?this._bldSaleTypeConverter(item.bld_sale_type): this._roomTypeConverter(item.wr_room_type) +' '+ this._rentTypeConverter(item.wr_rent_type)
             }
         </Text>
       

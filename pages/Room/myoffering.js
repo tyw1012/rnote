@@ -98,7 +98,7 @@ static setSelectedOfferingType(type){
       myoffering_all:[],
       myoffering_num:30,
       modalVisible: false,
-      selectedSegment: '건물',
+      selectedSegment: '공실',
       selectedSegment_before:'',
       selectedIndex:0,
       isFiltered:false,
@@ -239,7 +239,7 @@ static setSelectedOfferingType(type){
 
     const {memberID, memberName, selectedSegment,level,myoffering_from, countPerLoad,selectedOfferingType} = this.state;
 
-    fetch('http://real-note.co.kr/app3/getMyOffering_room.php',{
+    fetch('http://real-note.co.kr/app3/getMyOffering_room2.php',{
       method:'post',
       header:{
         'Accept': 'application/json',
@@ -290,8 +290,28 @@ static setSelectedOfferingType(type){
 
         var parsedRes_room_count = JSON.parse(res._bodyText).room_count.count;
         var parsedRes_room_data = JSON.parse(res._bodyText).room_data;
+        var parsedRes_room_extra_data = JSON.parse(res._bodyText).room_extra_data;
 
-        this.setState({myoffering:parsedRes_room_data, myoffering_all:parsedRes_room_data, offering_count: parsedRes_room_count,isLoaded: true});
+        for(var i =0; i<=parsedRes_room_data.length-1; i++){
+        
+        
+          parsedRes_room_data[i].clone =  {...parsedRes_room_data[i]};
+          parsedRes_room_data[i].clone.rooms = [];
+          
+          for(var j = 0; j<=parsedRes_room_extra_data.length-1; j++){
+  
+             
+            if(parsedRes_room_data[i].wr_bld_match_id == parsedRes_room_extra_data[j].wr_bld_match_id){
+  
+              parsedRes_room_data[i].clone.rooms.push(parsedRes_room_extra_data[j])
+  
+            }
+  
+          }
+  
+        }
+
+        this.setState({myoffering:parsedRes_room_data, myoffering_all:parsedRes_room_data, offering_count: parsedRes_room_count,isLoaded: true},function(){console.log('check', this.state)});
 
       }
     

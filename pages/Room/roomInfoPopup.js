@@ -90,6 +90,9 @@ return <View style={{flexDirection:'row', }}>{optionNodes}</View>;
 _chooseRoomType(type){
     this.setState({wr_room_type: type}, function(){this.props.chooseRoomType(type, {wr_room_number:this.props.item.wr_room_number})});
 }
+_chooseRentType(type){
+    this.setState({wr_rent_type: type}, function(){this.props.chooseRentType(type, {wr_room_number:this.props.item.wr_room_number})});
+}
 _findOptionIndex(optionItem){
     for (var i = 0; i < this.state.options.length; i++){
       if(optionItem.name==this.state.options[i].name){
@@ -122,20 +125,20 @@ _findOptionIndex(optionItem){
     innerRef={ref => {this.scroll = ref}}
     style={styles.container}>
 
+
         <View style={{flexDirection:'row', marginBottom:25, justifyContent:'space-between'}}>
-            <View style={{flexDirection:'row'}}>
-            <Text style={{fontWeight:'bold', fontSize:13,marginBottom:10, marginTop:5, marginRight: 25}}>구분 </Text>
-            <RadioButtons
-                options={ ['원룸','투룸','쓰리룸'] }
-                onSelection={ this._chooseRoomType.bind(this) }
-                selectedOption={item.wr_room_type}
-                renderOption={ this.renderOption }
-                renderContainer={ this.renderContainer }
+            
+            <View style={{flexDirection:'row',}}>
+                <Text style={{fontWeight:'bold', fontSize:13,marginBottom:10, marginTop:5, marginRight: 25}}>매물형태 </Text>
+                <RadioButtons
+                    options={ ['월세','전세'] }
+                    onSelection={ this._chooseRentType.bind(this) }
+                    selectedOption={item.wr_rent_type}
+                    renderOption={ this.renderOption }
+                    renderContainer={ this.renderContainer }
 
-            /> 
-
-            </View>
-
+                /> 
+            </View> 
             <CheckBox
             checkedColor='#3b4db7'
             // uncheckedIcon={null}
@@ -149,6 +152,25 @@ _findOptionIndex(optionItem){
             item.wr_o_vacant = !item.wr_o_vacant;
         
             }}/>
+
+         
+            
+        </View>
+         
+
+        <View style={{flexDirection:'row', marginBottom:25, justifyContent:'space-between'}}>
+            
+            <Text style={{fontWeight:'bold', fontSize:13,marginBottom:10, marginTop:5, marginRight: 25}}>방 구분 </Text>
+            <RadioButtons
+                options={ ['원룸','1.5룸','투룸','쓰리룸'] }
+                onSelection={ this._chooseRoomType.bind(this) }
+                selectedOption={item.wr_room_type}
+                renderOption={ this.renderOption }
+                renderContainer={ this.renderContainer }
+
+            /> 
+
+         
             
         </View>
 
