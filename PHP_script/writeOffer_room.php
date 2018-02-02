@@ -86,6 +86,11 @@ header("Content-Type: text/html; charset=UTF-8");
     $memberName = $obj['memberName'];
     $contact = $obj['contact'];
 
+
+    $response = array();
+    $response['error'] = false;
+    $response['item'] = '';
+
   
     $bld_name = mysqli_real_escape_string($con,$obj['bld_name']);
     $bld_address = mysqli_real_escape_string($con,$obj['bld_address']);

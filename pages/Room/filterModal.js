@@ -177,7 +177,7 @@ this.setState({
 
 }
 
-_renderForm_sell(){
+_renderForm_bld(){
     return (
         
    <ScrollView keyboardShouldPersistTaps="always">     
@@ -189,7 +189,7 @@ _renderForm_sell(){
 
                 <View style = {{flex:1,}}>    
         
-                        <Text style={[styles.itemName,{marginTop:0}]}>매물명</Text>
+                        <Text style={[styles.itemName,{marginTop:0}]}>건물명</Text>
                 
                         <TextInput
                         placeholder=""
@@ -201,8 +201,8 @@ _renderForm_sell(){
                         returnKeyType = {"next"}
                         style={styles.itemInput}
                         underlineColorAndroid="transparent"
-                        value={ this.props.getFilterValue('nameFilter_sell')}
-                        onChangeText= {input => this.props.inputHandler('nameFilter_sell',input)}
+                        value={ this.props.getFilterValue('nameFilter_bld')}
+                        onChangeText= {input => this.props.inputHandler('nameFilter_bld',input)}
                         onFocus={(event: Event) => {
                           
                           this.scroll.props.scrollToPosition(0, 0)
@@ -216,7 +216,7 @@ _renderForm_sell(){
 
           <View style={{flexDirection: 'row',}}>
 
-                <View style = {{flex:1,}}>    
+                <View style = {{flex:1, marginRight:20}}>    
         
                         <Text style={styles.itemName}>주소</Text>
                 
@@ -231,233 +231,94 @@ _renderForm_sell(){
                         returnKeyType = {"next"}
                         style={styles.itemInput}
                         underlineColorAndroid="transparent"
-                        value={ this.props.getFilterValue('addrFilter_sell')}
-                        onChangeText= {input => this.props.inputHandler('addrFilter_sell',input)}
+                        value={ this.props.getFilterValue('addrFilter_bld')}
+                        onChangeText= {input => this.props.inputHandler('addrFilter_bld',input)}
                         onFocus={(event: Event) => {
                           
                           this.scroll.props.scrollToPosition(0, 0)
                         }}
                         />
                         
-                     
-                    {/* <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text> */}
                 
                 </View>
-        
-       
-             </View>
-       {/* </View> */}
-    
-        <View style={{flexDirection: 'row', marginBottom:15, marginTop:10,}}>
 
-                <Text style={[styles.itemName,{marginTop:12}]}>면적</Text>
+                <View style = {{flex:1,}}>    
         
-                    <View style = {[styles.row2, {marginTop:6,}]}>    
-            
-                        
-            
+                        <Text style={styles.itemName}>인근지하철역</Text>
+                
                         <TextInput
-                        placeholder="최소"
+                        placeholder=""
                         placeholderTextColor='#aaa'
-                        ref='ThirdInput'
+                        ref='SecondInput'
                         onSubmitEditing={(event) => { 
-                          this.refs.FourthInput.focus(); 
+                          this.refs.ThirdInput.focus(); 
                         }}
                         blurOnSubmit={false}
                         returnKeyType = {"next"}
-                        style={[styles.itemInput, {position:'relative'}]}
-                        keyboardType='phone-pad'
+                        style={styles.itemInput}
                         underlineColorAndroid="transparent"
-                        value={ this.props.getFilterValue('areaMinFilter_sell')}
-                        onChangeText= {input => this.props.inputHandler('areaMinFilter_sell',input)}
+                        value={ this.props.getFilterValue('subwayFilter_bld')}
+                        onChangeText= {input => this.props.inputHandler('subwayFilter_bld',input)}
                         onFocus={(event: Event) => {
-                            
-                            this.scroll.props.scrollToPosition(0, 100)
+                          
+                          this.scroll.props.scrollToPosition(0, 0)
                         }}
                         />
-                        <Text style={{ marginTop: 34, marginLeft: 3, fontSize:12, position: 'absolute', top:-25, right:15}}>평</Text>
-                    
-                    </View>
-            
-                    <Text style={{marginTop:12,fontSize: 16,}}> ~ </Text>
-    
-                    <View style = {[styles.row2, {marginTop:6}]}>    
-            
-                            {/* <Text style={styles.itemName}> </Text> */}
-            
                         
-                            <TextInput
-                            placeholder="최대"
-                            placeholderTextColor='#aaa'
-                            ref='FourthInput'
-                            style={[styles.itemInput, {}]}
-                            keyboardType='phone-pad'
-                            underlineColorAndroid="transparent"
-                            value={ this.props.getFilterValue('areaMaxFilter_sell')}
-                            onChangeText= {input => this.props.inputHandler('areaMaxFilter_sell',input)}
-                            onFocus={(event: Event) => {
-                            
-                            this.scroll.props.scrollToPosition(0, 100)
-                            }}
-                            />                      
-                        
-                            <Text style={{ marginTop: 34, marginLeft: 3, fontSize:12, position: 'absolute', top:-25, right:15}}>평</Text>
-                    
-                    </View>
-    
-                    
-        </View>
-        </View>
-        
-        <View style={styles.segment}>  
-
-        <View style={{flexDirection:'row', flex:1, justifyContent:'space-between'}}>  
-            <Text style={[styles.itemName,{marginTop:15, marginBottom:25}]}>총매도가</Text>
-            <Text style={{marginTop:15,fontSize:12,fontWeight:'bold'}}>{
-                this.state.onSalePriceEditMode?
-                    this.state.salePriceSliderValue[0]==this.state.salePriceSliderValue[1]?
-                        this.state.salePriceSliderValue[1]==9999999?
-                            '1000000만 이상'
-                        :this.state.salePriceSliderValue[1]+'만'
-                    :
-                        this.state.salePriceSliderValue[1]==9999999?
-                             this.state.salePriceSliderValue[0]+'만 - 1000000만 이상'
-                        :this.state.salePriceSliderValue[0]+'만 - '+ this.state.salePriceSliderValue[1]+'만'
-                :'전체'} 
-            </Text>
-           
-        </View>
-        <View style={{alignItems:'center'}}>
-        <MultiSlider
-            values={[this.state.salePriceSliderValue[0], this.state.salePriceSliderValue[1]]}
-            sliderLength={width-65}
-            onValuesChange={this._salePriceSliderValuesChange}
-            min={0}
-            max={9999999}
-            containerStyle={{height:30,marginBottom: -10,}}
-            // step={500}
-            optionsArray={[0,10000,15000,20000,25000,30000,35000,40000,45000,50000,60000,70000,80000,90000,100000,150000,200000,250000,300000,350000,400000,500000,600000,700000,800000,900000,1000000,9999999]}
-            allowOverlap={true}
-            snapped={true}
-            touchDimensions	={ {height: 60, width: 100, borderRadius: 25, slipDisplacement: 70} }
-            markerStyle={{ height:25, width: 25, borderRadius: 22.5, backgroundColor:'#fff', borderWidth: 1, borderColor: '#3b4db7'}}
-            selectedStyle={{backgroundColor:'#3b4db7'}}
-       />
-        </View>
-
-        <View style={{flexDirection:'row', flex:1, justifyContent:'space-between'}}>  
-            <Text style={[styles.itemName,{ marginBottom:25}]}>평당가격</Text>
-            <Text style={{marginTop:15,fontSize:12,fontWeight:'bold'}}>
-            {
-                this.state.onPsalePriceEditMode?
-                    this.state.psalePriceSliderValue[0]==this.state.psalePriceSliderValue[1]?
-                        this.state.psalePriceSliderValue[1]==999999?
-                            '20000만 이상'
-                        :this.state.psalePriceSliderValue[1]+'만'
-                    :
-                        this.state.psalePriceSliderValue[1]==999999?
-                             this.state.psalePriceSliderValue[0]+'만 - 20000만 이상'
-                        :this.state.psalePriceSliderValue[0]+'만 - '+ this.state.psalePriceSliderValue[1]+'만'
-                :'전체'} 
-            </Text>
-          
-        </View>
-        <View style={{alignItems:'center'}}>
-        <MultiSlider
-            values={[this.state.psalePriceSliderValue[0], this.state.psalePriceSliderValue[1]]}
-            sliderLength={width-65}
-            onValuesChange={this._psalePriceSliderValuesChange}
-            min={0}
-            max={999999}
-            containerStyle={{height:30,marginBottom: -10,}}
-            // step={500}
-            optionsArray={[0,100,200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2500,3000,3500,4000,5000,6000,7000,8000,9000,10000,15000,20000,999999]}
-            allowOverlap={true}
-            snapped={true}
-            touchDimensions	={ {height: 60, width: 100, borderRadius: 35, slipDisplacement: 70} }
-            markerStyle={{ height:25, width: 25, borderRadius: 22.5, backgroundColor:'#fff', borderWidth: 1, borderColor: '#3b4db7'}}
-            selectedStyle={{backgroundColor:'#3b4db7'}}
-        />
-        </View>
-
-        <View style={{flexDirection:'row', flex:1, justifyContent:'space-between'}}>  
-            <Text style={[styles.itemName,{ marginBottom:25}]}>실인수가</Text>
-            <Text style={{marginTop:15,fontSize:12,fontWeight:'bold'}}>
-            {
-                this.state.onSilinsuEditMode?
-                    this.state.silinsuSliderValue[0]==this.state.silinsuSliderValue[1]?
-                        this.state.silinsuSliderValue[1]==9999999?
-                            '1000000만 이상'
-                        :this.state.silinsuSliderValue[1]+'만'
-                    :
-                        this.state.silinsuSliderValue[1]==9999999?
-                             this.state.silinsuSliderValue[0]+'만 - 1000000만 이상'
-                        :this.state.silinsuSliderValue[0]+'만 - '+ this.state.silinsuSliderValue[1]+'만'
-                :'전체'} 
-             </Text>
-          
-        </View>
-        <View style={{alignItems:'center'}}>
-        <MultiSlider
-            values={[this.state.silinsuSliderValue[0], this.state.silinsuSliderValue[1]]}
-            sliderLength={width-65}
-            onValuesChange={this._silinsuSliderValuesChange}
-            min={0}
-            max={9999999}
-            containerStyle={{height:30, marginBottom: -10,}}
-            // step={500}
-            optionsArray={[0,10000,15000,20000,25000,30000,35000,40000,45000,50000,60000,70000,80000,90000,100000,150000,200000,250000,300000,350000,400000,500000,600000,700000,800000,900000,1000000,9999999]}
-            allowOverlap={true}
-            snapped={true}
-            touchDimensions	={ {height: 60, width: 100, borderRadius: 35, slipDisplacement: 70} }
-            markerStyle={{ height:25, width: 25, borderRadius: 22.5, backgroundColor:'#fff', borderWidth: 1, borderColor: '#3b4db7'}}
-            selectedStyle={{backgroundColor:'#3b4db7'}}
-        />
-        </View>
-
-        <View style={{flexDirection:'row', flex:1, justifyContent:'space-between'}}>  
-            <Text style={[styles.itemName,{ marginBottom:25}]}>수익률</Text>
-            <Text style={{marginTop:15,fontSize:12,fontWeight:'bold'}}>
-            {
-                this.state.onProfitEditMode?
-                    this.state.profitSliderValue[0]==this.state.profitSliderValue[1]?
-                        this.state.profitSliderValue[1]==999999?
-                            '50% 이상'
-                        :this.state.profitSliderValue[1]+' %'
-                    :
-                        this.state.profitSliderValue[1]==999999?
-                             this.state.profitSliderValue[0]+' % - 50% 이상'
-                        :this.state.profitSliderValue[0]+'% - '+ this.state.profitSliderValue[1]+'%'
-                :'전체'} 
-            </Text>
-          
-        </View>
-        <View style={{alignItems:'center'}}>
-        <MultiSlider
-            values={[this.state.profitSliderValue[0], this.state.profitSliderValue[1]]}
-            sliderLength={width-65}
-            onValuesChange={this._profitSliderValuesChange}
-            min={0}
-            max={999999}
-            containerStyle={{height:30,marginBottom: 100,}}
-            // step={500}
-            optionsArray={[0,1,2,3,4,5,6,7,8,9,10,12,15,20,25,30,35,40,50,999999]}
-            allowOverlap={true}
-            snapped={true}
-            touchDimensions	={ {height: 60, width:100, borderRadius: 35, slipDisplacement: 70} }
-            markerStyle={{ height:25, width: 25, borderRadius: 22.5, backgroundColor:'#fff', borderWidth: 1, borderColor: '#3b4db7',}}
-            selectedStyle={{backgroundColor:'#3b4db7'}}
-        />
-        </View>
-    
-        </View>
-    
-            
-
+                
+                </View>        
        
+             </View>
+       {/* </View> */}
+            
+        </View>
+
+        <View style={[styles.segment_rec, {marginBottom:50}]}>
+                <TouchableOpacity style={{flexDirection:'row', justifyContent:'space-between', padding:20,}}
+                onPress={()=>{this.setState({flatListVisible3:!this.state.flatListVisible3})}}>
+               
+                    <Text style={[styles.itemName,{ marginTop:0}]}>추가옵션</Text>
+                    <Icon
+                    name="ios-arrow-down"
+                    size={22}
+                    style={{color: '#3b4db7',}}
+                    onPress={()=>{this.setState({flatListVisible2:!this.state.flatListVisible2})}}
+                    />      
+                </TouchableOpacity>
+
+                <View style={this.state.flatListVisible3?{padding:20, paddingTop:5, flexDirection:'row', justifyContent:'space-between'}:{display:'none'}}>
+
+                    <CheckBox
+                    checkedColor='#3b4db7'
+                    title={'주차가능'}
+                    containerStyle={{backgroundColor:'#fff',borderWidth:0, height:35, marginTop:-7, paddingRight:0, marginRight:0, paddingLeft:0, marginLeft: 0}}
+                    textStyle={{color:'#666', fontSize: 13, marginTop:-2}}
+                    checked={this._convertToBool(this.props.getFilterValue('parkingFilter_bld'))}
+                    onPress={()=>{
+                        this.props.getFilterValue('parkingFilter_bld') == "1"?
+                        this.props.inputHandler('parkingFilter_bld', "0") :
+                        this.props.inputHandler('parkingFilter_bld', "1")
+                                                
+                    }}/> 
+
+                    <CheckBox
+                    checkedColor='#3b4db7'
+                    title={'엘리베이터'}
+                    containerStyle={{backgroundColor:'#fff',borderWidth:0, height:35, marginTop:-7, paddingRight:0, marginRight:30,}}
+                    textStyle={{color:'#666', fontSize: 13, marginTop:-2}}
+                    checked={this._convertToBool(this.props.getFilterValue('elevFilter_bld'))}
+                    onPress={()=>{
+                        this.props.getFilterValue('elevFilter_bld') == "1"?
+                        this.props.inputHandler('elevFilter_bld', "0") :
+                        this.props.inputHandler('elevFilter_bld', "1")
+                        
+                    }}/>
+                     
+                 </View>           
+
+        </View>
     
     </ScrollView>
-          
     
 )
 }
@@ -966,16 +827,7 @@ _resetHandler(){
         premoSliderValue: [0, 999999],
         sumSliderValue:[0,999999],
 
-        onSalePriceEditMode:false,
-        onPsalePriceEditMode:false,
-        onSilinsuEditMode:false,
-        onProfitEditMode:false,
-
-        salePriceSliderValue:[0,9999999],
-        psalePriceSliderValue:[0,999999],
-        silinsuSliderValue: [0, 9999999],
-        profitSliderValue:[0,999999],
-
+      
     })
     this.props.resetHandler();
 }
@@ -1045,14 +897,12 @@ style={styles.modalContainer}
 
 {this.state.isSearching? this._renderIndicator():null}  
 
-
-
     <View 
     // style={styles.inputContainer}
     >         
 
             {this.state.selectedSegment=='공실'?this._renderForm_room() : 
-             this.state.selectedSegment=='건물'?this._renderForm_sell() :
+             this.state.selectedSegment=='건물'?this._renderForm_bld() :
              this._renderForm_fin()
             }
 
@@ -1086,16 +936,16 @@ style={styles.modalContainer}
         myoffering_from: 0,
         countPerLoad: this.props.countPerLoad,
         
-        rentType : this.props.getFilterValue('rentTypeFilter'),
-        roomType : this.props.getFilterValue('roomTypeFilter'),
+        rentType : this.props.getFilterValue('rentTypeFilter')==undefined?'0':this.props.getFilterValue('rentTypeFilter'),
+        roomType : this.props.getFilterValue('roomTypeFilter')==undefined?'0':this.props.getFilterValue('roomTypeFilter'),
         addr: this.props.getFilterValue('addrFilter'),
         subway: this.props.getFilterValue('subwayFiler'),
         floorMin: this.props.getFilterValue('floorMinFilter'),
         floorMax: this.props.getFilterValue('floorMaxFilter'),
         areaMin: this.props.getFilterValue('areaMinFilter'),
         areaMax: this.props.getFilterValue('areaMaxFilter'),   
-        parking: this.props.getFilterValue('parkingFilter'),
-        elev: this.props.getFilterValue('elevFilter'),
+        parking: this.props.getFilterValue('parkingFilter')==undefined?'0':this.props.getFilterValue('parkingFilter'),
+        elev: this.props.getFilterValue('elevFilter')==undefined?'0':this.props.getFilterValue('elevFilter'),
         
                                
         depositMin: this.state.onDepositEditMode? this.state.depositSliderValue[0] : '',
@@ -1103,27 +953,20 @@ style={styles.modalContainer}
         mrateMin: this.state.onMrateEditMode? this.state.mrateSliderValue[0] : '',
         mrateMax: this.state.onMrateEditMode? this.state.mrateSliderValue[1] : '',
 
-        name_sell: this.props.getFilterValue('nameFilter_sell'),
-        addr_sell: this.props.getFilterValue('addrFilter_sell'),
-        writer_sell: this.props.getFilterValue('writerFilter_sell'),
-        areaMin_sell: this.props.getFilterValue('areaMinFilter_sell'),
-        areaMax_sell: this.props.getFilterValue('areaMaxFilter_sell'),
+        name_bld: this.props.getFilterValue('nameFilter_bld'),
+        addr_bld: this.props.getFilterValue('addrFilter_bld'),
+        subway_bld: this.props.getFilterValue('subwayFilter_bld'),
+        parking_bld: this.props.getFilterValue('parkingFilter_bld')==undefined?'0':this.props.getFilterValue('parkingFilter_bld'),
+        elev_bld: this.props.getFilterValue('elevFilter_bld')==undefined?'0':this.props.getFilterValue('elevFilter_bld'),
 
-        salePriceMin: this.state.onSalePriceEditMode? this.state.salePriceSliderValue[0] : '',
-        salePriceMax: this.state.onSalePriceEditMode? this.state.salePriceSliderValue[1] : '',
-        psalePriceMin: this.state.onPsalePriceEditMode? this.state.psalePriceSliderValue[0] : '',
-        psalePriceMax: this.state.onPsalePriceEditMode? this.state.psalePriceSliderValue[1] : '',
-        silinsuMin: this.state.onSilinsuEditMode? this.state.silinsuSliderValue[0] : '',
-        silinsuMax: this.state.onSilinsuEditMode? this.state.silinsuSliderValue[1] : '',
-        profitMin: this.state.onProfitEditMode? this.state.profitSliderValue[0] : '',
-        profitMax: this.state.onProfitEditMode? this.state.profitSliderValue[1] : '',
-
-        name_fin: this.props.getFilterValue('nameFilter_fin'),
-        addr_fin: this.props.getFilterValue('addrFilter_fin'),
+    
       })
 
     })
     .then((res)=>{
+
+        console.log(res.json())
+        
 
       if(this.state.selectedSegment=='공실'){
 
@@ -1149,12 +992,38 @@ style={styles.modalContainer}
             }
     
           }
-
+          console.log(parsedRes_room_data);
           this.props.offeringHandler(parsedRes_room_data, parsedRes_room_count);
 
       }
-    //   var parsedRes = JSON.parse(res._bodyText).data;
-    //   var parsedRes_count = JSON.parse(res._bodyText).count.count;
+
+      else{
+
+        var parsedRes_bld_count = JSON.parse(res._bodyText).bld_count.count;
+        var parsedRes_bld_data = JSON.parse(res._bodyText).bld_data;
+        var parsedRes_room_data = JSON.parse(res._bodyText).room_data;
+       
+        for(var i =0; i<=parsedRes_bld_data.length-1; i++){
+        
+        
+          parsedRes_bld_data[i].rooms = [];
+          
+          for(var j = 0; j<=parsedRes_room_data.length-1; j++){
+  
+             
+            if(parsedRes_bld_data[i].bld_id == parsedRes_room_data[j].wr_bld_match_id){
+  
+              parsedRes_bld_data[i].rooms.push(parsedRes_room_data[j])
+  
+            }
+  
+          }
+  
+        }
+
+        this.props.offeringHandler(parsedRes_bld_data, parsedRes_bld_count);
+      }
+  
       
       this.setState({isSearching:false});
       this.state.onDepositEditMode?this.props.inputHandler('depositMinFilter',this.state.depositSliderValue[0]):null

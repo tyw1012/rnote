@@ -23,20 +23,20 @@ class RoomDetail extends Component{
         // if (this.props.onEditMode){
       
           if(item.wr_room_inactive==1){
-            return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
+            return {flex:1,margin:4,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center', borderRadius:5}
           }
           else{
-            return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',backgroundColor:'#f1f1f1'}
+            return {flex:1,margin:4,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',backgroundColor:'#f1f1f1', borderRadius:5}
           }
           
         }
         else{
           if (item.wr_room_inactive==1){
-             return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center',}
+             return {flex:1,margin:4,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center', borderRadius:5}
           }
           else{
       
-              return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center'}
+              return {flex:1,margin:4,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center', borderRadius:5}
             
           }
       
@@ -153,7 +153,7 @@ class RoomDetail extends Component{
                     </View>
 
                     <ScrollView 
-                    contentContainerStyle={{ flexGrow:1,}}
+                    contentContainerStyle={{ flexGrow:1, marginBottom:30, flexDirection:'column'}}
                     horizontal>
 
                         
@@ -209,9 +209,7 @@ class RoomDetail extends Component{
                         />
 
 
-                    </ScrollView>   
-
-                    <View style={{flexDirection:'row', marginTop:10}}>
+                        <View style={{flexDirection:'row', marginTop:10, marginBottom:30}}>
                         <TouchableOpacity style={this.state.onEditMode?{flex:1, justifyContent:'center', alignItems:'center', padding:12, backgroundColor:'#3b4db7', marginLeft:2, marginRight:2, marginBottom:3}:{display:'none'}}
                             onPress={()=>{
                                 // this.props.editModeToggle()
@@ -237,7 +235,12 @@ class RoomDetail extends Component{
                             <Text style={{color:'#fff', fontSize:13,}}>{this.state.onEditMode?'저장':'공실체크'}</Text>
 
                         </TouchableOpacity>
-                        </View>  
+                        </View>
+
+
+                    </ScrollView>   
+
+                      
                     </View>
                   );
    }

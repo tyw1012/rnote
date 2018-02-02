@@ -65,7 +65,7 @@ if($level == 'emp'){
             
             }
 
-            $sql_query4 = "select * FROM bld_$memberID a, g5_write_$memberID b where a.bld_id = b.wr_bld_match_id "."$or_query"."order by b.wr_room_number";
+            $sql_query4 = "select * FROM bld_$memberID a, g5_write_$memberID b where a.bld_id = b.wr_bld_match_id "."$or_query"."order by b.wr_id DESC";
             $result4 = mysqli_query($con, $sql_query4) or die("Error in Selecting " . mysqli_error($con));
             $emparray['room_data'] =array();
             while($row4 =mysqli_fetch_assoc($result4))
@@ -86,7 +86,7 @@ if($level == 'emp'){
             $emparray['room_count'] = $row;
 
 
-            $sql_query2 = "select * FROM bld_$memberID a, g5_write_$memberID b where a.bld_id = b.wr_bld_match_id and b.wr_o_vacant = 1 order by b.wr_room_number";
+            $sql_query2 = "select * FROM bld_$memberID a, g5_write_$memberID b where a.bld_id = b.wr_bld_match_id and b.wr_o_vacant = 1 order by b.wr_id DESC limit $limitFrom, $limitNum";
             $result2 = mysqli_query($con, $sql_query2) or die("Error in Selecting " . mysqli_error($con));
             $emparray['room_data'] =array();
             while($row2 =mysqli_fetch_assoc($result2))
@@ -130,7 +130,7 @@ if($level == 'emp'){
                 
                 }
 
-                $sql_query4 = "select * FROM bld_$memberID a, g5_write_$memberID b where a.bld_id = b.wr_bld_match_id "."$or_query"."order by b.wr_room_number";
+                $sql_query4 = "select * FROM bld_$memberID a, g5_write_$memberID b where a.bld_id = b.wr_bld_match_id "."$or_query"."order by b.wr_id DESC";
                 $result4 = mysqli_query($con, $sql_query4) or die("Error in Selecting " . mysqli_error($con));
                 $emparray['room_extra_data'] =array();
                 while($row4 =mysqli_fetch_assoc($result4))
@@ -163,7 +163,7 @@ if($level == 'emp'){
                 $emparray['bld_data'][] = $row2;
             }
 
-            $sql_query4 = "select * FROM bld_$memberID a, g5_write_$memberID b where a.bld_id = b.wr_bld_match_id order by b.wr_room_number DESC limit $limitFrom, $limitNum";
+            $sql_query4 = "select * FROM bld_$memberID a, g5_write_$memberID b where a.bld_id = b.wr_bld_match_id order by b.wr_id DESC limit $limitFrom, $limitNum";
             $result4 = mysqli_query($con, $sql_query4) or die("Error in Selecting " . mysqli_error($con));
             $emparray['room_data'] =array();
             while($row4 =mysqli_fetch_assoc($result4))
@@ -183,7 +183,7 @@ if($level == 'emp'){
             $emparray['room_count'] = $row;
 
 
-            $sql_query2 = "select * FROM bld_$memberID a, g5_write_$memberID b where a.bld_id = b.wr_bld_match_id and b.wr_o_vacant = 1 order by b.wr_room_number DESC limit $limitFrom, $limitNum";
+            $sql_query2 = "select * FROM bld_$memberID a, g5_write_$memberID b where a.bld_id = b.wr_bld_match_id and b.wr_o_vacant = 1 order by b.wr_id DESC limit $limitFrom, $limitNum";
             $result2 = mysqli_query($con, $sql_query2) or die("Error in Selecting " . mysqli_error($con));
             $emparray['room_data'] =array();
             while($row2 =mysqli_fetch_assoc($result2))
