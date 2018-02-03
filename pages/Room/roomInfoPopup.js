@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {View, TouchableOpacity, AppRegistry, Text, TextInput, ScrollView, StyleSheet, Keyboard,FlatList} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { RadioButtons } from 'react-native-radio-buttons';
-import { CheckBox } from 'react-native-elements'
+import { CheckBox } from 'react-native-elements';
+import CheckBoxListItem_mt from './checkBoxListItem_mt';
+import CheckBoxListItem_opt from './checkBoxListItem_opt';
 
 var options = [];
 var previous;
@@ -116,9 +118,46 @@ _findOptionIndex(optionItem){
       const {item} = this.props
       return(
     <View>
-    <View style ={{backgroundColor:'#3b4db7', height:40, width:'100%', justifyContent:'center', alignItems:'center'}}>
-        <Text style={{fontSize:14, color:'#fff', fontWeight:'bold'}}>{item.wr_room_number}호 상세 </Text>
-    
+    <View style ={{flexDirection: 'row',backgroundColor:'#3b4db7', height:45, width:'100%', alignItems:'center', }}>
+
+            <TouchableOpacity 
+            onPress={()=>{this.props.cancelHandler() }}
+            style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:15, }}>
+                <Icon
+                name="ios-close"
+                size={45}
+                style={{color:'#fff', marginTop:12, marginLeft: -3,}}
+                />
+           </TouchableOpacity>
+
+            <View style= {{justifyContent:'space-between', flexDirection:'row', flex:1}}>
+
+                <Text style={{fontSize:14, fontWeight:'bold', color:'#fff', marginLeft: 20, marginTop:3}}>{item.wr_room_number}호 상세 </Text>
+
+                <View style={{flexDirection:'row'}}>
+                    <TouchableOpacity style={{padding:5, marginRight:5, justifyContent:'center',width:65, alignItems:'center', }}
+                    onPress={()=>{this.setState(previousState => {previous = previousState;      
+                                    return this.default}, function(){
+
+                        this.props.showRoomList(this.props.item); 
+
+                    })
+                                }}>
+                        <Text style={{color:'#fff', fontSize:12.5,}}>내용복사</Text>
+                    </TouchableOpacity>    
+                    
+                    <TouchableOpacity style={{padding:5, justifyContent:'center', alignItems:'center', width:65, marginRight:5, }}
+                    onPress={()=>{this.setState(previousState => {previous = previousState;      
+                        return this.default}, function(){
+                            this.props.saveRoomInfo(this.props.item)
+                            })
+                    }}
+                    >
+                        <Text style={{color:'#fff', fontSize: 12.5}}>저장</Text>
+                    </TouchableOpacity>   
+
+                </View>  
+            </View>
     </View>
     <KeyboardAwareScrollView enableOnAndroid={true}
     keyboardShouldPersistTaps='always'
@@ -383,34 +422,43 @@ _findOptionIndex(optionItem){
         keyExtractor ={(x,i)=>i}
         numColumns={5}
         renderItem ={
-        ({item}) =><CheckBox
-        uncheckedIcon={null}
-        checkedIcon={null}
+        ({item}) =>
+
+        <CheckBoxListItem_mt
+        item = {item}
+        mt_options = {this.state.mt_options}
+        selectedItem = {this.props.item}
+        checkboxHandler = {this.props.checkboxHandler}
+        />
+        // <CheckBox
+        // uncheckedIcon={null}
+        // checkedIcon={null}
         
-        title={item.name}
-        containerStyle={this._checkBoxStyle(item.checked)}
-        textStyle={this._checkBoxTextStyle(item.checked)}
-        checked={item.checked}
-        onPress={()=>{
+        // title={item.name}
+        // containerStyle={this._checkBoxStyle(item.checked)}
+        // textStyle={this._checkBoxTextStyle(item.checked)}
+        // checked={item.checked}
+        // onPress={()=>{
 
-        let optionClone = {...item};
-        optionClone.checked = !optionClone.checked;
-        optionClone[Object.keys(optionClone)[1]] == 1?
-        optionClone[Object.keys(optionClone)[1]] = 0 : optionClone[Object.keys(optionClone)[1]] = 1
+        // let optionClone = {...item};
+        // optionClone.checked = !optionClone.checked;
+        // optionClone[Object.keys(optionClone)[1]] == 1?
+        // optionClone[Object.keys(optionClone)[1]] = 0 : optionClone[Object.keys(optionClone)[1]] = 1
 
-        let optionIndex = this._findMtOptionIndex(item)
-        // console.log(optionIndex)
-        this.props.checkboxHandler(item, optionIndex, this.props.item, 'mt_options');
+        // let optionIndex = this._findMtOptionIndex(item)
+        // // console.log(optionIndex)
+        // this.props.checkboxHandler(item, optionIndex, this.props.item, 'mt_options');
      
-        let clone = this.state.mt_options.slice(0);
-        clone[optionIndex] = optionClone
-        this.setState({mt_options: clone}, function(){
-            console.log(item, this.state.mt_options); 
-        })
+        // let clone = this.state.mt_options.slice(0);
+        // clone[optionIndex] = optionClone
+        // this.setState({mt_options: clone}, function(){
+        //     console.log(item, this.state.mt_options); 
+        // })
             
         
     
-        }}/>}
+        // }}/>
+    }
         />
         </View>    
 
@@ -425,34 +473,43 @@ _findOptionIndex(optionItem){
         keyExtractor ={(x,i)=>i}
         numColumns={4}
         renderItem ={
-        ({item}) =><CheckBox
-        uncheckedIcon={null}
-        checkedIcon={null}
+        ({item}) =>
         
-        title={item.name}
-        containerStyle={this._checkBoxStyle(item.checked)}
-        textStyle={this._checkBoxTextStyle(item.checked)}
-        checked={item.checked}
-        onPress={()=>{
+        <CheckBoxListItem_opt
+        item = {item}
+        options = {this.state.options}
+        selectedItem = {this.props.item}
+        checkboxHandler = {this.props.checkboxHandler}
+        />
+        // <CheckBox
+        // uncheckedIcon={null}
+        // checkedIcon={null}
+        
+        // title={item.name}
+        // containerStyle={this._checkBoxStyle(item.checked)}
+        // textStyle={this._checkBoxTextStyle(item.checked)}
+        // checked={item.checked}
+        // onPress={()=>{
 
-        let optionClone = {...item};
-        optionClone.checked = !optionClone.checked;
-        optionClone[Object.keys(optionClone)[1]] == 1?
-        optionClone[Object.keys(optionClone)[1]] = 0 : optionClone[Object.keys(optionClone)[1]] = 1
+        // let optionClone = {...item};
+        // optionClone.checked = !optionClone.checked;
+        // optionClone[Object.keys(optionClone)[1]] == 1?
+        // optionClone[Object.keys(optionClone)[1]] = 0 : optionClone[Object.keys(optionClone)[1]] = 1
 
-        let optionIndex = this._findOptionIndex(item)
-        this.props.checkboxHandler(item, optionIndex, this.props.item, 'options');
+        // let optionIndex = this._findOptionIndex(item)
+        // this.props.checkboxHandler(item, optionIndex, this.props.item, 'options');
      
-        let clone = this.state.options.slice(0);
-        clone[optionIndex] = optionClone
-        this.setState({options: clone}, function(){
-            console.log(item, this.state.options); 
-        })
+        // let clone = this.state.options.slice(0);
+        // clone[optionIndex] = optionClone
+        // this.setState({options: clone}, function(){
+        //     console.log(item, this.state.options); 
+        // })
             
             
         
     
-        }}/>}
+        // }}/>
+    }
         />
         </View>
 
@@ -461,33 +518,6 @@ _findOptionIndex(optionItem){
         <View style={{flexDirection:'row', marginBottom:70, justifyContent:'flex-end'}}>
                 
 
-            <TouchableOpacity style={{padding:15, justifyContent:'center', alignItems:'center',  }}
-            onPress={()=>{this.setState(previousState => {previous = previousState;      
-                            return this.default}, function(){
-
-                this.props.showRoomList(this.props.item); 
-
-            })
-                          }}>
-                <Text style={{color:'#3b4db7'}}>해당 정보를 다른 호실에도 적용</Text>
-            </TouchableOpacity>    
-            {/* <TouchableOpacity style={{padding:15, justifyContent:'center', alignItems:'center',  }}
-            onPress={()=>this.props.applyRoomInfoToOthers(this.state)}>
-                <Text style={{color:'#3b4db7'}}>모든 호실에 적용</Text>
-            </TouchableOpacity>  */}
-            <TouchableOpacity style={{padding:15, justifyContent:'center', alignItems:'center', width:65, }}
-             onPress={()=>{this.setState(previousState => {previous = previousState;      
-                return this.default}, function(){
-                    this.props.saveRoomInfo(this.props.item)
-})
-              }}
-            >
-                <Text style={{color:'#3b4db7'}}>저장</Text>
-            </TouchableOpacity>   
-            {/* <TouchableOpacity style={{padding:15, justifyContent:'center', alignItems:'center', width:65, }}
-            onPress={this.props.cancelHandler}>
-                <Text style={{color:'#3b4db7'}}>취소</Text>
-            </TouchableOpacity>    */}
         </View>          
     </KeyboardAwareScrollView>
     </View>

@@ -573,8 +573,9 @@ _showRoomList(itemState){
   temp[this._findRoomIndex(clone)] = clone;
   this.setState({savedData: clone, rooms:temp},
     function(){
-     
+      this.roomInfoPopup.dismiss();
       this.roomListPopup.show();
+      
     }
   )
  
@@ -598,6 +599,8 @@ _cancelHandler(){
   this.setState({scrollEnabled:true})
 }
   render() {
+
+  
    
     return (
     
@@ -819,7 +822,7 @@ _cancelHandler(){
                        
                       })
                     })
-                    .then((res)=>{console.log(res); return res.json()})
+                    .then((res)=>{return res.json()})
                     .then((json) =>{
                         if (json.error){
                           if(json.typeError){

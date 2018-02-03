@@ -192,11 +192,17 @@ export default class writeoffer extends Component {
  
 
   render() {
+
+    const config = {
+      velocityThreshold: 0.1,
+      directionalOffsetThreshold: 1
+    }
    
     return (
    
     <GestureRecognizer
-    onSwipeLeft={(state) => this.onSwipeLeft(state)}>
+    onSwipeLeft={(state) => this.onSwipeLeft(state)}
+    config ={config}>
     <KeyboardAwareScrollView enableOnAndroid={true}
     keyboardShouldPersistTaps='always'
     innerRef={ref => {this.scroll = ref}}

@@ -666,7 +666,7 @@ static navigationOptions= ({navigation}) =>({
                   
                   this.setState({
                                 myoffering : [...this.state.myoffering,...parsedRes],
-                                myoffering_all:[...this.state.myoffering_all,...parsedRes],
+                                // myoffering_all:[...this.state.myoffering_all,...parsedRes],
                                 isAdding: false,
                                 });
                 

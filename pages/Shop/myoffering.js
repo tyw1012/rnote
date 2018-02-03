@@ -650,7 +650,7 @@ static setSelectedOfferingType(type){
          console.log(parsedRes);
          this.setState({
                         myoffering : [...this.state.myoffering,...parsedRes],
-                        myoffering_all:[...this.state.myoffering_all,...parsedRes],
+                        // myoffering_all:[...this.state.myoffering_all,...parsedRes],
                         isAdding: false,
                        });
        })

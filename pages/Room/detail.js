@@ -121,7 +121,7 @@ static updateInformationFromOutside(params){
         const RoomMapNavigator = TabNavigator({
 
            
-            MapInfo: { screen : ()=><MapDetail data = {this.state}/>,
+            MapInfo: { screen : ()=><MapDetail data = {this.state} navigation ={this.props.navigation}/>,
                     navigationOptions:{
                             
                         tabBarLabel: '건물정보',
@@ -182,7 +182,9 @@ static updateInformationFromOutside(params){
 
         else{
             return(
-             <ScrollView contentContainerStyle={styles.container}>
+             <ScrollView contentContainerStyle={styles.container}
+             
+             >
                     
                      <RoomMapNavigator/>
                 

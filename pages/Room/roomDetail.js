@@ -5,6 +5,7 @@ import call from 'react-native-phone-call'
 import Icon from 'react-native-vector-icons/Ionicons';
 import PopupDialog from 'react-native-popup-dialog';
 import RoomDetailPopup from './roomDetailPopup';
+import myoffering from './myoffering';
 
 class RoomDetail extends Component{
 
@@ -108,19 +109,15 @@ class RoomDetail extends Component{
     }
 
     componentWillMount(){
-        this.setState({rooms: this.props.data.rooms, bld_roomPerFloor: this.props.data.bld_roomPerFloor})
+        this.setState({rooms: this.props.data.rooms, bld_roomPerFloor: this.props.data.bld_roomPerFloor, memberID: this.props.data.memberID, bld_id : this.props.data.bld_id})
     }
 
 	render(){
        
-        // const {data} = this.props
-        // let roomsClone = [...this.props.data.rooms];
         let roomsClone = [...this.state.rooms];
         console.log(roomsClone);
-        // let chunk = this._chunk(roomsClone, parseInt(this.props.data.bld_roomPerFloor))
         let chunk = this._chunk(roomsClone, parseInt(this.state.bld_roomPerFloor))
         console.log(chunk);
-        // console.log('chunk',chunk, 'roomsClone', roomsClone)
         let rooms = [];
              
         for ( let i = 0; i < chunk.length; i ++){
@@ -128,12 +125,11 @@ class RoomDetail extends Component{
                 rooms.push(...(chunk[i].sort(function(a,b){return b['wr_room_number']-a['wr_room_number']})))
             }
             else{
-                rooms.push(...chunk[i])
+                rooms.push(...chunk[i].sort(function(a,b){return a['wr_room_number']-b['wr_room_number']}))
             }
           
         }
 
-        // console.log('rendering', rooms, roomsClone)
             return(
                     <View style={{padding:10}}> 
 
@@ -152,8 +148,60 @@ class RoomDetail extends Component{
                         
                     </View>
 
+                    <View style={{flexDirection:'row', marginBottom:10}}>
+                        <TouchableOpacity style={this.state.onEditMode?{flex:1, justifyContent:'center', alignItems:'center', padding:12, backgroundColor:'#3b4db7', marginLeft:2, marginRight:2, marginBottom:3}:{display:'none'}}
+                            onPress={()=>{
+                                // this.props.editModeToggle()
+                                this.setState({onEditMode:false, rooms: this.state.rooms_before})
+                            }}
+                        >
+                            <Text style={{color:'#fff', fontSize:13,}}>취소</Text>
+
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{flex:1,justifyContent:'center', alignItems:'center', padding:12, backgroundColor:'#3b4db7', marginLeft:2, marginRight:2, marginBottom:3}}
+                            onPress={()=>{
+                                if(this.state.onEditMode){
+
+                                    fetch('http://real-note.co.kr/app3/emptyCheckRoom.php',{
+                                        method:'post',
+                                        header:{
+                                        'Accept': 'application/json',
+                                        'Content-type': 'application/json'
+                                        },
+                                        body:JSON.stringify({
+                                            memberID: this.state.memberID,
+                                            bld_id: this.state.bld_id,
+                                            rooms: this.state.rooms,
+                                        })
+                                    })
+                                    .then((res)=>{console.log(res); return res.json()})
+                                    .then((json) =>{
+                                        
+                                        if(!json.error){
+
+                                            alert('공실 정보가 저장되었습니다.')
+                                            this.setState({onEditMode:false,})
+                                            myoffering.refreshFromOutside()
+
+                                        }
+
+                                    })
+                                }
+                                else{
+                                    let temp = this.state.rooms.slice(0);                                    
+                                    this.setState({onEditMode:true, rooms_before: temp})
+                                }
+                                
+                            }}
+                        >
+                            <Text style={{color:'#fff', fontSize:13,}}>{this.state.onEditMode?'저장':'공실체크'}</Text>
+
+                        </TouchableOpacity>
+                    </View>
+
                     <ScrollView 
-                    contentContainerStyle={{ flexGrow:1, marginBottom:30, flexDirection:'column'}}
+                    contentContainerStyle={{ flexGrow:1, marginBottom:80, flexDirection:'column'}}
+                    showsHorizontalScrollIndicator={false}
                     horizontal>
 
                         
@@ -179,7 +227,7 @@ class RoomDetail extends Component{
                                 clone.wr_o_vacant == 1? clone.wr_o_vacant = 0 :
                                 clone.wr_o_vacant = 1;
                                 roomsClone[index] = clone;
-                                this.setState({rooms:roomsClone})
+                                this.setState({rooms:roomsClone}, function(){console.log(this.state.rooms)})
                                 
                             }
                             else{
@@ -207,35 +255,6 @@ class RoomDetail extends Component{
                         </TouchableOpacity>
                         }
                         />
-
-
-                        <View style={{flexDirection:'row', marginTop:10, marginBottom:30}}>
-                        <TouchableOpacity style={this.state.onEditMode?{flex:1, justifyContent:'center', alignItems:'center', padding:12, backgroundColor:'#3b4db7', marginLeft:2, marginRight:2, marginBottom:3}:{display:'none'}}
-                            onPress={()=>{
-                                // this.props.editModeToggle()
-                                this.setState({onEditMode:false, rooms: this.state.rooms_before})
-                            }}
-                        >
-                            <Text style={{color:'#fff', fontSize:13,}}>취소</Text>
-
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{flex:1,justifyContent:'center', alignItems:'center', padding:12, backgroundColor:'#3b4db7', marginLeft:2, marginRight:2, marginBottom:3}}
-                            onPress={()=>{
-                                if(this.state.onEditMode){
-                                    alert('저장되었습니다.')
-                                    this.setState({onEditMode:false,})
-                                }
-                                else{
-                                    let temp = this.state.rooms.slice(0);                                    
-                                    this.setState({onEditMode:true, rooms_before: temp})
-                                }
-                                
-                            }}
-                        >
-                            <Text style={{color:'#fff', fontSize:13,}}>{this.state.onEditMode?'저장':'공실체크'}</Text>
-
-                        </TouchableOpacity>
-                        </View>
 
 
                     </ScrollView>   

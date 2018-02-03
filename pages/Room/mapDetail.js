@@ -11,6 +11,9 @@ class MapDetail extends Component{
 
     }
 
+    componentWillMount(){
+        this.setState({bld_posx: this.props.data.bld_posx, bld_posy: this.props.data.bld_posy, bld_name: this.props.data.bld_name})
+    }
 	render(){
         const {data} = this.props
                 
@@ -40,7 +43,7 @@ class MapDetail extends Component{
                 
                     <TouchableOpacity
                     style={{position:'absolute', top: 234, right: 10, backgroundColor:'#3b4db7', justifyContent:'center', alignItems:'center', padding:8, borderRadius:3,}}
-                    onPress={()=>{this.props.navigation.navigate('Profile',{wr_posx:this.state.wr_posx,wr_posy:this.state.wr_posy, wr_subject:this.state.wr_subject})}}
+                    onPress={()=>{this.props.navigation.navigate('Profile',{wr_posx:this.state.bld_posx,wr_posy:this.state.bld_posy, wr_subject:this.state.bld_name})}}
                     ><Text style={{ color:'#fff'}}>로드뷰 보기</Text>
                     </TouchableOpacity>
 

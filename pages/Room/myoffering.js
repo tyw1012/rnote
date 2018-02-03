@@ -172,7 +172,7 @@ static setSelectedOfferingType(type){
           const {memberID, memberName, countPerLoad, myoffering_from, selectedSegment, level, selectedOfferingType} = this.state;
           
        
-          fetch('http://real-note.co.kr/app3/getMyOffering_room.php',{
+          fetch('http://real-note.co.kr/app3/getMyOffering_room2.php',{
             method:'post',
             header:{
               'Accept': 'application/json',
@@ -223,7 +223,27 @@ static setSelectedOfferingType(type){
       
               var parsedRes_room_count = JSON.parse(res._bodyText).room_count.count;
               var parsedRes_room_data = JSON.parse(res._bodyText).room_data;
-      
+              var parsedRes_room_extra_data = JSON.parse(res._bodyText).room_extra_data;
+
+              for(var i =0; i<=parsedRes_room_data.length-1; i++){
+              
+              
+                parsedRes_room_data[i].clone =  {...parsedRes_room_data[i]};
+                parsedRes_room_data[i].clone.rooms = [];
+                
+                for(var j = 0; j<=parsedRes_room_extra_data.length-1; j++){
+        
+                  
+                  if(parsedRes_room_data[i].wr_bld_match_id == parsedRes_room_extra_data[j].wr_bld_match_id){
+        
+                    parsedRes_room_data[i].clone.rooms.push(parsedRes_room_extra_data[j])
+        
+                  }
+        
+                }
+        
+              }
+
               this.setState({myoffering:parsedRes_room_data, myoffering_all:parsedRes_room_data, offering_count: parsedRes_room_count,isSegmentChanging:false,});
       
             }
@@ -699,7 +719,7 @@ static setSelectedOfferingType(type){
                           myoffering : [...this.state.myoffering,...parsedRes_room_data],
                           myoffering_all:[...this.state.myoffering_all,...parsedRes_room_data],
                           isAdding: false,
-                         }, function(){ });
+                         });
                 
                       }
                                       
@@ -715,7 +735,7 @@ static setSelectedOfferingType(type){
          }, function(){
 
           console.log(this.state);
-       fetch('http://real-note.co.kr/app3/searchByFilter.php',{
+       fetch('http://real-note.co.kr/app3/searchByFilter_room.php',{
          method:'post',
          header:{
            'Accept': 'application/json',
@@ -732,60 +752,106 @@ static setSelectedOfferingType(type){
            level: this.state.level,
            boss: this.state.boss,
 
-           name: this.state.nameFilter,
+           rentType : this.state.rentTypeFilter==undefined?'0': this.state.rentTypeFilter,
+           roomType : this.state.roomTypeFilter==undefined?'0': this.state.rentTypeFilter,
            addr: this.state.addrFilter,
-           writer: this.state.writerFilter,
-           saleArea: this.state.saleAreaFilter,
+           subway: this.state.subwayFilter,
            floorMin: this.state.floorMinFilter,
            floorMax: this.state.floorMaxFilter,
            areaMin: this.state.areaMinFilter,
-           areaMax: this.state.areaMaxFilter, 
-           wr_rec_sectors: this.state.wr_rec_sectors,                           
+           areaMax: this.state.areaMaxFilter,
+           parking: this.state.parkingFilter==undefined?'0':this.state.parkingFilter,
+           elev: this.state.elevFilter==undefined?'0':this.state.elevFilter,
+           
+                                  
            depositMin: this.state.depositMinFilter,
            depositMax: this.state.depositMaxFilter,
            mrateMin: this.state.mrateMinFilter,
            mrateMax: this.state.mrateMaxFilter,
-           premoMin: this.state.premoMinFilter,
-           premoMax: this.state.premoMaxFilter,
-           sumMin: this.state.sumMinFilter,
-           sumMax: this.state.sumMaxFilter,
+   
+           name_bld: this.state.nameFilter_bld,
+           addr_bld: this.state.addrFilter_bld,
+           subway_bld: this.state.subwayFilter_bld,
+           parking_bld: this.state.parkingFilter_bld==undefined?'0':this.state.parkingFilter_bld,
+           elev_bld: this.state.elevFilter_bld==undefined?'0':this.state.elevFilter_bld,
            
-           name_sell: this.state.nameFilter_sell,
-           addr_sell: this.state.addrFilter_sell,
-           writer_sell: this.state.writerFilter_sell,
-           areaMin_sell: this.state.areaMinFilter_sell,
-           areaMax_sell: this.state.areaMaxFilter_sell, 
-
-           salePriceMin: this.state.salePriceMinFilter,
-           salePriceMax: this.state.salePriceMaxFilter,
-           psalePriceMin: this.state.psalePriceMinFilter,
-           psalePriceMax: this.state.psalePriceMaxFilter,
-           silinsuMin: this.state.silinsuMinFilter,
-           silinsuMax: this.state.silinsuMaxFilter,
-           profitMin: this.state.profitMinFilter,
-           profitMax: this.state.profitMaxFilter,
-
-           name_fin: this.state.nameFilter_fin,
-           addr_fin: this.state.addrFilter_fin,
          })
        })
        .then((res)=>{
-         var parsedRes = JSON.parse(res._bodyText);
-         
-        //  for(var i =0; i<=parsedRes.length-1; i++){
-        //   parsedRes[i].isChecked = false;
-        
-        // }
-        if(parsedRes.length ==0){
-          this.setState({noMoreData:true})
-        }
 
-         console.log(parsedRes);
-         this.setState({
-                        myoffering : [...this.state.myoffering,...parsedRes],
-                        myoffering_all:[...this.state.myoffering_all,...parsedRes],
-                        isAdding: false,
-                       });
+        if(this.state.selectedSegment == '건물'){
+
+          var parsedRes_bld_count = JSON.parse(res._bodyText).bld_count.count;
+          var parsedRes_bld_data = JSON.parse(res._bodyText).bld_data;
+          var parsedRes_room_data = JSON.parse(res._bodyText).room_data;
+          
+          for(var i =0; i<=parsedRes_bld_data.length-1; i++){
+          
+          
+            parsedRes_bld_data[i].rooms = [];
+            
+            for(var j = 0; j<=parsedRes_room_data.length-1; j++){
+    
+               
+              if(parsedRes_bld_data[i].bld_id == parsedRes_room_data[j].wr_bld_match_id){
+    
+                parsedRes_bld_data[i].rooms.push(parsedRes_room_data[j])
+    
+              }
+    
+            }
+    
+          }
+
+          if(parsedRes_bld_data.length ==0){
+            this.setState({noMoreData:true})
+          }
+
+          this.setState({
+            myoffering : [...this.state.myoffering,...parsedRes_bld_data],
+            // myoffering_all:[...this.state.myoffering_all,...parsedRes_bld_data],
+            isAdding: false,
+           });
+  
+  
+        }
+        else{
+  
+          var parsedRes_room_count = JSON.parse(res._bodyText).room_count.count;
+          var parsedRes_room_data = JSON.parse(res._bodyText).room_data;
+          var parsedRes_room_extra_data = JSON.parse(res._bodyText).room_extra_data;
+  
+          for(var i =0; i<=parsedRes_room_data.length-1; i++){
+          
+          
+            parsedRes_room_data[i].clone =  {...parsedRes_room_data[i]};
+            parsedRes_room_data[i].clone.rooms = [];
+            
+            for(var j = 0; j<=parsedRes_room_extra_data.length-1; j++){
+    
+               
+              if(parsedRes_room_data[i].wr_bld_match_id == parsedRes_room_extra_data[j].wr_bld_match_id){
+    
+                parsedRes_room_data[i].clone.rooms.push(parsedRes_room_extra_data[j])
+    
+              }
+    
+            }
+    
+          }
+
+          if(parsedRes_room_data.length ==0){
+            this.setState({noMoreData:true})
+          }
+
+          this.setState({
+            myoffering : [...this.state.myoffering,...parsedRes_room_data],
+            // myoffering_all:[...this.state.myoffering_all,...parsedRes_room_data],
+            isAdding: false,
+           });
+  
+        }
+         
        })
 
      });
