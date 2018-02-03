@@ -151,7 +151,7 @@ static updateFigures(){
               roomsClone.push(...(chunk[i].sort(function(a,b){return b['wr_room_number']-a['wr_room_number']})))
           }
           else{
-              roomsClone.push(...chunk[i])
+              roomsClone.push(...(chunk[i].sort(function(a,b){return a['wr_room_number']-b['wr_room_number']})))
           }
         
         }
@@ -519,7 +519,7 @@ _chooseRoomType(type, state){
 _chooseRentType(type, state){
   var clone = this.state.rooms.slice(0);
   clone[this._findRoomIndex(state)]['wr_rent_type'] = type
-  this.setState({rooms: clone})
+  this.setState({rooms: clone}, function(){console.log(this.state.rooms[this._findRoomIndex(state)])})
 
 }
 _saveRoomInfo(itemState){
@@ -587,11 +587,11 @@ _checkboxHandler(optionItem,optionIndex, roomItem, optionType){
   optionClone[Object.keys(optionClone)[1]] == 1?
   optionClone[Object.keys(optionClone)[1]] = 0 : optionClone[Object.keys(optionClone)[1]] = 1
   
-  let temp = [...this.state.rooms];
+  let temp = this.state.rooms.slice(0);
   let roomClone = {...roomItem};
   roomClone[optionType][optionIndex] = optionClone;
   temp[this._findRoomIndex(roomClone)] = roomClone;
-  this.setState({rooms:temp}, function(){console.log(this.state.rooms)} );
+  this.setState({rooms:temp, selectedRoom: roomClone }, function(){console.log(this.state.rooms)} );
 
 }
 _cancelHandler(){

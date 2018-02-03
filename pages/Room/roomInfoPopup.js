@@ -113,7 +113,16 @@ _findOptionIndex(optionItem){
       }
     }
  }
+ _convertToBool(string){
+     if(string == '1'){
+         return true
+     }
+     if(string == '0' || string == '' || string == undefined){
+        return false
+    }
+ }
 
+ 
   render() {
       const {item} = this.props
       return(
@@ -185,7 +194,7 @@ _findOptionIndex(optionItem){
             title={'공실'}
             containerStyle={{backgroundColor:'#fff',borderWidth:0, height:35, marginTop:-7, paddingRight:0, marginRight:0,}}
             textStyle={{color:'#666', fontSize: 13, marginTop:-2}}
-            checked={item.wr_o_vacant}
+            checked={this._convertToBool(item.wr_o_vacant)}
             onPress={()=>{
              this.setState({wr_o_vacant : !this.state.wr_o_vacant})
             item.wr_o_vacant = !item.wr_o_vacant;

@@ -63,7 +63,7 @@ class MapDetail extends Component{
                     </View>
                     <View style={styles.row}>
                         <Text style={styles.columnName}>인근지하철역</Text>
-                        <Text style={[styles.columnInfo,{flex:5.5}]}>{data.bld_subway}</Text>
+                        <Text style={styles.columnInfo}>{data.bld_subway}</Text>
                         
                     </View>
 

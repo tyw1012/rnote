@@ -64,10 +64,10 @@ render(){
         checked={item.checked}
         onPress={()=>{
 
-        let optionClone = {...item};
-        optionClone.checked = !optionClone.checked;
-        optionClone[Object.keys(optionClone)[1]] == 1?
-        optionClone[Object.keys(optionClone)[1]] = 0 : optionClone[Object.keys(optionClone)[1]] = 1
+        // let optionClone = {...item};
+        // optionClone.checked = !optionClone.checked;
+        // optionClone[Object.keys(optionClone)[1]] == 1?
+        // optionClone[Object.keys(optionClone)[1]] = 0 : optionClone[Object.keys(optionClone)[1]] = 1
 
         let optionIndex = this._findMtOptionIndex(item)
         // console.log(optionIndex)
