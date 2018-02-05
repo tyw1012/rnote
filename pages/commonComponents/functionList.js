@@ -17,7 +17,7 @@ export default class functionList extends Component{
 static navigationOptions= ({navigation}) =>({
      
   headerLeft:null,
-  title:'설정',
+  title:'더보기',
   headerTitleStyle: {color:'white',fontSize:18, fontWeight:'bold'},
   headerStyle: {
      backgroundColor: '#3b4db7',
@@ -42,6 +42,8 @@ static navigationOptions= ({navigation}) =>({
   componentWillMount(){
     const {params} = this.props.navigation.state;
     this.setState(params, function(){
+
+      console.log(this.state)
       
     })
   }
@@ -165,22 +167,31 @@ static navigationOptions= ({navigation}) =>({
                 <StatusBar backgroundColor="#16236e"/>
 
 
-                <View style={{height:110,flexDirection:'row',justifyContent:'space-between', padding: 20, borderBottomWidth:1, borderTopWidth:1, borderColor:'#e1e1e1', marginBottom: 8, backgroundColor: '#fff'}}>
+                <View style={{height:100,flexDirection:'row',justifyContent:'space-between', padding: 20, paddingTop:15, borderColor:'#f1f1f1', backgroundColor: '#3b4db7'}}>
 
-                    <View style={{flexDirection:'row'}}>
-                      <Image 
+                    <View style={{flexDirection:'row', }}>
+                       <Image 
                         source={require('./person2.png')}
                         resizeMode="contain"
-                        style={{width: 60, padding: 10, height: 60, marginRight: 15}}/>
-                        <View>
-                          <Text style={{fontSize: 15, fontWeight:'bold'}}>{this.state.memberName}  <Text style={{fontWeight:'100'}}>( {this.state.memberID} )</Text> </Text>
-                          <Text>{this.state.email}</Text>
-                          <Text style={{color: '#888', fontSize:12, marginTop:2}}>{this.state.level=='emp'?'개인회원':'업체회원'}</Text>
+                        style={{width: 60, padding: 10, height: 60, marginRight: 15, tintColor:'#fff'}}/>
+                        {/* <Text style={{fontWeight:'100'}}>( {this.state.memberID} )</Text> */}
+                        <View style={{}}>
+                            <View style={{flexDirection:'row'}}>
+                                <Text style={{fontSize: 17, fontWeight:'bold', color:'#fff'}}>{this.state.memberName} </Text>
+                                <Text style={{fontSize: 13, marginTop:4, color:'#fff'}}>님 </Text>
+                            </View>
+                            <Text style={{fontSize:13, color: '#fff'}}>{this.state.email}</Text>
+                            <Text style={{color: '#fff', fontSize:12, marginTop:2}}>{this.state.level=='emp'?'개인회원':'업체회원'}</Text>
                         </View>
                       
                     </View>
-                    <View style={{justifyContent:'flex-end'}}>
+                    <View style={{
+                      flexDirection:'row'
+                      // justifyContent:'flex-end'
+                      }}>
+
                           <TouchableOpacity style={{flexDirection:'row',}}
+                          style={{paddingBottom:10, paddingLeft: 10, marginTop: -4, marginRight:5,}}
                            onPress={()=>{
                             Alert.alert(
                               '알림',
@@ -212,45 +223,64 @@ static navigationOptions= ({navigation}) =>({
                           >
                             <Icon
                             name="ios-log-out"    
-                            size={20}                    
+                            size={32}       
+                            style={{color:'#fff'}}             
                             />
-                            <Text style={{marginLeft:3, marginTop:1, fontSize:12, }}>로그아웃</Text>
+                            {/* <Text style={{marginLeft:3, marginTop:1, fontSize:12, }}>로그아웃</Text> */}
                           </TouchableOpacity>
+
+                          <TouchableOpacity
+                          style={{paddingBottom:10, paddingLeft: 10, marginTop: -5}}
+                          onPress ={()=>{this.props.navigation.navigate('MyConfig', {...this.state})}}
+                          >
+                            <Icon
+                            name="ios-settings"
+                            size= {32}
+                            style={{color:'#fff'}}>
+
+                            </Icon>
+                          </TouchableOpacity>
+
+
                     </View>
                 
                 </View>
 
-                <View style={{ height:120,  padding: 20, backgroundColor: '#fff', marginBottom: 8, borderBottomWidth:1, borderTopWidth:1, borderColor:'#e1e1e1'}}>
-               
-                  <Text style={{marginBottom: 20, }}>내 노트에 표시될 부동산</Text>
-                    {/* <SegmentedControls      
-                            
-                    options={ options }
-                    onSelection={ this.setSelectedOption.bind(this) }
-                    selectedOption={ this.state.selectedOfferingType }
-                    containerStyle={{height: 35,  borderRadius:5, }}
-                    optionContainerStyle={{justifyContent:'center',}}
-                    optionStyle ={{fontSize: 12, borderRadius:5,}}
-                    separatorWidth= {1}
-                    
-                    tint={'#3b4db7'}
-                    selectedTint= {'white'}
-                    />  */}
+                <View style={{ height:80,backgroundColor: '#fff', flexDirection:'row', marginBottom: 8,  borderTopWidth:1, borderBottomWidth:1, borderColor:'#e1e1e1'}}>
+                           
+                    <TouchableOpacity style={{flex:1, alignItems:'center', borderRightWidth: 0.5, borderColor:'#777', backgroundColor:'#fff'}}
+                      onPress = {()=>{this.props.navigation.navigate('ChangeOfferingType', {...this.state})}}
+                    >
+                      <Text style={{marginBottom: 5, marginTop:15,  color:'#777', fontSize:13 }}>대표 부동산</Text>
+                      
+                      <View style ={{flexDirection:'row'}}>
+                          {/* <Image
+                            source={
+                              this.state.selectedOfferingType == 1?
+                              require('./home-outlined.png') :
+                              this.state.selectedOfferingType == 2?
+                              require('./residential-area-outlined.png') :
+                              this.state.selectedOfferingType == 3?
+                              require('./money-outlined.png') : require('./layout-outlined.png')
+                            }
+                            resizeMode="contain"
+                            style={{width: 30, height: 30, tintColor:'#777'}}
+                          /> */}
+                          <Text style={{marginTop:0, marginLeft:0, fontSize: 14, fontWeight:'bold', color:'#333' }}>{options[parseInt(this.state.selectedOfferingType)-1]}</Text>
+                      </View>
+                    </TouchableOpacity>
 
-                    <SegmentedControlTab
-                    tabsContainerStyle={{marginTop:-0.5, marginRight:-1}}
-                    borderRadius={0}
-                    tabStyle={{borderColor: '#777', borderWidth:0.5, borderColor:'#bbb'}}
-                    activeTabStyle={{ backgroundColor: '#777', }}
-                    tabTextStyle={{color:'#777'}}
-                    values={options}
-                    selectedIndex={parseInt(this.state.selectedOfferingType)-1}
-                    onTabPress={this.handleIndexChange}
-                    />
+                    <TouchableOpacity style={{flex:1, alignItems:'center', borderColor:'#777', backgroundColor:'#fff'}}
+                      onPress = {()=>{this.props.navigation.navigate('MyOfficeConfig', {...this.state})}}
+                    >
+                      <Text style={{marginBottom: 5, marginTop:15, color:'#777', fontSize:13  }}>나의 오피스</Text>
+                      <Text style={{ fontSize: 14, fontWeight:'bold', color:'#333' }}>{this.state.boss_office}</Text>
+                    </TouchableOpacity>
+
 
                 </View>
 
-                <TouchableOpacity style={{ height:70, flexDirection:'row', padding: 20, backgroundColor: '#fff', justifyContent:'space-between', borderBottomWidth:1, borderTopWidth:1, borderColor:'#e1e1e1'}} 
+                {/* <TouchableOpacity style={{ height:70, flexDirection:'row', padding: 20, backgroundColor: '#fff', justifyContent:'space-between', borderBottomWidth:1, borderTopWidth:1, borderColor:'#e1e1e1'}} 
                  onPress={()=>{this.props.navigation.navigate('Employee', this.state)}}
                 >
 
@@ -262,7 +292,13 @@ static navigationOptions= ({navigation}) =>({
                     onPress={()=>{}}
                     /> 
 
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                <View style={{ height:200, padding: 15, backgroundColor: '#fff',  borderBottomWidth:1, borderTopWidth:1, borderColor:'#e1e1e1',}}>
+                    <Text style={{fontSize:12.5, fontWeight:'bold'}}>유틸</Text>
+                    <View style={{ height:140, flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
+                    <Text>준비 중입니다.</Text>
+                    </View>
+                </View>
         
             
         </View>

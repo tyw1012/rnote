@@ -33,6 +33,7 @@ header("Content-Type: text/html; charset=UTF-8");
     $token['email'] = $mb['mb_email'];
     $token['level'] = $gr['gr_1'];
     $token['min_write'] = $gr2['gr_write_permission'];
+    $token['boss_office'] = $gr2['gr_subject'];
     $token['boss'] = $mb['mb_1'];
     $token['selectedOfferingType'] = $mb['mb_3'];
     $jsonWebToken = JWT::encode($token, $jwtKey);

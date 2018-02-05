@@ -19,6 +19,7 @@ header("Content-Type: text/html; charset=UTF-8");
     $level = $obj['level'];
     $minWrite = $obj['minWrite'];
     $boss = $obj['boss'];
+    $boss_office = $obj['boss_office'];
     $selectedOfferingType = $obj['selectedOfferingType'];
     
 
@@ -29,7 +30,8 @@ header("Content-Type: text/html; charset=UTF-8");
     $token['email'] = $email;
     $token['level'] = $level;
     $token['min_write'] = $minWrite;
-    $token['boss'] = $boss;
+    $token['boss_office'] = $boss_office;
+    $token['boss'] = $boss;    
     $token['selectedOfferingType'] = $selectedOfferingType;
 
     $sql_query = "update g5_member set mb_3 = '$selectedOfferingType' where mb_id = '$memberID'";

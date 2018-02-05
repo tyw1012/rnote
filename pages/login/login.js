@@ -34,13 +34,18 @@ export default class login extends Component {
     this._loadInitialState().done();
   }
   _loadInitialState = async () => {
-    this._checkToken();
+	var autoLoginUserSetting = await AsyncStorage.getItem('autoLoginUserSetting')
+
+	if(autoLoginUserSetting == 'yes' ||autoLoginUserSetting== undefined){
+		this._checkToken();
+	}
+   
   }
 
   _checkToken = async () => {
 
       var myToken = await AsyncStorage.getItem('token');
-      var myID = await AsyncStorage.getItem('user');
+	  var myID = await AsyncStorage.getItem('user');
       
 
 			if (myToken){
@@ -57,19 +62,19 @@ export default class login extends Component {
 								
 								console.log(resJson);
 								this.props.navigation.navigate('MainNavigator3',
-							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'office', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType  });
+							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'office', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType, boss_office: resJson.boss_office  });
 
 							}
 							
 							else if(resJson.selectedOfferingType == '1'){
 								console.log(resJson);
 								this.props.navigation.navigate('MainNavigator1',
-							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'office', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType  });
+							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'office', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType , boss_office: resJson.boss_office });
 							}
 
 							else{
 								this.props.navigation.navigate('MainNavigator4',
-								{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'office', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType  });
+								{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'office', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType, boss_office: resJson.boss_office  });
 							}
 							
 						}
@@ -77,17 +82,17 @@ export default class login extends Component {
 							console.log(resJson);
 							if(resJson.selectedOfferingType == '3'){
 								this.props.navigation.navigate('MainNavigator3',
-							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'emp', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType });
+							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'emp', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType, boss_office: resJson.boss_office });
 
 							}
 							else if(resJson.selectedOfferingType == '1'){
 								console.log(resJson);
 								this.props.navigation.navigate('MainNavigator1',
-							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'emp', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType });
+							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'emp', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType, boss_office: resJson.boss_office });
 							}
 							else{
 								this.props.navigation.navigate('MainNavigator4',
-							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'emp', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType });
+							{memberID: myID, memberName: resJson.name, email:resJson.email,contact:resJson.contact, level:'emp', boss:resJson.boss, minWrite: resJson.min_write, selectedOfferingType: resJson.selectedOfferingType, boss_office: resJson.boss_office });
 							}
 							
 						}
@@ -122,7 +127,7 @@ export default class login extends Component {
 				//  alert("Successfully Login");
         // alert(responseJson['token']);
          AsyncStorage.setItem('user', responseJson['memberID']);
-         AsyncStorage.setItem('token', responseJson['token']);
+		 AsyncStorage.setItem('token', responseJson['token']);
 
          this._checkToken();
 

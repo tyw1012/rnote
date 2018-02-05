@@ -12,6 +12,9 @@ import Agreement_text_1 from './Register/agreement_text_1';
 import Agreement_text_2 from './Register/agreement_text_2';
 import FunctionList from './commonComponents/functionList';
 import Employee from './commonComponents/employee';
+import ChangeOfferingType from './commonComponents/changeOfferingType';
+import MyConfig from './commonComponents/myConfig';
+import MyOfficeConfig from './commonComponents/myOfficeConfig';
 
 function getCurrentRouteName(navigationState) {
 	if (!navigationState) {
@@ -224,6 +227,9 @@ const WriteOfferSellNavigator = TabNavigator({
 
  const FunctionNoteStack = StackNavigator({
 	 FunctionList: {screen: FunctionList},
+	 ChangeOfferingType: {screen: ChangeOfferingType},
+	 MyConfig: {screen: MyConfig},
+	 MyOfficeConfig: {screen: MyOfficeConfig},
 	 Employee:{screen: Employee},
  },)
 
@@ -287,10 +293,10 @@ const WriteOfferSellNavigator = TabNavigator({
 		
 		screen: FunctionNoteStack,
 		navigationOptions:{
-			tabBarLabel: '설정',
+			tabBarLabel: '더보기',
 			tabBarIcon:({ tintColor }) => (
 				<Icon
-				  name='cog'
+				  name='dots-three-horizontal'
 				  size={25}
 				  style={{color:tintColor,}}
 				/>
@@ -511,10 +517,10 @@ FunctionNote: {
 	
 	screen: FunctionNoteStack,
 	navigationOptions:{
-		tabBarLabel: '설정',
+		tabBarLabel: '더보기',
 		tabBarIcon:({ tintColor }) => (
 			<Icon
-				name='cog'
+				name='dots-three-horizontal'
 				size={25}
 				style={{color:tintColor,}}
 			/>
@@ -785,20 +791,20 @@ const MainNavigator_room = TabNavigator({
 			
 		},
 	},
-	OfficeNote: {
-		screen: OfficeNoteStack_room,
-		navigationOptions:{
-			tabBarLabel: '오피스노트',
-			tabBarIcon:({ tintColor }) => (
-				<Icon
-					name='archive'
-					size={25}
-					style={{color:tintColor,}}
-				/>
-			)
+	// OfficeNote: {
+	// 	screen: OfficeNoteStack_room,
+	// 	navigationOptions:{
+	// 		tabBarLabel: '오피스노트',
+	// 		tabBarIcon:({ tintColor }) => (
+	// 			<Icon
+	// 				name='archive'
+	// 				size={25}
+	// 				style={{color:tintColor,}}
+	// 			/>
+	// 		)
 			
-		},
-	},
+	// 	},
+	// },
 	Bookmark: {
 		screen: BookmarkStack_room,
 		navigationOptions:{
@@ -816,10 +822,10 @@ const MainNavigator_room = TabNavigator({
 		
 		screen: FunctionNoteStack,
 		navigationOptions:{
-			tabBarLabel: '설정',
+			tabBarLabel: '더보기',
 			tabBarIcon:({ tintColor }) => (
 				<Icon
-					name='cog'
+					name='dots-three-horizontal'
 					size={25}
 					style={{color:tintColor,}}
 				/>
