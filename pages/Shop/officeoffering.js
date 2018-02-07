@@ -852,6 +852,25 @@ _showSegmentDialog(){
            </View>
         )
       }
+      else if(this.state.gm_block == 1){
+        return (
+
+          <View style ={{justifyContent:'center', alignItems: 'center', flex:1,}}>
+
+              <Icon
+              name='ios-alert-outline'
+              size ={90}
+              style={{color:'#ccc', marginBottom:10,}}
+              />
+             <Text style={{fontWeight:'bold', fontSize: 15, marginBottom:5,}}>
+              일시적으로 접근이 차단되었습니다.              
+             </Text>
+             <Text style={{ fontSize: 12.5, marginBottom:50}}>
+              오피스({this.state.boss_office}) 관리자에게 문의 후 다시 로그인 하십시오.           
+             </Text>
+           </View>
+        )
+      }
       else{
 
         return(
@@ -904,7 +923,7 @@ _showSegmentDialog(){
                <FolderListPopup 
                memberID = {this.state.memberID}
                boss ={this.state.boss}
-               folderList = {folderList}
+               folderList = {this.state.folderList==undefined?[]:this.state.folderList}
                selectedFolder = {this.state.selectedFolder}
                selectHandler ={this._chooseFolder.bind(this)}
                submitHandler={this._insertToFolder.bind(this)}

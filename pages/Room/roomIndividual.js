@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
 import {View, TouchableOpacity, AppRegistry, Text, TextInput, ScrollView, StyleSheet, Keyboard,FlatList} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { RadioButtons } from 'react-native-radio-buttons';
 import { CheckBox } from 'react-native-elements'
 
 var options = [];
 var previous;
-class RoomDetailPopup extends Component{
+class RoomIndividual extends Component{
 
     constructor(props){
         super(props);
         this.state={
-            
 
             wr_room_type:'',
             wr_rent_deposit:'',
@@ -114,18 +113,8 @@ _findOptionIndex(optionItem){
       const {item} = this.props
       return(
     <View>
-    <View style ={{backgroundColor:'#3b4db7', height:40, width:'100%', flexDirection:'row', justifyContent:'space-between', alignItems:'center', borderTopLeftRadius:7, borderTopRightRadius:7}}>
-        <Text style={{fontSize:14, color:'#fff', fontWeight:'bold', marginLeft:15,}}>{item.wr_room_number}호 상세 </Text>
-        <TouchableOpacity
-        style={{justifyContent:'center', padding:5, paddingLeft:15, alignItems:'center'}}
-        onPress ={()=>{this.props.removePopup()}}
-        >
-            <Icon
-            name='ios-arrow-down-outline'
-            size={25}
-            style={{color:'#fff', marginRight:15}}
-            />
-        </TouchableOpacity>
+    <View style ={{backgroundColor:'#3b4db7', height:40, width:'100%', justifyContent:'center', alignItems:'center'}}>
+        <Text style={{fontSize:14, color:'#fff', fontWeight:'bold'}}>{item.wr_room_number}호 상세 </Text>
     
     </View>
     <KeyboardAwareScrollView enableOnAndroid={true}
@@ -250,7 +239,7 @@ _findOptionIndex(optionItem){
 
 }
 
-export default RoomDetailPopup;
+export default RoomIndividual;
 
 const styles = StyleSheet.create({
     container: {

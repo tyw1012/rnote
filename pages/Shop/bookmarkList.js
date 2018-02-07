@@ -529,12 +529,12 @@ static navigationOptions= ({navigation}) =>({
         bm_id: item.bm_id
       })
     })
-    .then((res)=>{console.log('delcheck', res); return res.json()})
+    .then((res)=>{ return res.json()})
     .then((json) =>{
 
            
       alert('삭제되었습니다.')
-      this.setState({data: temp});
+      this.setState({filteredData: temp, data:temp });
       getBookmark.refreshFromOutside()
       
     })

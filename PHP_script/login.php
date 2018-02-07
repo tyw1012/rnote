@@ -17,6 +17,7 @@ header("Content-Type: text/html; charset=UTF-8");
   $mb = get_member($memberID);
   $gr = get_group($memberID);
   $gr2 = get_group($mb['mb_1']);
+  $gr3 = get_group_member($memberID, $mb['mb_1']);
 
 
 
@@ -36,6 +37,7 @@ header("Content-Type: text/html; charset=UTF-8");
     $token['boss_office'] = $gr2['gr_subject'];
     $token['boss'] = $mb['mb_1'];
     $token['selectedOfferingType'] = $mb['mb_3'];
+    $token['gm_block'] = $gr3['gm_block'];
     $jsonWebToken = JWT::encode($token, $jwtKey);
 
     $message = 'ok';

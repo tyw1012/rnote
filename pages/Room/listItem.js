@@ -13,11 +13,27 @@ constructor(props){
 }
 
 shouldComponentUpdate(nextProps, nextState) {
-    
-   if(this.props.onCheckMode === nextProps.onCheckMode && this.props.isChecked === nextProps.isChecked && this.props.item.wr_id === nextProps.item.wr_id){
-    //   console.log(this.props.onCheckMode, nextProps.onCheckMode )
-      return false   ;
+      
+    if(this.props.selectedSegment =='건물'){
+
+        if(this.props.onCheckMode === nextProps.onCheckMode && this.props.isChecked === nextProps.isChecked 
+            && this.props.item.bld_id === nextProps.item.bld_id &&  this.props.item.wr_id === nextProps.item.wr_id && this.props.isRefreshing === nextProps.isRefreshing){
+            //   console.log(this.props.onCheckMode, nextProps.onCheckMode )
+              return false   ;
+            }
+
     }
+
+    if(this.props.selectedSegment =='공실'){
+
+        if(this.props.onCheckMode === nextProps.onCheckMode && this.props.isChecked === nextProps.isChecked 
+            && this.props.item.wr_id === nextProps.item.wr_id && this.props.isRefreshing === nextProps.isRefreshing){
+            //   console.log(this.props.onCheckMode, nextProps.onCheckMode )
+              return false   ;
+            }
+
+    }
+   
     // console.log(this.props.isChecked, nextProps.isChecked )
     return true
 }

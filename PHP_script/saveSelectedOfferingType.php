@@ -21,6 +21,7 @@ header("Content-Type: text/html; charset=UTF-8");
     $boss = $obj['boss'];
     $boss_office = $obj['boss_office'];
     $selectedOfferingType = $obj['selectedOfferingType'];
+    $gm_block = $obj['gm_block'];
     
 
     $token = array();
@@ -33,6 +34,7 @@ header("Content-Type: text/html; charset=UTF-8");
     $token['boss_office'] = $boss_office;
     $token['boss'] = $boss;    
     $token['selectedOfferingType'] = $selectedOfferingType;
+    $token['gm_block'] = $gm_block;
 
     $sql_query = "update g5_member set mb_3 = '$selectedOfferingType' where mb_id = '$memberID'";
     $result= mysqli_query($con, $sql_query)or die("Error in Selecting " . mysqli_error($con));

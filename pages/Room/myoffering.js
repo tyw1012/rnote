@@ -520,6 +520,7 @@ static setSelectedOfferingType(type){
             navigation = {this.props.navigation}
             toggleHandler = {this._toggle.bind(this)}
             longPressHandler = {this._longPress.bind(this)}
+            isRefreshing = {this.state.isRefreshing}
             />
        
         </Swipeout>
@@ -605,7 +606,6 @@ static setSelectedOfferingType(type){
               }
       
               this.setState({myoffering:parsedRes_room_data, myoffering_all:parsedRes_room_data, offering_count: parsedRes_room_count, isRefreshing: false, noMoreData:false},function(){console.log('check', this.state)});
-      
             }
             
             

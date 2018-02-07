@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry,View,Text,StyleSheet,ScrollView,TouchableOpacity,FlatList } from 'react-native';
+import { AppRegistry,View,Text,StyleSheet,ScrollView,TouchableOpacity,FlatList,Animated, Easing } from 'react-native';
 import MapView from 'react-native-maps';
 import call from 'react-native-phone-call'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -11,11 +11,64 @@ class RoomDetail extends Component{
 
     constructor(props){
         super(props);
+        
         this.state = {
             // columnChange:1
+            slideIn: new Animated.ValueXY({x:0,y:400}),
+            slideOut: new Animated.ValueXY({x:0, y:0}),
+            roomDetailPopupVisible:false,
             selectedRoom: {},
+            
         }
+      
+        this.slideOut = Animated.timing(
+            this.state.slideOut,
+            { 
+                toValue:{x: 0, y: 400},
+                duration: 500,
+                delay: 0,
+                easing: Easing.in(Easing.ease)
+
+            }
+        )
+
+        
     }
+
+    slideIn() {
+
+        this.state.slideIn.setValue({x:0, y:400})
+        Animated.timing(
+            this.state.slideIn,
+            { 
+                toValue:{x: 0, y: 0},
+                duration: 500,
+                delay: 0,
+                easing: Easing.in(Easing.ease)
+    
+            }
+        ).start(() => this.slideIn())
+
+
+    }
+
+    slideOut() {
+
+        this.state.slideOut.setValue({x:0, y:0})
+        Animated.timing(
+            this.state.slideIn,
+            { 
+                toValue:{x: 0, y: 400},
+                duration: 500,
+                delay: 0,
+                easing: Easing.in(Easing.ease)
+    
+            }
+        ).start(() => this.slideIn())
+
+
+    }
+       
 
 
     _roomStyle(item){
@@ -103,21 +156,30 @@ class RoomDetail extends Component{
     }
 
     _showRoomDetailPopup(item){
-
-        this.setState({selectedRoom: item},
-        ()=>{ this.roomDetailPopup.show()})
+        
+        this.setState({selectedRoom: item, roomDetailPopupVisible: true},
+        ()=>{ this.slideIn.start( ()=>{this.setState({slideIn: new Animated.ValueXY({x:0,y:400})})} )}
+        
+    )
+    }
+    _removePopup(){
+        this.slideOut.start(()=>{this.setState({slideOut: new Animated.ValueXY({x:0,y:0})})})
+        setTimeout(()=>{ this.setState({roomDetailPopupVisible:false})}, 600)
+       
     }
 
     componentWillMount(){
         this.setState({rooms: this.props.data.rooms, bld_roomPerFloor: this.props.data.bld_roomPerFloor, memberID: this.props.data.memberID, bld_id : this.props.data.bld_id})
     }
+    
 
 	render(){
-       
+        
+        const slideInStyle = this.state.slideIn.getTranslateTransform();
+        const slideOutStyle = this.state.slideOut.getTranslateTransform();
+        console.log('slideInStyle', slideInStyle)
         let roomsClone = [...this.state.rooms];
-        console.log(roomsClone);
         let chunk = this._chunk(roomsClone, parseInt(this.state.bld_roomPerFloor))
-        console.log(chunk);
         let rooms = [];
              
         for ( let i = 0; i < chunk.length; i ++){
@@ -131,16 +193,25 @@ class RoomDetail extends Component{
         }
 
             return(
-                    <View style={{padding:10}}> 
-
-                    <PopupDialog
-                     ref={(popupDialog) => { this.roomDetailPopup = popupDialog; }}            
-                     dialogStyle ={{elevation:2, width: '90%', position:'absolute', height:400, top: 30, }}
-                     > 
-                        <RoomDetailPopup
-                        item = {this.state.selectedRoom}/>
-                     </PopupDialog>
-
+                    <View style={{padding:10, height:'100%'}}> 
+                        {/* <View style={{elevation:2, width: '100%', position:'absolute',  top: 0, bottom:0 }}> */}
+                        {/* <PopupDialog
+                        ref={(popupDialog) => { this.roomDetailPopup = popupDialog; }}            
+                        dialogStyle ={{elevation:2, width: '100%', height:'100%', position:'absolute', top: 0, bottom:0 }}
+                        >  */}
+                        <Animated.View style={this.state.roomDetailPopupVisible?
+                        [slideInStyle,{zIndex:10,height:300, backgroundColor:'#fff', position:'absolute', right:15, left:15, bottom:0,  elevation:10, borderRadius:7,}]
+                        : [slideOutStyle,{zIndex:10,height:300, backgroundColor:'#fff', position:'absolute', right:15, left:15, bottom:0,  elevation:10, borderRadius:7,}]}
+                        // {this.state.roomDetailPopupVisible?{zIndex:10,height:300,margin:10, backgroundColor:'#fff', width:'100%', position:'absolute', bottom:0}:{display:'none'}}
+                        >
+                            <RoomDetailPopup
+                            visible = {this.state.roomDetailPopupVisible}
+                            item = {this.state.selectedRoom}
+                            removePopup = {this._removePopup.bind(this)}
+                            />
+                        </Animated.View>
+                        {/* </PopupDialog> */}
+                        {/* </View> */}
                     
                     <View style={{flexDirection:'row', justifyContent:'space-between', marginBottom:10}}>
                         <Text style={{marginLeft:2, fontSize:13, }}>{this.state.onEditMode?'호실을 선택하면 공실여부를 변경합니다':'호실을 선택하면 상세정보를 볼 수 있습니다.'}</Text>

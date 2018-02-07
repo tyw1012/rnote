@@ -14,7 +14,7 @@ constructor(props){
 
 shouldComponentUpdate(nextProps, nextState) {
     
-   if(this.props.item.wr_subject === nextProps.item.wr_subject && this.props.item.bm_from === nextProps.item.bm_from ){
+   if(this.props.item.wr_id === nextProps.item.wr_id && this.props.item.bm_from === nextProps.item.bm_from ){
     //   console.log(this.props.onCheckMode, nextProps.onCheckMode )
       return false   ;
     }

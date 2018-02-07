@@ -117,6 +117,7 @@ static navigationOptions= ({navigation}) =>({
         boss_office: this.state.boss_office,
         boss: this.state.boss,
         selectedOfferingType: (type+1).toString(), //index+1
+        gm_block: this.state.gm_block,
         
       })
     })
@@ -145,6 +146,7 @@ static navigationOptions= ({navigation}) =>({
                 boss_office: this.state.boss_office,
                 minWrite: this.state.minWrite,
                 selectedOfferingType: (type+1).toString(),
+                gm_block: this.state.gm_block,
               }
             }
           ]

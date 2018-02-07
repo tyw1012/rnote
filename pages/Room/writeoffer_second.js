@@ -841,7 +841,7 @@ _cancelHandler(){
                           alert("매물 등록이 완료되었습니다.")
                           this.props.navigation.goBack(null);   
                           myoffering.refreshFromOutside();
-                          myoffering.setSelectedSaleTypeFromOutside(this.state.segment)                     
+                          // myoffering.setSelectedSaleTypeFromOutside(this.state.segment)                     
                           
                         }
                       
