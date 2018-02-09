@@ -7,7 +7,7 @@ import PopupDialog from 'react-native-popup-dialog';
 import RoomDetailPopup from './roomDetailPopup';
 import myoffering from './myoffering';
 
-class RoomDetail extends Component{
+class EmptyCheck extends Component{
 
     constructor(props){
         super(props);
@@ -362,4 +362,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default RoomDetail;
+export default EmptyCheck;

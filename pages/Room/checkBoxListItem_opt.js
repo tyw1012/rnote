@@ -64,14 +64,14 @@ render(){
         checked={item.checked}
         onPress={()=>{
 
-        let optionClone = {...item};
-        optionClone.checked = !optionClone.checked;
-        optionClone[Object.keys(optionClone)[1]] == 1?
-        optionClone[Object.keys(optionClone)[1]] = 0 : optionClone[Object.keys(optionClone)[1]] = 1
+        // let optionClone = {...item};
+        // optionClone.checked = !optionClone.checked;
+        // optionClone[Object.keys(optionClone)[1]] == 1?
+        // optionClone[Object.keys(optionClone)[1]] = 0 : optionClone[Object.keys(optionClone)[1]] = 1
 
         let optionIndex = this._findOptionIndex(item)
         // console.log(optionIndex)
-        this.props.checkboxHandler(item, optionIndex, this.props.selectedItem, 'options');
+        this.props.checkboxHandler(item, optionIndex, 'options');
      
         // let clone = this.props.options.slice(0);
         // clone[optionIndex] = optionClone

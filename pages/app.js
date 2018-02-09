@@ -580,6 +580,7 @@ import Writeoffer_room from './Room/writeoffer';
 import Writeoffer_second_room from './Room/writeoffer_second';
 import Writeoffer_third_room from './Room/writeoffer_third';
 import Writeoffer_fourth_room from './Room/writeoffer_fourth';
+import RoomIndividual from './Room/roomIndividual';
 
 import Writeoffer_sell_room from './Room/writeoffer_sell';
 import Writeoffer_sell_second_room from './Room/writeoffer_sell_second';
@@ -753,6 +754,10 @@ const MyNoteStack_room = StackNavigator({
 	   screen: WriteOfferSellNavigator_room,
 	   navigationOptions:{tabBarVisible:false,}	
 	},
+   RoomIndividual: {
+	   screen: RoomIndividual,
+	   navigationOptions: {tabBarVisible:false,}
+   }
 	
 },)
 

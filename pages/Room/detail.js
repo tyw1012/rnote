@@ -9,6 +9,7 @@ import { TabNavigator} from 'react-navigation';
 // import StreetView from 'react-native-streetview';
 import MapDetail from './mapDetail';
 import RoomDetail from './roomDetail';
+import EmptyCheck from './emptyCheck';
 import PopupDialog from 'react-native-popup-dialog';
 
 var self;
@@ -120,6 +121,29 @@ static updateInformationFromOutside(params){
 
         const RoomMapNavigator = TabNavigator({
 
+            Rooms: { screen : ()=><RoomDetail data = {this.state}
+            //   onEditMode = {this.state.onEditMode}
+            //   editModeToggle = {this._editModeToggle.bind(this)}
+            //   updateVacancy = {this._updateVacancy.bind(this)}
+              />, 
+
+            navigationOptions:{
+
+                tabBarLabel: '호실정보',
+                            
+            }},    
+
+            EmptyCheck: { screen : ()=><EmptyCheck data = {this.state}
+            //   onEditMode = {this.state.onEditMode}
+            //   editModeToggle = {this._editModeToggle.bind(this)}
+            //   updateVacancy = {this._updateVacancy.bind(this)}
+              />, 
+
+            navigationOptions:{
+
+                tabBarLabel: '공실체크',
+                            
+            }}, 
            
             MapInfo: { screen : ()=><MapDetail data = {this.state} navigation ={this.props.navigation}/>,
                     navigationOptions:{
@@ -128,17 +152,7 @@ static updateInformationFromOutside(params){
                                                 
                     }},
 
-            Rooms: { screen : ()=><RoomDetail data = {this.state}
-                    //   onEditMode = {this.state.onEditMode}
-                    //   editModeToggle = {this._editModeToggle.bind(this)}
-                    //   updateVacancy = {this._updateVacancy.bind(this)}
-                      />, 
-       
-                    navigationOptions:{
-        
-                        tabBarLabel: '호실정보',
-                                    
-        }},        
+    
         
         }, {
             backBehavior:'none',            

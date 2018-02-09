@@ -16,6 +16,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import RoomInfoPopup from './roomInfoPopup';
 import RoomListPopup from './roomListPopup';
 import myoffering from './myoffering';
+import RoomListItem from './roomListItem';
 import detail from './detail';
 
 
@@ -72,6 +73,30 @@ export default class writeoffer_second extends Component {
 };
 static getState(name){
   return self.state[name]
+}
+static copyRoomInfo(itemState){
+  let clone = self.state.rooms.slice(0);
+  
+  for ( let i = 0; i < clone.length; i ++){
+    if(clone[i].listChecked){ 
+     clone[i] = {...itemState, wr_room_number: clone[i].wr_room_number} 
+     clone[i].listChecked = false     
+    }
+  }
+
+
+  self.setState({rooms:clone}, function(){
+    
+  })
+
+}
+
+static saveRoomInfo(itemState){
+  let clone = self.state.rooms.slice(0);
+  clone[self._findRoomIndex(itemState)] = itemState;
+  self.setState({rooms: clone});
+  
+
 }
 static updateFigures(){
 
@@ -168,7 +193,7 @@ static updateFigures(){
   }, function(){
     let rooms = []
     let chunk = self._chunk(self._makeRoomArray(parseInt(self.state.bld_floor), parseInt(self.state.bld_roomPerFloor), self.state.bld_Bfloor, self.state.bld_firstRoomNumber), parseInt(self.state.bld_roomPerFloor) ) ;
-    console.log(chunk)
+    // console.log(chunk)
 
 
     for ( let i = 0; i < chunk.length; i ++){
@@ -211,9 +236,13 @@ static updateFigures(){
    //층수, 최대호실수, 지하층수, 시작번호 정보가 변경되면 
     !(previous.bld_roomPerFloor === this.state.bld_roomPerFloor && previous.bld_floor === this.state.bld_floor && previous.bld_firstRoomNumber === this.state.bld_firstRoomNumber && previous.bld_Bfloor === this.state.bld_Bfloor)?
    //roomsObj로 초기화
-    this.setState({rooms:roomsObj,rooms_forList:roomsObj, columnChange:2}, function(){console.log(this.state)})
+    this.setState({rooms:roomsObj,rooms_forList:roomsObj, columnChange:2},
+      //  function(){console.log(this.state)}
+      )
    //변경없을경우 -> state 그대로
-    : this.setState({columnChange:2}, function(){console.log('case2', this.state)})
+    : this.setState({columnChange:2}, function(){
+      // console.log('case2', this.state)
+    })
 
   })
 
@@ -253,7 +282,8 @@ static updateFigures(){
      }
       , function(){
 
-        console.log('secondState', this.state)
+        this.state.bld_firstRoomNumber==0?
+        this.setState({bld_firstRoomNumber: "1"}) : null
  
       
     })
@@ -501,7 +531,7 @@ _roomTextStyle(item){
   
 }
 _inActiveToggle(item){
-  var clone = this.state.rooms.slice(0);
+  var clone = JSON.parse(JSON.stringify(this.state.rooms));
   clone[this._findRoomIndex(item)]['wr_room_inactive'] = !clone[this._findRoomIndex(item)]['wr_room_inactive']
   this.setState({rooms:clone})
 }
@@ -549,7 +579,7 @@ _applyRoomInfoToOthers(itemState){
   }
 
   this.setState({rooms:clone}, function(){
-    this.roomListPopup.dismiss();
+    
   })
 
   // for ( var i = 0; i < checkList.length; i ++){
@@ -591,7 +621,10 @@ _checkboxHandler(optionItem,optionIndex, roomItem, optionType){
   let roomClone = {...roomItem};
   roomClone[optionType][optionIndex] = optionClone;
   temp[this._findRoomIndex(roomClone)] = roomClone;
-  this.setState({rooms:temp, selectedRoom: roomClone }, function(){console.log(this.state.rooms)} );
+  this.setState({rooms:temp, selectedRoom: roomClone }, function(){
+    // console.log(this.state.rooms)
+  } 
+  );
 
 }
 _cancelHandler(){
@@ -600,7 +633,7 @@ _cancelHandler(){
 }
   render() {
 
-  
+    // console.log('writeoffer_second_rendered!');
    
     return (
     
@@ -681,36 +714,52 @@ _cancelHandler(){
                       keyExtractor ={(x,i)=>i}
                       numColumns={this.state.bld_roomPerFloor}
                       renderItem ={
-                      ({item}) => <TouchableOpacity
-                       style={this._roomStyle(item)}
-                       onPress = {()=>{
-                         if(this.state.inActiveMode){
-                           this._inActiveToggle(item);
-                         }
-                         else{
-                           if(item.wr_room_inactive!=1){
-                            this.setState({selectedRoom:item, scrollEnabled:false}, function(){
-                              this.roomInfoPopup.show();
-                            })
-                           }
-                          
-                         }
-                      }}
-                    >
-                      
-                        <Text style={this._roomTextStyle(item)}>{item.wr_room_inactive==1? '없음':this._parseBFloor(item.wr_room_number)}</Text>
-                        <View style={item.wr_o_vacant==1?{position:'absolute', top:0, right:0, zIndex:10, padding:1,}:{display:'none'}}>
-                        <Text style={item.wr_room_inactive==1?{display:'none'}:{fontSize:11, color:'#3b4db7', marginRight:2, marginTop:1, fontWeight:'bold'}}>공실</Text>
-                        </View>
-                        <View style={{position:'absolute', bottom:0, left:0, zIndex:10, padding:1,}}>
-                        <Text style={item.wr_room_inactive==1?{display:'none'}:{fontSize:11, color:'#c1c1c1', marginLeft:2, marginBottom:1, fontWeight:'bold'}}>
-                         {item.wr_room_type=='원룸'?'원룸':item.wr_room_type=='1.5룸'?'1.5룸':item.wr_room_type=='투룸'?'투룸':item.wr_room_type=='쓰리룸'?'쓰리룸':''                           
-                         }
-                        
-                        </Text>
-                        </View>
+                      ({item}) => 
 
-                      </TouchableOpacity>}
+                         <RoomListItem
+                         item = {item}
+                         inActiveMode = {this.state.inActiveMode}
+                         inActiveToggle = {this._inActiveToggle.bind(this)}
+                         navigation = {this.props.navigation}
+                         rooms = {this.state.rooms}
+                         bld_roomPerFloor = {this.state.bld_roomPerFloor}
+                         />
+                    //   <TouchableOpacity
+                    //    style={this._roomStyle(item)}
+                    //    onPress = {()=>{
+                    //      if(this.state.inActiveMode){
+                    //        this._inActiveToggle(item);
+                    //      }
+                    //      else{
+                    //        if(item.wr_room_inactive!=1){
+                    //         // this.setState({selectedRoom:item, scrollEnabled:false}, function(){
+                    //           // this.roomInfoPopup.show();
+                    //           // let itemClone = JSON.parse(JSON.stringify(item));
+                    //           // let roomsClone = JSON.parse(JSON.stringify(this.state.rooms))
+                    //           // let bld_roomPerFloorClone = this.state.bld_roomPerFloor;
+                    //           this.props.navigation.navigate('RoomIndividual', {...item, rooms:this.state.rooms, bld_roomPerFloor: this.state.bld_roomPerFloor, })
+                    //         // })
+                    //        }
+                          
+                    //      }
+                    //   }}
+                    // >
+                      
+                    //     <Text style={this._roomTextStyle(item)}>{item.wr_room_inactive==1? '없음':this._parseBFloor(item.wr_room_number)}</Text>
+                    //     <View style={item.wr_o_vacant==1?{position:'absolute', top:0, right:0, zIndex:10, padding:1,}:{display:'none'}}>
+                    //     <Text style={item.wr_room_inactive==1?{display:'none'}:{fontSize:11, color:'#3b4db7', marginRight:2, marginTop:1, fontWeight:'bold'}}>공실</Text>
+                    //     </View>
+                    //     <View style={{position:'absolute', bottom:0, left:0, zIndex:10, padding:1,}}>
+                    //     <Text style={item.wr_room_inactive==1?{display:'none'}:{fontSize:11, color:'#c1c1c1', marginLeft:2, marginBottom:1, fontWeight:'bold'}}>
+                    //      {item.wr_room_type=='원룸'?'원룸':item.wr_room_type=='1.5룸'?'1.5룸':item.wr_room_type=='투룸'?'투룸':item.wr_room_type=='쓰리룸'?'쓰리룸':''                           
+                    //      }
+                        
+                    //     </Text>
+                    //     </View>
+
+                    //   </TouchableOpacity>
+                      
+                    }
                         />
               </ScrollView>
              
@@ -762,7 +811,9 @@ _cancelHandler(){
                         
                         })
                       })
-                      .then((res)=>{console.log(res); return res.json()})
+                      .then((res)=>{
+                        // console.log(res)
+                         return res.json()})
                       .then((json) =>{
                         if (json.error){
                           if(json.typeError){

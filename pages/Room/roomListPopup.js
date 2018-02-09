@@ -120,7 +120,7 @@ _parseBFloor(number){
             
             item.listChecked = !item.listChecked;
             this.setState({forceRender: !this.state.forceRender})
-            console.log(item);  
+            // console.log(item);  
             // if(item.listChecked){
             //     this.setState({checkedRoomList : [...this.state.checkedRoomList,item]}, function(){console.log(this.state.checkedRoomList)})
             // }else{ 

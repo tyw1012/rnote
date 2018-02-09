@@ -71,7 +71,7 @@ render(){
 
         let optionIndex = this._findMtOptionIndex(item)
         // console.log(optionIndex)
-        this.props.checkboxHandler(item, optionIndex, this.props.selectedItem, 'mt_options');
+        this.props.checkboxHandler(item, optionIndex, 'mt_options');
      
         // let clone = this.props.mt_options.slice(0);
         // clone[optionIndex] = optionClone

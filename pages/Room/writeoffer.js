@@ -104,6 +104,8 @@ export default class writeoffer extends Component {
       bld_posy: params.bld_posy,
       
     }, function(){
+      this.state.bld_firstRoomNumber==0?
+      this.setState({bld_firstRoomNumber: "1"}) : null
       this.props.navigation.state.params={};
       
    })
@@ -232,18 +234,7 @@ export default class writeoffer extends Component {
                 this.scroll.props.scrollToPosition(0, 0)
                }}
               />
-              <TouchableOpacity
-                  style={{position:'absolute', top:5, right:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
-                  onPress={()=>{this.setState({bld_name:''})}}
-                  >
-                  <Icon 
-                  name="md-close-circle"
-                  size={20}
-                  style={{ marginTop: 27,color: '#ddd', }}
-                                        
-                  />   
-              </TouchableOpacity>
-
+           
           </View>
 
           <View style = {styles.row}>    
@@ -274,7 +265,7 @@ export default class writeoffer extends Component {
                   <TouchableOpacity
                     
                     onPress={()=>{
-                        fetch(`http://www.juso.go.kr/addrlink/addrLinkApi.do?currentPage=1&countPerPage=15&keyword=${this.state.bld_address}&confmKey=U01TX0FVVEgyMDE3MTExNTIwNTg0NDEwNzQ4NjI=&resultType=json`)
+                        fetch(`http://www.juso.go.kr/addrlink/addrLinkApi.do?currentPage=1&countPerPage=15&keyword='${this.state.bld_address}'&confmKey=U01TX0FVVEgyMDE3MTExNTIwNTg0NDEwNzQ4NjI=&resultType=json`)
                         .then((res)=>res.json())
                         .then((text)=>{
                           this.setState({wr_addressList: text.results.juso});
@@ -336,18 +327,7 @@ export default class writeoffer extends Component {
                }}
               />
 
-              <TouchableOpacity
-                  style={{position:'absolute', top:5, right:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
-                  onPress={()=>{this.setState({bld_contact:''})}}
-                  >
-                  <Icon 
-                  name="md-close-circle"
-                  size={20}
-                  style={{ marginTop: 27,color: '#ddd', }}
-                                        
-                  />   
-              </TouchableOpacity>
-
+         
           </View>
 
           <View style = {styles.row}>    
@@ -373,18 +353,6 @@ export default class writeoffer extends Component {
               this.scroll.props.scrollToPosition(0, 240)
             }}
             />
-
-            <TouchableOpacity
-                style={{position:'absolute', top:5, right:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
-                onPress={()=>{this.setState({bld_contact:''})}}
-                >
-                <Icon 
-                name="md-close-circle"
-                size={20}
-                style={{ marginTop: 27,color: '#ddd', }}
-                                      
-                />   
-            </TouchableOpacity>
 
             </View>
 
@@ -415,17 +383,7 @@ export default class writeoffer extends Component {
                     this.scroll.props.scrollToPosition(0, 0)
                 }}
                 />
-                <TouchableOpacity
-                  style={{position:'absolute', top:5, left:5, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
-                  onPress={()=>{this.setState({bld_floor:''})}}
-                  >
-                  <Icon 
-                  name="md-close-circle"
-                  size={20}
-                  style={{ marginTop: 27,color: '#ddd', }}
-                                        
-                  />   
-                </TouchableOpacity>
+         
                 <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text>
 
             </View>
@@ -457,18 +415,7 @@ export default class writeoffer extends Component {
                     }}
                     />                      
 
-                  <TouchableOpacity
-                    style={{position:'absolute', top:5, left:5, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
-                    onPress={()=>{this.setState({bld_roomPerFloor:''})}}
-                    >
-                    <Icon 
-                    name="md-close-circle"
-                    size={20}
-                    style={{ marginTop: 27,color: '#ddd', }}
-                                          
-                    />   
-                  </TouchableOpacity>
-
+             
                   <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>개</Text>
 
             </View>
@@ -500,17 +447,7 @@ export default class writeoffer extends Component {
                     this.scroll.props.scrollToPosition(0, 0)
                 }}
                 />
-                <TouchableOpacity
-                  style={{position:'absolute', top:5, left:5, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
-                  onPress={()=>{this.setState({bld_Bfloor:''})}}
-                  >
-                  <Icon 
-                  name="md-close-circle"
-                  size={20}
-                  style={{ marginTop: 27,color: '#ddd', }}
-                                        
-                  />   
-                </TouchableOpacity>
+       
                 <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text>
 
             </View>
@@ -525,7 +462,7 @@ export default class writeoffer extends Component {
                     <TextInput
                     placeholder="미입력시 1"
                     placeholderTextColor='#aaa'
-                    style={[styles.itemInput,{}]}
+                    style={[styles.itemInput,{ paddingBottom:0}]}
                     ref='SecondInput'
                     onSubmitEditing={(event) => { 
                       this.refs.ThirdInput.focus(); 
