@@ -74,7 +74,7 @@ _rentTypeConverter(number){
     if(number==2){
         return '전세'
     }
-    if(number==undefined || number == null){
+    if(number==undefined || number == null || number == 0){
         return ''
     }
     
@@ -253,8 +253,8 @@ render() {
         <Text style={this.props.selectedSegment=='건물'?{fontSize: 13, textAlign:'right',}:{display:'none'}}>
         공실 총 {item.rooms==undefined?0:item.rooms.filter(function(el){return el.wr_o_vacant==1}).length}개
         </Text>
-        <Text style={this.props.selectedSegment=='공실'?{fontSize: 13, textAlign:'right',}:{display:'none'}}>
-         {item.wr_mt_separate==0?'관리비 월세에 포함':'관리비 별도'}
+        <Text style={this.props.selectedSegment=='공실'?{fontSize: 13, textAlign:'right', fontWeight:'bold'}:{display:'none'}}>
+         {item.wr_mt_separate==0?'관리비 월세에 포함':'관리비 ' + item.wr_mt_cost + '만'}
         </Text>
     
       </View>

@@ -16,7 +16,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import RoomInfoPopup from './roomInfoPopup';
 import RoomListPopup from './roomListPopup';
 import myoffering from './myoffering';
-import RoomListItem from './roomListItem';
+import RoomListItem_write from './roomListItem_write';
 import detail from './detail';
 
 
@@ -79,14 +79,14 @@ static copyRoomInfo(itemState){
   
   for ( let i = 0; i < clone.length; i ++){
     if(clone[i].listChecked){ 
-     clone[i] = {...itemState, wr_room_number: clone[i].wr_room_number} 
+     clone[i] = {...itemState, wr_room_number: clone[i].wr_room_number, wr_id: clone[i].wr_id} 
      clone[i].listChecked = false     
     }
   }
 
 
   self.setState({rooms:clone}, function(){
-    
+     console.log(self.state.rooms)
   })
 
 }
@@ -94,7 +94,9 @@ static copyRoomInfo(itemState){
 static saveRoomInfo(itemState){
   let clone = self.state.rooms.slice(0);
   clone[self._findRoomIndex(itemState)] = itemState;
-  self.setState({rooms: clone});
+  self.setState({rooms: clone}, function(){
+    console.log(self.state.rooms)
+  });
   
 
 }
@@ -164,6 +166,7 @@ static updateFigures(){
         )
         
         temp[i].wr_room_type = self._typeConverter(temp[i].wr_room_type);
+        temp[i].wr_rent_type = self._rentTypeConverter(temp[i].wr_rent_type);
         temp[i].wr_mt_separate = self._stringConverter(temp[i].wr_mt_separate);
         temp[i].wr_room_inactive = self._stringConverter(temp[i].wr_room_inactive);
       }
@@ -284,6 +287,7 @@ static updateFigures(){
 
         this.state.bld_firstRoomNumber==0?
         this.setState({bld_firstRoomNumber: "1"}) : null
+        // console.log(this.state.rooms)
  
       
     })
@@ -310,6 +314,16 @@ static updateFigures(){
     if(string=="4"){
       return '1.5룸'
     }
+  }
+  _rentTypeConverter(string){
+
+    if(string=="1"){
+      return '월세'
+    }
+    if(string=="2"){
+      return '전세'
+    }
+
   }
   _booleanConverter(bool){
     if(bool===true){
@@ -366,6 +380,14 @@ static updateFigures(){
       }
       if(roomsClone[i].wr_room_type == '1.5룸'){
         roomsClone[i].wr_room_type = "4"
+      }
+
+      if(roomsClone[i].wr_rent_type == '월세'){
+        roomsClone[i].wr_rent_type = "1"
+      }
+
+      if(roomsClone[i].wr_rent_type == '전세'){
+        roomsClone[i].wr_rent_type = "2"
       }
 
       roomsClone[i].options = undefined;
@@ -573,7 +595,7 @@ _applyRoomInfoToOthers(itemState){
   
   for ( var i = 0; i < clone.length; i ++){
     if(clone[i].listChecked){ 
-     clone[i] = {...itemState, wr_room_number: clone[i].wr_room_number} 
+     clone[i] = {...itemState, wr_room_number: clone[i].wr_room_number, wr_id : clone[i].wr_id} 
      clone[i].listChecked = false     
     }
   }
@@ -716,7 +738,7 @@ _cancelHandler(){
                       renderItem ={
                       ({item}) => 
 
-                         <RoomListItem
+                         <RoomListItem_write
                          item = {item}
                          inActiveMode = {this.state.inActiveMode}
                          inActiveToggle = {this._inActiveToggle.bind(this)}
@@ -778,7 +800,7 @@ _cancelHandler(){
                   
                   if(this.state.mode == 'edit'){
 
-                      
+                      console.log(this.state.rooms)
                       fetch('http://real-note.co.kr/app3/editOffer_room.php',{
                         method:'post',
                         header:{
@@ -812,9 +834,10 @@ _cancelHandler(){
                         })
                       })
                       .then((res)=>{
-                        // console.log(res)
+                        console.log(res);
                          return res.json()})
                       .then((json) =>{
+                        // console.log(json);
                         if (json.error){
                           if(json.typeError){
 

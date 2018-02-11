@@ -155,7 +155,7 @@ export default class login extends Component {
 				<Image
 					source={require('./rnote.png')}
 					resizeMode="contain"
-					style={{width: 220}}
+					style={{width: 190}}
         />
 
 		</View>
@@ -234,10 +234,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 	},
 	input:{
-		width:'65%', height: 60, margin:5, backgroundColor: 'transparent',
+		width:'60%', height: 60, margin:5, backgroundColor: 'transparent',
 		paddingLeft:25,
 		borderRadius: 30, borderWidth:2, borderColor: 'white',
-		fontSize: 18,
+		fontSize: 16,
 		fontWeight: 'bold',
 		color:'white',
 
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
 	},
 	btn:{
 		backgroundColor:'#fff',
-		padding:10,margin:5,width:'65%',
+		padding:10,margin:5,width:'60%',
 				
 	},
 	pageName:{
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
 		color:'#000', textAlign:'center'
 	},
 	btnText:{
-		color:'#3b4db7',fontWeight:'bold',justifyContent: 'center',fontSize: 18,
+		color:'#3b4db7',fontWeight:'bold',justifyContent: 'center',fontSize: 16,
 		textAlign: 'center',
 		
 	},

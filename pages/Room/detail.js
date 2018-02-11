@@ -196,9 +196,7 @@ static updateInformationFromOutside(params){
 
         else{
             return(
-             <ScrollView contentContainerStyle={styles.container}
-             
-             >
+             <ScrollView contentContainerStyle={styles.container}>
                     
                      <RoomMapNavigator/>
                 

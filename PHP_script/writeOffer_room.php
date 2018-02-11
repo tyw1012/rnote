@@ -49,6 +49,10 @@ header("Content-Type: text/html; charset=UTF-8");
      return 2;
  }
 
+ if($string ==''){
+    return 0;
+}
+
 }
 
  function boolConvert($bool){
@@ -108,6 +112,7 @@ header("Content-Type: text/html; charset=UTF-8");
     $bld_datetime = date('Y-m-d H:i:s');
     $bld_datetime_mod = '1111-11-11 11:11:11';
     $rooms = $obj['rooms'];
+    
     
 
     $sql_query = "INSERT IGNORE INTO bld_$memberID SET
@@ -173,6 +178,7 @@ header("Content-Type: text/html; charset=UTF-8");
             wr_room_number = '$wr_room_number',
             wr_floor = '$wr_floor',
             wr_room_type = '$wr_room_type',
+            wr_rent_type = '$wr_rent_type',
             wr_area_p = '$wr_area_p',
             wr_area_m = '$wr_area_m',
             wr_rent_deposit = '$wr_rent_deposit',

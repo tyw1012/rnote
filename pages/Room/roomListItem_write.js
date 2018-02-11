@@ -1,6 +1,6 @@
 import React, { Component, PureComponent } from 'react';
 import { View,Text,ActivityIndicator,TouchableOpacity, } from 'react-native';
-export default class RoomListItem extends Component{
+export default class RoomListItem_write extends Component{
 
 constructor(props){
     super(props);

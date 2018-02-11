@@ -13,7 +13,7 @@ class RoomDetailPopup extends Component{
         super(props);
         this.state={
 
-            slideIn: new Animated.ValueXY({x:0,y:400}),
+            slideIn: new Animated.ValueXY({x:0,y:220}),
             slideOut: new Animated.ValueXY({x:0, y:0}),
 
             wr_room_type:'',
@@ -55,7 +55,7 @@ class RoomDetailPopup extends Component{
 
 slideIn() {
 
-    this.state.slideIn.setValue({x:0,y:240})
+    this.state.slideIn.setValue({x:0,y:220})
 
     Animated.timing(
         this.state.slideIn,
@@ -77,7 +77,7 @@ slideOut() {
     Animated.timing(
         this.state.slideOut,
         { 
-            toValue:{x: 0, y: 240},
+            toValue:{x: 0, y: 220},
             duration: 400,
             delay: 0,
             easing: Easing.in(Easing.ease)
@@ -103,11 +103,11 @@ componentWillReceiveProps(nextProps) {
 
 _checkBoxStyle(item){
     if(item==1){
-        return {flex:1, height:50, justifyContent:'center', alignItems:'center',margin:0,marginLeft:0,marginRight:0,borderRadius:0, backgroundColor:'#3b4db7',borderWidth:0.7, paddingLeft:2, paddingRight:2}
+        return {flex:1, height:25, justifyContent:'center', alignItems:'center',margin:0,marginLeft:0,marginRight:0,borderRadius:0, backgroundColor:'#bbb',borderWidth:0.7, paddingLeft:2, paddingRight:2}
 
     }
     else{
-        return {flex:1, height:50, justifyContent:'center', alignItems:'center',margin:0,marginLeft:0,marginRight:0,borderRadius:0,backgroundColor:'#fff',borderWidth:0.7, paddingLeft:2, paddingRight:2}
+        return {flex:1, height:25, justifyContent:'center', alignItems:'center',margin:0,marginLeft:0,marginRight:0,borderRadius:0,backgroundColor:'#fff',borderWidth:0.7, paddingLeft:2, paddingRight:2}
     }
 
 }
@@ -170,9 +170,9 @@ _findOptionIndex(optionItem){
       return(
     <Animated.View
      style={this.props.item.wr_id==undefined?{display:'none'}:this.props.visible? [{transform: [{translateX:slideInStyle[0].translateX}, {translateY: slideInStyle[1].translateY}]},
-     {zIndex:10,height:240, backgroundColor:'#fff', position:'absolute', right:15, left:15, bottom:0,  elevation:10, borderRadius:7,}]
+     {zIndex:10,height:220, backgroundColor:'#fff', position:'absolute', right:15, left:15, bottom:0,  elevation:10, borderRadius:7,}]
      : [{transform: [{translateX:slideOutStyle[0].translateX}, {translateY: slideOutStyle[1].translateY}]},
-     {zIndex:10,height:240, backgroundColor:'#fff', position:'absolute', right:15, left:15, bottom:0,  elevation:10, borderRadius:7,}]}
+     {zIndex:10,height:220, backgroundColor:'#fff', position:'absolute', right:15, left:15, bottom:0,  elevation:10, borderRadius:7,}]}
     >
 
 
@@ -195,15 +195,25 @@ _findOptionIndex(optionItem){
             innerRef={ref => {this.scroll = ref}}
             style={styles.container}>
 
-                <View style={{flexDirection:'row', marginBottom:10, justifyContent:'space-between'}}>
+                <View style={{flexDirection:'row', marginBottom:10, justifyContent:'space-between',}}>
                     <View style={{flexDirection:'row'}}>
-                    <Text style={styles.itemName}>구분: </Text>
                     
-                    <Text style={styles.itemDesc}>{item.wr_room_type==1?'원룸':item.wr_room_type==2?'투룸':'쓰리룸'}</Text>
-
+                    <Text style={[styles.itemDesc,{fontWeight:'bold'}]}>{item.wr_room_type==1?'원룸':item.wr_room_type==2?'투룸':item.wr_room_type ==4? '1.5룸':item.wr_room_type ==3? '쓰리룸':''}</Text>
+                    <Text style={[styles.itemDesc,{fontWeight:'bold'}]}>{item.wr_rent_type==1?' 월세':item.wr_rent_type==2?' 전세':''}</Text>
+                   
                     </View>
+                    
+                    <View style={{flexDirection:'row'}}>
 
-                    <CheckBox
+                   
+                    <Text style={[styles.itemDesc,{fontWeight:'bold', color:'#3b4db7',}]}>{item.wr_rent_deposit+ '/'+item.wr_m_rate }</Text>
+                    <Text style={{fontSize:12, marginTop:0.75}}>만 </Text>
+                    <Text style={[styles.itemDesc,{fontWeight:'bold'}]}> 관 </Text> 
+                    <Text style={[styles.itemDesc,{fontWeight:'bold', color:'#3b4db7'}]}>{item.wr_mt_separate==1?' 월세포함' : item.wr_mt_cost}</Text>
+                    <Text style={item.wr_mt_separate==1?{display:'none'}:{fontSize:12, marginTop:0.75}}>만 </Text>
+                    <Text style={{fontSize:12, marginTop:0.75}}>/ {item.wr_area_p+ '평 ('+parseFloat(item.wr_area_m).toFixed(1) + '㎡)'}</Text>
+                    </View>
+                    {/* <CheckBox
                     checkedColor='#3b4db7'
                     // uncheckedIcon={null}
                     // checkedIcon={null}            
@@ -211,39 +221,12 @@ _findOptionIndex(optionItem){
                     containerStyle={{backgroundColor:'#fff',borderWidth:0, height:35, marginTop:-12, paddingRight:0, marginRight:0, marginLeft:15,}}
                     textStyle={{color:'#666', fontSize: 13, marginTop:-2}}
                     checked={item.wr_o_vacant==1?true:false}
-                />
+                /> */}
                     
                 </View>
 
-                <View style={{flexDirection: 'row', marginBottom:15, justifyContent: 'space-between'}}>
-
-
-                    <Text style={styles.itemName}>보증금 / 월세 </Text>
-                    <Text style={styles.itemDesc}><Text style={{fontWeight:'bold', color:'#3b4db7',}}>{item.wr_rent_deposit+ ' / '+item.wr_m_rate }</Text> 만</Text>
-            
-
-                </View>
-
-                <View style={{flexDirection: 'row', marginBottom:15, justifyContent: 'space-between'}}>
-
-
-                    <Text style={styles.itemName}>면적 </Text>
-                    <Text style={styles.itemDesc}>{item.wr_area_p+ ' 평 ( '+item.wr_area_m + ' ㎡ )'}</Text>
-            
-
-                </View>
-
-                <View style={{flexDirection: 'row', marginBottom:15, justifyContent: 'space-between'}}>
-
-
-                    <Text style={styles.itemName}>관리비 </Text>
-                    <Text style={styles.itemDesc}>{item.wr_mt_separate==1? item.wr_mt_cost +' 만': '월세에 포함'}</Text>
-            
-
-                </View>
-
-                <View style={{marginBottom:15,}}>
-                    <Text style={[styles.itemName, {marginBottom:15}]}>관리비 포함 항목</Text>
+                <View style={{marginBottom:10,}}>
+                    <Text style={[styles.itemName, {marginBottom:7}]}>관리비 포함 항목</Text>
 
                     <FlatList data ={[{checked: item.wr_mt_elec, name:'전기'},{checked: item.wr_mt_water, name:'수도'},{checked: item.wr_mt_gas, name:'가스'},{checked: item.wr_mt_tv, name:'TV'},{checked: item.wr_mt_internet, name:'인터넷'} ]}
                     style={{margin: 0, padding:0,}}
@@ -266,8 +249,8 @@ _findOptionIndex(optionItem){
                     />
                 </View>
 
-                <View style={{marginBottom:15,}}>
-                    <Text style={[styles.itemName, {marginBottom:15}]}>옵션</Text>
+                <View style={{marginBottom:10,}}>
+                    <Text style={[styles.itemName, {marginBottom:7}]}>옵션</Text>
         
                     <FlatList data ={[
                         {checked: item.wr_o_tv, name:'TV'},
@@ -319,13 +302,13 @@ const styles = StyleSheet.create({
       
       // justifyContent: 'center',
       // alignItems: 'center',
-      padding:20,
+      padding:15,
+      paddingTop:10,
       backgroundColor: '#fff',
       // paddingBottom:50
     },
     itemName : {
-        fontSize:13,
-        fontWeight:'bold',
+        fontSize:12,
         marginBottom:5,
     },
     itemDesc :{

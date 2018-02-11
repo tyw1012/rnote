@@ -34,8 +34,24 @@ header("Content-Type: text/html; charset=UTF-8");
     if($string =='쓰리룸'){
         return 3;
     }
+    if($string =='1.5룸'){
+        return 4;
+    }
  }
+ function rentTypeConvert($string){
+    if($string =='월세'){
+        return 1;
+    }
+    
+    if($string =='전세'){
+       return 2;
+   }
 
+   if($string ==''){
+       return 0;
+    }
+  
+  }
  function boolConvert($bool){
     if($bool == true){
         return 1;
@@ -95,6 +111,17 @@ header("Content-Type: text/html; charset=UTF-8");
     $bld_datetime_mod = '1111-11-11 11:11:11';
     $rooms = $obj['rooms'];
 
+    // print_r ($rooms[0]['wr_room_number']);
+    // print_r ($rooms[1]['wr_room_number']);
+    // print_r ($rooms[2]['wr_room_number']);
+    // print_r ($rooms[3]['wr_room_number']);
+
+    // print_r ($rooms[0]['wr_id']);
+    // print_r ($rooms[1]['wr_id']);
+    // print_r ($rooms[2]['wr_id']);
+    // print_r ($rooms[3]['wr_id']);
+
+
     $sql_query = "UPDATE bld_$memberID SET
     
     bld_name = '$bld_name',
@@ -121,11 +148,12 @@ header("Content-Type: text/html; charset=UTF-8");
             $result3= mysqli_query($con, $sql_query3) or die("Error in Selecting " . mysqli_error($con));
 
 
-                for ( $i = 0,  $size = count($rooms); $i < $size; ++$i){
+                for ( $i = 0,  $size = count($rooms); $i < $size; $i++){
 
                     
                     $wr_room_number = $rooms[$i]['wr_room_number'];
                     $wr_room_type = roomTypeConvert($rooms[$i]['wr_room_type']);
+                    $wr_rent_type = rentTypeConvert($rooms[$i]['wr_rent_type']);
                     $wr_area_p = floatval($rooms[$i]['wr_area_p']);
                     $wr_area_m = floatval($rooms[$i]['wr_area_m']);
                     $wr_rent_deposit = intval($rooms[$i]['wr_rent_deposit']);
@@ -160,6 +188,7 @@ header("Content-Type: text/html; charset=UTF-8");
                         
                     wr_room_number = '$wr_room_number',
                     wr_room_type = '$wr_room_type',
+                    wr_rent_type = '$wr_rent_type',
                     wr_area_p = '$wr_area_p',
                     wr_area_m = '$wr_area_m',
                     wr_rent_deposit = '$wr_rent_deposit',
@@ -205,11 +234,12 @@ header("Content-Type: text/html; charset=UTF-8");
        }
        else{
 
-            for ( $i = 0,  $size = count($rooms); $i < $size; ++$i){
+            for ( $i = 0,  $size = count($rooms); $i < $size; $i++){
 
                 $wr_id = $rooms[$i]['wr_id'];
                 $wr_room_number = $rooms[$i]['wr_room_number'];
                 $wr_room_type = roomTypeConvert($rooms[$i]['wr_room_type']);
+                $wr_rent_type = rentTypeConvert($rooms[$i]['wr_rent_type']);
                 $wr_area_p = floatval($rooms[$i]['wr_area_p']);
                 $wr_area_m = floatval($rooms[$i]['wr_area_m']);
                 $wr_rent_deposit = intval($rooms[$i]['wr_rent_deposit']);
@@ -243,6 +273,7 @@ header("Content-Type: text/html; charset=UTF-8");
             
                 wr_room_number = '$wr_room_number',
                 wr_room_type = '$wr_room_type',
+                wr_rent_type = '$wr_rent_type',
                 wr_area_p = '$wr_area_p',
                 wr_area_m = '$wr_area_m',
                 wr_rent_deposit = '$wr_rent_deposit',

@@ -5,6 +5,7 @@ import call from 'react-native-phone-call'
 import Icon from 'react-native-vector-icons/Ionicons';
 import PopupDialog from 'react-native-popup-dialog';
 import RoomDetailPopup from './roomDetailPopup';
+import RoomListItem_detail from './roomListItem_detail';
 import myoffering from './myoffering';
 
 class RoomDetail extends Component{
@@ -14,71 +15,13 @@ class RoomDetail extends Component{
         
         this.state = {
             // columnChange:1
-           
             roomDetailPopupVisible:false,
             selectedRoom: {},
             
         }
             
-        
-    }
-
-
-    _roomStyle(item){
-
-        if (this.state.onEditMode){
-        // if (this.props.onEditMode){
-      
-          if(item.wr_room_inactive==1){
-            return {flex:1,margin:4,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center', borderRadius:5}
-          }
-          else{
-            return {flex:1,margin:4,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',backgroundColor:'#f1f1f1', borderRadius:5}
-          }
-          
-        }
-        else{
-          if (item.wr_room_inactive==1){
-             return {flex:1,margin:4,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#f1f1f1', justifyContent:'center', alignItems:'center', borderRadius:5}
-          }
-          else{
-      
-              return {flex:1,margin:4,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center', borderRadius:5}
-            
-          }
-      
-        }
-        
-      }
-    _roomTextStyle(item){
-    
-    if (this.state.inActiveMode){
-    
-        if(item.wr_room_inactive==1){
-        return {fontSize:12, color:'#d1d1d1', fontWeight:'bold'}
-        }
-        else{
-        return {fontSize:12}
-        }
-        
-    }
-    else{
-    
-        if (item.wr_room_inactive==1){
-            return {fontSize:12, color:'#d1d1d1', fontWeight:'bold'}
-        }
-        else{
-    
-         
-            return {fontSize:12, fontWeight:'bold'}
-            
-            
-        }
-    
-    
     }
     
-    } 
     _chunk(arr, len) {
     
     var chunks = [],
@@ -112,22 +55,19 @@ class RoomDetail extends Component{
         
         this.setState({selectedRoom: item, roomDetailPopupVisible: true},
                 
-    )
+        )
     }
     _removePopup(){
         
        this.setState({roomDetailPopupVisible: false,})
-        
        
     }
 
     componentWillMount(){
         this.setState({rooms: this.props.data.rooms, bld_roomPerFloor: this.props.data.bld_roomPerFloor, memberID: this.props.data.memberID, bld_id : this.props.data.bld_id})
     }
-    
 
 	render(){
-        
         
         let roomsClone = [...this.state.rooms];
         let chunk = this._chunk(roomsClone, parseInt(this.state.bld_roomPerFloor))
@@ -145,221 +85,51 @@ class RoomDetail extends Component{
 
             return(
                     <View style={{padding:10, height:'100%'}}> 
-                        {/* <View style={{elevation:2, width: '100%', position:'absolute',  top: 0, bottom:0 }}> */}
-                        {/* <PopupDialog
-                        ref={(popupDialog) => { this.roomDetailPopup = popupDialog; }}            
-                        dialogStyle ={{elevation:2, width: '100%', height:'100%', position:'absolute', top: 0, bottom:0 }}
-                        >  */}
-                        {/* <Animated.View style={this.state.roomDetailPopupVisible?
-                        [slideInStyle,{zIndex:10,height:300, backgroundColor:'#fff', position:'absolute', right:15, left:15, bottom:0,  elevation:10, borderRadius:7,}]
-                        : [slideOutStyle,{zIndex:10,height:300, backgroundColor:'#fff', position:'absolute', right:15, left:15, bottom:0,  elevation:10, borderRadius:7,}]}
-                        // {this.state.roomDetailPopupVisible?{zIndex:10,height:300,margin:10, backgroundColor:'#fff', width:'100%', position:'absolute', bottom:0}:{display:'none'}}
-                        > */}
+                     
                             <RoomDetailPopup
                             visible = {this.state.roomDetailPopupVisible}
                             item = {this.state.selectedRoom}
                             removePopup = {this._removePopup.bind(this)}
                             />
-                        {/* </Animated.View> */}
-                        {/* </PopupDialog> */}
-                        {/* </View> */}
+                      
                     
-                    <View style={{flexDirection:'row', justifyContent:'space-between', marginBottom:10}}>
-                        <Text style={{marginLeft:2, fontSize:13, }}>{this.state.onEditMode?'호실을 선택하면 공실여부를 변경합니다':'호실을 선택하면 상세정보를 볼 수 있습니다.'}</Text>
+                        <View style={{flexDirection:'row', justifyContent:'space-between',backgroundColor:'#f3f3f3', margin:-10, marginBottom:10,  padding: 12, paddingTop:17, paddingBottom:17, borderBottomWidth:1, borderColor:'#e1e1e1'}}>
+                            <Text style={{marginLeft:2, fontSize:13, color:'#777'  }}>호실을 선택하면 <Text style={{fontWeight:'bold',color:'#444' }}>상세정보</Text>를 볼 수 있습니다</Text>
+                        </View>
                     
-                        
-                    </View>
+                        <ScrollView 
+                        contentContainerStyle={{ flexGrow:1, marginBottom:80, flexDirection:'column'}}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal>
 
-                    <View style={{flexDirection:'row', marginBottom:10}}>
-                        <TouchableOpacity style={this.state.onEditMode?{flex:1, justifyContent:'center', alignItems:'center', padding:12, backgroundColor:'#3b4db7', marginLeft:2, marginRight:2, marginBottom:3}:{display:'none'}}
-                            onPress={()=>{
-                                // this.props.editModeToggle()
-                                this.setState({onEditMode:false, rooms: this.state.rooms_before})
-                            }}
-                        >
-                            <Text style={{color:'#fff', fontSize:13,}}>취소</Text>
+                            <FlatList data ={rooms}
+                            style={{margin: 0, padding:0,}}
+                            extraData={this.state}
+                            keyExtractor ={(x,i)=>i}
+                            numColumns={this.state.bld_roomPerFloor}
+                            renderItem ={
+                            ({item}) => 
 
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{flex:1,justifyContent:'center', alignItems:'center', padding:12, backgroundColor:'#3b4db7', marginLeft:2, marginRight:2, marginBottom:3}}
-                            onPress={()=>{
-                                if(this.state.onEditMode){
-
-                                    fetch('http://real-note.co.kr/app3/emptyCheckRoom.php',{
-                                        method:'post',
-                                        header:{
-                                        'Accept': 'application/json',
-                                        'Content-type': 'application/json'
-                                        },
-                                        body:JSON.stringify({
-                                            memberID: this.state.memberID,
-                                            bld_id: this.state.bld_id,
-                                            rooms: this.state.rooms,
-                                        })
-                                    })
-                                    .then((res)=>{console.log(res); return res.json()})
-                                    .then((json) =>{
-                                        
-                                        if(!json.error){
-
-                                            alert('공실 정보가 저장되었습니다.')
-                                            this.setState({onEditMode:false,})
-                                            myoffering.refreshFromOutside()
-
-                                        }
-
-                                    })
-                                }
-                                else{
-                                    let temp = this.state.rooms.slice(0);                                    
-                                    this.setState({onEditMode:true, rooms_before: temp})
-                                }
-                                
-                            }}
-                        >
-                            <Text style={{color:'#fff', fontSize:13,}}>{this.state.onEditMode?'저장':'공실체크'}</Text>
-
-                        </TouchableOpacity>
-                    </View>
-
-                    <ScrollView 
-                    contentContainerStyle={{ flexGrow:1, marginBottom:80, flexDirection:'column'}}
-                    showsHorizontalScrollIndicator={false}
-                    horizontal>
-
-                        
-
-                        <FlatList data ={rooms}
-                        style={{margin: 0, padding:0,}}
-                        extraData={this.state}
-                        // key={(this.state.columnChange)}
-                        keyExtractor ={(x,i)=>i}
-                        numColumns={this.state.bld_roomPerFloor}
-                        renderItem ={
-                        ({item}) => <TouchableOpacity
-                        style={this._roomStyle(item)}
-                        onPress = {()=>{
-                           
-                            if(this.state.onEditMode){
-                            // if(this.props.onEditMode){
-                                // let index = this._findRoomIndex(item)
-                                // this.props.updateVacancy(item, index)
-                                let roomsClone = [...this.state.rooms]
-                                let clone = {...item}
-                                let index = this._findRoomIndex(clone);
-                                clone.wr_o_vacant == 1? clone.wr_o_vacant = 0 :
-                                clone.wr_o_vacant = 1;
-                                roomsClone[index] = clone;
-                                this.setState({rooms:roomsClone}, function(){console.log(this.state.rooms)})
-                                
-                            }
-                            else{
-
-                                if(item.wr_room_inactive!=1){
-                                    this._showRoomDetailPopup(item)
-                                 }
+                            <RoomListItem_detail
+                            item = {item}
+                            showRoomDetailPopup = {this._showRoomDetailPopup.bind(this)}
+                            />
                             
                             }
-                           
-                        }}
-                        >
+                            />
+
+                        </ScrollView>   
                       
-                        <Text style={this._roomTextStyle(item)}>{item.wr_room_inactive==1?'없음':this._parseBFloor(item.wr_room_number)}</Text>
-                        <View style={item.wr_o_vacant==1?{position:'absolute', top:0, right:0, zIndex:10,  padding:2,}:{display:'none'}}>
-                        <Text style={item.wr_room_inactive==1?{display:'none'}:{fontSize:11, color:'#3b4db7', marginRight:2, marginTop:1, fontWeight:'bold'}}>공실</Text>
-                        </View>
-                        <View style={{position:'absolute', bottom:0, left:0, zIndex:10, padding:1,}}>
-                        <Text style={item.wr_room_inactive==1?{display:'none'}:{fontSize:11, color:'#c1c1c1', marginLeft:2, marginBottom:1, fontWeight:'bold'}}>
-                         {item.wr_room_type=='1'?'원룸':item.wr_room_type=='2'?'투룸':item.wr_room_type=='3'?'쓰리룸':item.wr_room_type=='4'?'1.5룸':''                           
-                         }
-                        
-                        </Text>
-                        </View>
-                        </TouchableOpacity>
-                        }
-                        />
-
-
-                    </ScrollView>   
-
-                      
-                    </View>
-                  );
+                </View>
+            );
    }
-       
 	
 }
 const styles = StyleSheet.create({
 	container:{
         flex:1,
         backgroundColor: '#eee'	,	
-        
 	},
-    map:{  
-        flex:1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    mapView:{
-        position: 'relative',
-        width:'100%',
-        height:280,
-    },
-    content:{
-        flex:1,       
-        
-        
-    },
-    sec1:{
-        flex:1,
-        alignItems: 'center',
-        paddingTop:15,
-        marginBottom:12,
-        backgroundColor: '#fff',
-        borderBottomWidth:1,
-        borderColor:'#d6d6d6'
-
-    },
-    sec2:{
-        flex:1,
-        flexDirection:'column',
-        backgroundColor: '#fff',
-        padding: 15,
-        
-       
-    },
-    row:{
-        flex:1,
-        flexDirection:'row',
-        borderBottomWidth: 1,
-        borderColor: '#d1d1d1',
-        padding:10,
-
-    },
-    columnName:{
-        flex:3.5,
-        fontWeight:'bold'
-    },
-    columnInfo:{
-        flex:6.5,
-        
-    },
-    title:{
-        fontSize: 20,
-        fontWeight:'bold'
-    },
-    pricesContainer:{
-        flex:1,
-        flexDirection:'row',
-        marginTop:20,
-        marginBottom:20,
-        
-    },
-    price:{
-        flex:1,
-        alignItems: 'center',
-    },
-
 });
 
 export default RoomDetail;

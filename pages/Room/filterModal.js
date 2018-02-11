@@ -183,7 +183,7 @@ _renderForm_bld(){
    <ScrollView keyboardShouldPersistTaps="always">     
 
         {/* <View style={{paddingBottom: 10, marginBottom:10, }}> */}
-        <View style={styles.segment}>
+        <View style={[styles.segment,{borderTopWidth:0}]}>
 
             <View style={{flexDirection: 'row',}}>
 
@@ -445,11 +445,11 @@ _renderForm_room(){
             
        <ScrollView keyboardShouldPersistTaps="always">     
 
-           <View style={styles.segment}>
+           <View style={[styles.segment,{borderTopWidth:0,}]}>
 
                 <View>
 
-                    <View style = {{flexDirection: 'row', justifyContent:'space-between', marginBottom:15}}>    
+                    <View style = {{flexDirection: 'row', justifyContent:'space-between', marginBottom:30}}>    
             
                             <Text style={[styles.itemName,{marginTop:0}]}>매물형태</Text>                    
                          
@@ -465,7 +465,7 @@ _renderForm_room(){
             
                     
 
-                    <View style = {{flexDirection: 'row', justifyContent:'space-between',marginBottom:10}}>       
+                    <View style = {{flexDirection: 'row', justifyContent:'space-between',marginBottom:20}}>       
             
                             <Text style={[styles.itemName,{marginTop:0}]}>방구분</Text>
 
@@ -485,7 +485,7 @@ _renderForm_room(){
                    
               </View>
 
-              <View style={{flexDirection: 'row',}}>
+              <View style={{flexDirection: 'row', marginBottom:10,}}>
 
                     <View style = {{flex:1, marginRight:20}}>    
             
@@ -844,31 +844,34 @@ onRequestClose={this._closeModalAndSetState.bind(this)}
 >
   
 {/* 헤더 */}
-        <View style={{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#3b4db7', padding:8, height:45, width:'100%'}}>
+        <View style={{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#fff', padding:8, paddingTop:10, height:50, width:'100%', marginBottom:0,  borderBottomWidth:1, borderColor:'#e1e1e1',}}>
+
+            <View style={{flexDirection:'row'}}>
+                <TouchableOpacity
+                style={{width:40,height:35,backgroundColor:'#fff', padding:10, alignItems:'center', justifyContent:'center' }}
+                onPress={this._closeModalAndSetState.bind(this)}>
+
+                <Icon
+                    name="ios-close"
+                    size={40}
+                    style={{color: '#333', marginBottom:5}}
+                    />     
+                
+                </TouchableOpacity>
+
+                <Text style={{color: '#333', fontSize: 16, fontWeight:'bold', marginTop:4, marginLeft:20}}>필터검색</Text>
+                
+            </View>
 
             <TouchableOpacity
-            style={{width:40,height:35,backgroundColor:'#3b4db7', padding:10, alignItems:'center', justifyContent:'center' }}
-            onPress={this._closeModalAndSetState.bind(this)}>
-
-            <Icon
-                name="ios-close"
-                size={40}
-                style={{color: '#fff', marginBottom:5}}
-                />     
-            
-            </TouchableOpacity>
-
-            <Text style={{color: '#fff', fontSize: 16, fontWeight:'bold', marginTop:4}}>조건검색 (마이노트)</Text>
-            
-            <TouchableOpacity
-            style={{width:40,height:35,backgroundColor:'#3b4db7', padding:10, alignItems:'center', justifyContent:'center' }}
+            style={{width:40,height:35,backgroundColor:'#fff', padding:10, alignItems:'center', justifyContent:'center' }}
             onPress={this._resetHandler.bind(this)}
             >
 
             <Icon
                 name="ios-refresh"
                 size={30}
-                style={{color: '#fff', marginBottom:5}}
+                style={{color: '#333', marginBottom:5}}
                 />     
             
             </TouchableOpacity>
@@ -878,13 +881,13 @@ onRequestClose={this._closeModalAndSetState.bind(this)}
 
 {/* 양식 */}
 
-<View style={{borderBottomWidth:1, borderColor:'#16236e'}}>
+<View style={{borderBottomWidth:0.5,borderColor:'#e1e1e1'}}>
 <SegmentedControlTab
-                    tabsContainerStyle={{marginTop:-0.5, marginRight:-1}}
+                    tabsContainerStyle={{ borderBottomWidth:0, borderColor:'#e1e1e1', height:50, }}
                     borderRadius={0}
-                    tabStyle={{borderColor: '#16236e', borderWidth:1, borderBottomWidth:1.5, borderRightWidth:0.5, borderLeftWidth:0.5}}
-                    activeTabStyle={{ backgroundColor: '#16236e', }}
-                    tabTextStyle={{color:'#16236e'}}
+                    tabStyle={{borderColor: '#fff',backgroundColor:'#f9f9f9', borderWidth:0, borderBottomWidth:0, borderRightWidth:0, borderLeftWidth:0}}
+                    activeTabStyle={{ backgroundColor: '#3b4db7', }}
+                    tabTextStyle={{color:'#b1b1b1'}}
                     values={options}
                     selectedIndex={options.indexOf(this.state.selectedSegment)}
                     onTabPress={this.handleIndexChange}
@@ -912,7 +915,7 @@ style={styles.modalContainer}
    
 {/* 필터적용버튼 */}
 <TouchableOpacity style={{
-  position: 'absolute', width:'50%', height:45, bottom:0, right:0, backgroundColor:'#3b4db7', alignItems:'center',justifyContent:'center'}}
+  position: 'absolute', flexDirection:'row', width:'50%', height:45, bottom:0, right:0, backgroundColor:'#3b4db7', borderColor:'#3b4db7', alignItems:'center',justifyContent:'center'}}
   onPress={()=>{
 
     this.setState({isSearching:true});
@@ -1048,13 +1051,23 @@ style={styles.modalContainer}
     
   }}
   >
-    <Text style={{fontSize: 16, fontWeight:'bold', color: '#fff'}}>필터적용</Text>
+    <Icon
+    name="ios-funnel"
+    size={20}
+    style={{color:'#fff', marginRight:7, marginTop:3,}}
+    />
+    <Text style={{fontSize: 15,  color: '#fff'}}>필터적용</Text>
 </TouchableOpacity>  
 <TouchableOpacity
-style={{position: 'absolute', width:'50%', height:45, bottom:0, left:0, backgroundColor:'#3b4db7', alignItems:'center',justifyContent:'center',}}
+style={{position: 'absolute', flexDirection:'row', width:'50%', height:45, bottom:0, left:0, backgroundColor:'#3b4db7', borderColor:'#3b4db7', alignItems:'center',justifyContent:'center',}}
 onPress={this._resetHandler.bind(this)}
 >
-<Text style={{fontSize: 16, fontWeight:'bold', color: '#fff'}}>초기화</Text>
+    <Icon
+    name="ios-refresh"
+    size={26}
+    style={{color:'#fff', marginRight:7, marginTop:3,}}
+    />
+    <Text style={{fontSize: 16, color: '#fff'}}>초기화</Text>
 </TouchableOpacity>
 {/* 필터적용버튼 */}
 
@@ -1069,6 +1082,7 @@ modalContainer: {
     
     // justifyContent: 'center',
     // alignItems: 'center',
+    // marginTop:-1,
     padding:0,
     backgroundColor: '#f1f1f1',
     // paddingBottom:50
@@ -1104,7 +1118,7 @@ modalContainer: {
     // height: 600,
     borderColor: '#e6e6e6',
     backgroundColor: '#f2f2f2',
-    borderWidth: 1,
+    borderWidth: 0,
     padding:20,
     paddingBottom:25,
 
