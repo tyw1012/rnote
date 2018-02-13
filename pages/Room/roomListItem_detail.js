@@ -5,7 +5,6 @@ export default class RoomListItem_detail extends Component{
 constructor(props){
     super(props);
     this.state={
-      
     }
 }
 
@@ -17,7 +16,16 @@ _roomStyle(item){
       }
       else{
 
-          return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',borderRadius:5}
+        if(this.props.selectedRoom.wr_id == item.wr_id){
+
+            return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#3b4db7', justifyContent:'center', alignItems:'center',borderRadius:5}
+        }
+        else{
+
+            return {flex:1,margin:2.5,minWidth:60, height:60,padding:8, borderWidth:1, borderColor:'#d1d1d1', justifyContent:'center', alignItems:'center',borderRadius:5}
+        
+        }
+
         
       }
     
@@ -25,29 +33,28 @@ _roomStyle(item){
   }
   _roomTextStyle(item){
   
-    if (this.state.inActiveMode){
   
-      if(item.wr_room_inactive==1){
-        return {fontSize:12, color:'#d1d1d1', fontWeight:'bold'}
-      }
-      else{
-        return {fontSize:12, fontWeight:'bold'}
-      }
-      
-    }
-    else{
   
         if (item.wr_room_inactive==1){
             return {fontSize:12, color:'#d1d1d1', fontWeight:'bold'}
         }
         else{
+
+            if(this.props.selectedRoom.wr_id == item.wr_id){
+                return {fontSize:12, fontWeight:'bold', color:'#3b4db7'}
+                
+            }
+            else{
+                return {fontSize:12, fontWeight:'bold'}
+                
+            }
+
          
-            return {fontSize:12, fontWeight:'bold'}
                   
         }
   
   
-    }
+    
     
   }
 
@@ -59,9 +66,10 @@ _roomStyle(item){
 
 shouldComponentUpdate(nextProps, nextState) {
     
-   if(JSON.stringify(this.props.item) === JSON.stringify(nextProps.item)){
+   if(JSON.stringify(this.props.item) === JSON.stringify(nextProps.item) && (this.props.selectedRoom.wr_id != this.props.item.wr_id && nextProps.selectedRoom.wr_id != this.props.item.wr_id) ){
       return false   ;
     }
+    console.log('is rendering')
     return true
 }
 
@@ -75,7 +83,10 @@ render(){
         onPress = {()=>{
             
             if(item.wr_room_inactive!=1){
+                // item.isSelected = true;
                 this.props.showRoomDetailPopup(item)
+                // this.setState({isSelected: !this.state.isSelected})
+                
                 }
             
         }}

@@ -642,44 +642,37 @@ _findOptionIndex(optionItem){
         options = {this.state.options}
         checkboxHandler = {this._checkboxHandler.bind(this)}
         />
-        // <CheckBox
-        // uncheckedIcon={null}
-        // checkedIcon={null}
-        
-        // title={item.name}
-        // containerStyle={this._checkBoxStyle(item.checked)}
-        // textStyle={this._checkBoxTextStyle(item.checked)}
-        // checked={item.checked}
-        // onPress={()=>{
-
-        // let optionClone = {...item};
-        // optionClone.checked = !optionClone.checked;
-        // optionClone[Object.keys(optionClone)[1]] == 1?
-        // optionClone[Object.keys(optionClone)[1]] = 0 : optionClone[Object.keys(optionClone)[1]] = 1
-
-        // let optionIndex = this._findOptionIndex(item)
-        // this.props.checkboxHandler(item, optionIndex, this.props.item, 'options');
-     
-        // let clone = this.state.options.slice(0);
-        // clone[optionIndex] = optionClone
-        // this.setState({options: clone}, function(){
-        //     console.log(item, this.state.options); 
-        // })
-            
-            
-        
-    
-        // }}/>
+       
     }
         />
+
         </View>
 
-          
+        <View>
+
+                <Text style={{fontWeight:'bold', fontSize:13, marginBottom:5,}}>기타사항 </Text>
+
+                <TextInput
+                placeholder=" 기타내용"
+                placeholderTextColor='#aaa'
+                multiline = {true}
+                numberOfLines = {5}
+                style={{borderWidth:1, borderColor:'#e1e1e1',height:75, padding:10,paddingLeft:5, textAlignVertical:'top'}}
+                underlineColorAndroid="transparent"
+                onChangeText= {wr_memo => this.setState({wr_memo})}
+                value={this.state.wr_memo}
+                onFocus={(event: Event) => {
+                    // `bind` the function if you're using ES6 classes
+                    this.scroll.props.scrollToPosition(0, 0)
+                }}
+                />
+
+
+        </View>
+      
 
         <View style={{flexDirection:'row', marginBottom:70, justifyContent:'flex-end'}}>
-                
-
-        </View>          
+        </View>         
     </KeyboardAwareScrollView>
     </View>
       )

@@ -182,6 +182,7 @@ header("Content-Type: text/html; charset=UTF-8");
                     $wr_o_bookshelf = $rooms[$i]['options'][11]['wr_o_bookshelf'];
             
                     $wr_room_inactive = boolConvert($rooms[$i]['wr_room_inactive']);
+                    $wr_memo = $rooms[$i]['wr_memo'];
             
 
                     $sql_query2 = "INSERT IGNORE INTO g5_write_$memberID SET
@@ -219,6 +220,7 @@ header("Content-Type: text/html; charset=UTF-8");
                     wr_datetime= '$bld_datetime',
                     wr_bld_match_id = '$bld_id',
                     wr_room_inactive = '$wr_room_inactive',
+                    wr_memo ='$wr_memo',
                     board_list = 1
 
                     ";
@@ -268,6 +270,7 @@ header("Content-Type: text/html; charset=UTF-8");
                 $wr_o_bookshelf = $rooms[$i]['options'][11]['wr_o_bookshelf'];
         
                 $wr_room_inactive = boolConvert($rooms[$i]['wr_room_inactive']);
+                $wr_memo = $rooms[$i]['wr_memo'];
         
                 $sql_query2 = "UPDATE g5_write_$memberID SET
             
@@ -304,6 +307,7 @@ header("Content-Type: text/html; charset=UTF-8");
                 wr_datetime= '$bld_datetime',
                 wr_bld_match_id = '$bld_id',
                 wr_room_inactive = '$wr_room_inactive',
+                wr_memo = '$wr_memo',
                 board_list = 1 WHERE wr_id = '$wr_id'
         
                 ";

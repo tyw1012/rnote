@@ -163,14 +163,14 @@ _goNext(){
   this.setState(this.props.navigation.state.params, 
     function(){ 
       
-    this.props.navigation.navigate('Prices',this.state)})
+    this.props.navigation.navigate('Third',this.state)})
 
 }
 _goPrevious(){  
 
   this.state.mode=='edit'?
-  this.props.navigation.navigate('Basic',{mode:'edit'})
-  : this.props.navigation.navigate('Basic');
+  this.props.navigation.navigate('First',{mode:'edit'})
+  : this.props.navigation.navigate('First');
 }
 
 onSwipeLeft(gestureState) {

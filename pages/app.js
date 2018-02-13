@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
-import { Platform, BackHandler, ToastAndroid } from 'react-native';
+import { StackNavigator, TabNavigator, DrawerNavigator, NavigationActions  } from 'react-navigation';
+import { Platform, BackHandler, ToastAndroid,Alert } from 'react-native';
+
 import Icon from 'react-native-vector-icons/Entypo';
 // import HomeScreen from './home';
 import Login from './login/login';
@@ -27,6 +28,26 @@ function getCurrentRouteName(navigationState) {
 	}
 	return route.routeName;
   }
+
+function getCurrentRoute(navigationState) {
+	if (!navigationState) {
+		return null;
+	}
+	const route = navigationState.routes[navigationState.index];
+	// dive into nested navigators
+	if (route.routes) {
+		return getCurrentRoute(route);
+	}
+	return route;
+}
+
+function getCurrentNavigationState(navigationState) {
+	if (!navigationState) {
+		return null;
+	}
+	
+	return navigationState;
+}
   
 /////////////////////////// 상가시작 ///////////////////////////////////////////////////
 
@@ -47,7 +68,7 @@ import Writeoffer_sell_third from './Shop/writeoffer_sell_third';
 import Writeoffer_sell_fourth from './Shop/writeoffer_sell_fourth';
 
  const WriteOfferRentNavigator = TabNavigator({
-	 Basic: { 
+	 First: { 
 		 screen: Writeoffer,
 		 navigationOptions:{
 			 
@@ -58,7 +79,7 @@ import Writeoffer_sell_fourth from './Shop/writeoffer_sell_fourth';
 			 
 		 }
 	 },
-	 Recommended: {
+	 Second: {
 		 screen: Writeoffer_second,
 		 navigationOptions:{
 			 tabBarLabel: '추천업종',
@@ -68,7 +89,7 @@ import Writeoffer_sell_fourth from './Shop/writeoffer_sell_fourth';
 		 }
 
 	 },
-	 Prices:{
+	 Third:{
 		 screen: Writeoffer_third,
 		 navigationOptions:{
 			 tabBarLabel: '매물정보',
@@ -78,7 +99,7 @@ import Writeoffer_sell_fourth from './Shop/writeoffer_sell_fourth';
 		 }
 
 	 },
-	 Others:{
+	 Fourth:{
 		screen: Writeoffer_fourth,
 		navigationOptions:{
 			tabBarLabel: '기타정보',
@@ -589,7 +610,7 @@ import Writeoffer_sell_fourth_room from './Room/writeoffer_sell_fourth';
 
 
 const WriteOfferRentNavigator_room = TabNavigator({
-	Basic: { 
+	First: { 
 		screen: Writeoffer_room,
 		navigationOptions:{
 			
@@ -600,7 +621,7 @@ const WriteOfferRentNavigator_room = TabNavigator({
 			
 		}
 	},
-	Recommended: {
+	Second: {
 		screen: Writeoffer_second_room,
 		navigationOptions:{
 			tabBarLabel: '호실정보',
@@ -610,25 +631,6 @@ const WriteOfferRentNavigator_room = TabNavigator({
 		}
 
 	},
-	// Prices:{
-	// 	screen: Writeoffer_third_room,
-	// 	navigationOptions:{
-	// 		tabBarLabel: '공실여부',
-	// 		tabBarOnPress: (scene, jumpToIndex) => {
-			   
-	// 		},
-	// 	}
-
-	// },
-	// Others:{
-	//    screen: Writeoffer_fourth_room,
-	//    navigationOptions:{
-	// 	   tabBarLabel: '기타정보',
-	// 	   tabBarOnPress: (scene, jumpToIndex) => {
-			   
-	// 		},
-	//    }
-	// }
 	
 },{
    backBehavior:'none',
@@ -637,8 +639,8 @@ const WriteOfferRentNavigator_room = TabNavigator({
 	   // inactiveBackgroundColor: '#e91e63',
 	   
 	   labelStyle: {
-		   fontSize: 10.5,
-		   
+		   fontSize: 12.5,
+		   marginBottom:1,
 		   color:'#777',
 	   },
 	   style: {
@@ -1003,20 +1005,48 @@ export default class Root extends Component{
 	}
 	
 	componentDidMount() {
-        
         if (Platform.OS === 'android') {
             this.backButtonListener = BackHandler.addEventListener('hardwareBackPress', () => {
                 if (this.currentRouteName !== 'Myoffering') {
-					return false;
+					if(this.currentRouteName=='First'||this.currentRouteName=='Second'||this.currentRouteName=='Third'||this.currentRouteName=='Fourth'){
+						Alert.alert(
+							'정보가 저장되지 않았습니다.',
+							'뒤로 가시겠습니까?',
+							[
+							  
+							  {text: '취소', onPress: () => {	 return true }, style: 'cancel'},
+							  {text: '확인', onPress: () => {
+								
+								this.nav && this.nav.dispatch(
+									NavigationActions.back()
+								  );
+							 								   
+					   
+							  } },
+							],
+							{ cancelable: false }
+						  )
+						return true; 
+					}
+					return false				
 				}
-				if (this.lastBackButtonPress + 2000 >= new Date().getTime()) {
-                    BackHandler.exitApp();
-                    return true;
-                }
-                ToastAndroid.show('뒤로가기를 한번 더 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
-				this.lastBackButtonPress = new Date().getTime();
+				else{
+
+					if (this.lastBackButtonPress + 2000 >= new Date().getTime()) {
+						BackHandler.exitApp();
+						return true;
+					}
+					else{
+	
+						ToastAndroid.show('뒤로가기를 한번 더 누르면 앱이 종료됩니다.', ToastAndroid.SHORT);
+						this.lastBackButtonPress = new Date().getTime();
+						
+						return true;
+					}
+
+				}
 				
-				return true;
+               
 
             });
         }
@@ -1028,8 +1058,9 @@ export default class Root extends Component{
 
     render() {
         return (<RootNavigator
+				ref = {nav => {this.nav = nav;}}
             	onNavigationStateChange={(prevState, currentState, action) => {
-				  this.currentRouteName = getCurrentRouteName(currentState);
+			  this.currentRouteName = getCurrentRouteName(currentState);
                 
             }}
         />);

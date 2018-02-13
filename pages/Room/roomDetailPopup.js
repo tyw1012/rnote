@@ -267,7 +267,7 @@ _findOptionIndex(optionItem){
                         {checked: item.wr_o_bookshelf, name:'책장'},
 
                     ]}
-                    style={{marginBottom: 70, padding:0,}}
+                    style={{marginBottom: 5, padding:0,}}
                     extraData={this.props.item}
                     key={(this.props.columnChange)}
                     keyExtractor ={(x,i)=>i}
@@ -285,6 +285,11 @@ _findOptionIndex(optionItem){
 
                     }}/>}
                     />
+                </View>
+                <View style={{marginBottom:10,}}>
+                    <Text style={[styles.itemName, {marginBottom:7}]}>{item.wr_memo == ''? '기타사항: 없음':'기타사항'}</Text>
+                    <Text style={[styles.itemDesc,{fontWeight:'bold', marginBottom:15}]}>{item.wr_memo}</Text>
+              
                 </View>
                 
             

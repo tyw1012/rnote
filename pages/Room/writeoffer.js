@@ -31,6 +31,14 @@ export default class writeoffer extends Component {
           style={{color:'#fff'}}
           />
         </TouchableOpacity>,
+        headerRight:      <TouchableOpacity style={{padding:5, paddingLeft:20, paddingRight:20,}}
+                          onPress ={()=>{self._goNext();}}>
+                            <Icon
+                            name='ios-arrow-forward'
+                            size={25}
+                            style={{color:'#fff'}}/>
+                          </TouchableOpacity>     ,                     
+                    
         title:'매물정보 수정',
         headerTitleStyle: {color:'white',fontSize:18, fontWeight:'bold'},
         headerStyle: {
@@ -46,16 +54,23 @@ export default class writeoffer extends Component {
         return (
           {
             headerLeft: <TouchableOpacity 
-            onPress={()=>{self.props.navigation.goBack(null);  }}
-            style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:15}}>
-            <Icon
-            name="md-close"
-            size={30}
-            style={{color:'#fff'}}
-            />
-          </TouchableOpacity>,
-          title: '건물등록',
-          headerTitleStyle: {color:'white',fontSize:16, fontWeight:'bold'},
+                        onPress={()=>{self.props.navigation.goBack(null);  }}
+                        style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:15}}>
+                        <Icon
+                        name="md-close"
+                        size={30}
+                        style={{color:'#fff'}}
+                        />
+                       </TouchableOpacity>,
+          headerRight:  <TouchableOpacity style={{padding:5, paddingLeft:20, paddingRight:20, }}
+                        onPress ={()=>{self._goNext();}}>
+                          <Icon
+                          name='ios-arrow-forward'
+                          size={25}
+                          style={{color:'#fff',}}/>
+                        </TouchableOpacity>     ,   
+          title: '매물등록 - 임대',
+          headerTitleStyle: {color:'white',fontSize:16, fontWeight:'100'},
           headerStyle: {
             backgroundColor: '#3b4db7',
             elevation:0,
@@ -134,7 +149,7 @@ export default class writeoffer extends Component {
    {
       this.setState( {bld_contact: contact_dash},
       function(){
-        this.props.navigation.navigate('Recommended',this.state)
+        this.props.navigation.navigate('Second',this.state)
         setTimeout(function(){
           writeoffer_second.updateFigures();
         }, 200)
@@ -156,7 +171,7 @@ export default class writeoffer extends Component {
 
           this.setState( {bld_contact: contact_dash, roomsShouldBeInserted: true,},
             function(){
-              this.props.navigation.navigate('Recommended',this.state)
+              this.props.navigation.navigate('Second',this.state)
               setTimeout(function(){
                 writeoffer_second.updateFigures();
               }, 200)
@@ -166,7 +181,7 @@ export default class writeoffer extends Component {
          else{
           this.setState( {bld_contact: contact_dash},
             function(){
-              this.props.navigation.navigate('Recommended',this.state)
+              this.props.navigation.navigate('Second',this.state)
               setTimeout(function(){
                 writeoffer_second.updateFigures();
               }, 200)
@@ -313,7 +328,7 @@ export default class writeoffer extends Component {
               keyboardType='phone-pad'
               ref='FifthInput'
               onSubmitEditing={(event) => { 
-                this.props.navigation.navigate('Recommended',this.state)                
+                this.props.navigation.navigate('Second',this.state)                
               }}
               blurOnSubmit={false}
               returnKeyType = {"next"}
@@ -335,12 +350,12 @@ export default class writeoffer extends Component {
             <Text style={styles.itemName}>인근 지하철역</Text>
 
             <TextInput
-            placeholder=" 숫자만 입력해주세요"
+            placeholder=""
             placeholderTextColor='#aaa'
-            keyboardType='phone-pad'
+            // keyboardType='phone-pad'
             ref='FifthInput'
             onSubmitEditing={(event) => { 
-              this.props.navigation.navigate('Recommended',this.state)                
+              this.props.navigation.navigate('Second',this.state)                
             }}
             blurOnSubmit={false}
             returnKeyType = {"next"}
@@ -550,8 +565,8 @@ export default class writeoffer extends Component {
               this._goNext();                
               
             }}
-            style={{marginBottom:40,marginTop:40,backgroundColor:'#3b4db7',width:'100%', height: 45, justifyContent:'center', alignItems:'center'}}>
-            <Text style={{color:'white', fontSize: 13,}}>다음</Text>
+            style={{marginBottom:40,marginTop:40,backgroundColor:'#fff',width:'100%', height: 45, justifyContent:'center', alignItems:'center', borderWidth:1, borderColor:'#3b4db7'}}>
+            <Text style={{color:'#3b4db7', fontSize: 13,}}>다음</Text>
           </TouchableOpacity>
            
      {/* </KeyboardAvoidingView>

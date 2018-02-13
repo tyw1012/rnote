@@ -126,7 +126,7 @@ export default class writeoffer extends Component {
       wr_lessor_contact: lessor_dash,
     },
     function(){
-      this.props.navigation.navigate('Recommended',this.state)
+      this.props.navigation.navigate('Second',this.state)
     })            
  
 
@@ -335,7 +335,7 @@ export default class writeoffer extends Component {
               keyboardType='phone-pad'
               ref='FifthInput'
               onSubmitEditing={(event) => { 
-                this.props.navigation.navigate('Recommended',this.state)                
+                this.props.navigation.navigate('Second',this.state)                
               }}
               blurOnSubmit={false}
               returnKeyType = {"next"}

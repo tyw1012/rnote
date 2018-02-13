@@ -52,9 +52,13 @@ class RoomDetail extends Component{
     }
 
     _showRoomDetailPopup(item){
-        
-        this.setState({selectedRoom: item, roomDetailPopupVisible: true},
+        // var previous;
+        this.setState(prev =>{  return  {selectedRoom: item, roomDetailPopupVisible: true}  } ,
                 
+            // ()=>{
+            //     this.state.rooms[this._findRoomIndex(previous.selectedRoom)]!=undefined?
+            //     this.state.rooms[this._findRoomIndex(previous.selectedRoom)].isSelected = false : null;
+            // }
         )
     }
     _removePopup(){
@@ -112,6 +116,7 @@ class RoomDetail extends Component{
 
                             <RoomListItem_detail
                             item = {item}
+                            selectedRoom = {this.state.selectedRoom}
                             showRoomDetailPopup = {this._showRoomDetailPopup.bind(this)}
                             />
                             

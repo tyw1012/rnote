@@ -173,12 +173,12 @@ export default class writeoffer_third extends Component {
     this.setState(this.props.navigation.state.params, 
       function(){ 
         // console.log('stateCheck',this.state);
-      this.props.navigation.navigate('Others',this.state)}
+      this.props.navigation.navigate('Fourth',this.state)}
     )
     
     }
   _goPrevious(){  
-    this.props.navigation.navigate('Recommended');
+    this.props.navigation.navigate('Second');
   }
 
   onSwipeLeft(gestureState) {
@@ -421,7 +421,7 @@ export default class writeoffer_third extends Component {
                     this.setState(this.props.navigation.state.params, 
                       function(){ 
                         // console.log('stateCheck',this.state);
-                      this.props.navigation.navigate('Others',this.state)}
+                      this.props.navigation.navigate('Fourth',this.state)}
                     )
                   }}
                   blurOnSubmit={false}

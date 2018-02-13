@@ -106,7 +106,7 @@ export default class writeoffer_fourth extends Component {
 
 
   _goPrevious(){  
-    this.props.navigation.navigate('Prices')
+    this.props.navigation.navigate('Third')
   }
 
  
