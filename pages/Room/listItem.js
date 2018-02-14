@@ -63,7 +63,7 @@ _roomTypeConverter(number){
     if(number==4){
         return '1.5룸'
     }
-    if(number==undefined || number == null){
+    if(number==undefined || number == null || number == ''){
         return ''
     }
 }
@@ -74,7 +74,7 @@ _rentTypeConverter(number){
     if(number==2){
         return '전세'
     }
-    if(number==undefined || number == null || number == 0){
+    if(number==undefined || number == null || number == 0 || number == ''){
         return ''
     }
     

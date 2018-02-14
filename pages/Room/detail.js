@@ -28,7 +28,7 @@ static navigationOptions= ({navigation}) =>({
       },
       headerTintColor: 'white',
       headerRight:   navigation.state.params.mode=='edit'? <TouchableOpacity
-      style={{width:50,height:50,backgroundColor:'#3b4db7', marginRight:-10,justifyContent:'center', alignItems:'center'}}
+      style={{width:50,height:50,backgroundColor:'#3b4db7', marginRight:-5,justifyContent:'center', alignItems:'center'}}
       onPress={()=>{
         //   if(self.state.segment=='임대'){
         //       self.state.wr_rec_sectors.split(' ');

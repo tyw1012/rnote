@@ -14,6 +14,7 @@ class RoomListPopup extends Component{
         this.state={
             checkedRoomList:[],
             forceRender:false,
+            allSelected:false,
             
         }
     }
@@ -82,12 +83,35 @@ _parseBFloor(number){
                 />
            </TouchableOpacity>
         </View>
-
-        <TouchableOpacity style={{margin:20, marginBottom:5,padding:10, justifyContent:'center', alignItems:'center', height:40, width:'90%', borderColor:'#3b4db7', borderWidth:1, }}
-                           onPress={()=>this.props.applyRoomInfoToOthers( this.props.savedData)}>
-                    <Text style={{color:'#3b4db7'}}>복사하기</Text>
-        </TouchableOpacity> 
+        <View style={{flexDirection:'row'}}>
         
+            <TouchableOpacity style={{flex:1, margin:20, marginBottom:5,padding:10, justifyContent:'center', alignItems:'center', height:40, width:'90%', borderColor:'#3b4db7', borderWidth:1, }}
+                            onPress={()=>{
+                                
+                                if(!this.state.allSelected){
+                                    for(let i = 0; i < this.props.rooms.length ; i++){
+                                        this.props.rooms[i].listChecked = true;
+                                        
+                                    }
+                                }
+                                else{
+                                    for(let i = 0; i < this.props.rooms.length ; i++){
+                                        this.props.rooms[i].listChecked = false;
+                                        
+                                    }
+                                }
+                                this.setState({allSelected:!this.state.allSelected})
+                                    
+
+                            }}>
+                        <Text style={{color:'#3b4db7'}}>{this.state.allSelected?'전체해제':'전체선택'}</Text>
+            </TouchableOpacity> 
+
+            <TouchableOpacity style={{flex:1, margin:20, marginBottom:5,padding:10, justifyContent:'center', alignItems:'center', height:40, width:'90%', borderColor:'#3b4db7', borderWidth:1, }}
+                            onPress={()=>this.props.applyRoomInfoToOthers( this.props.savedData)}>
+                        <Text style={{color:'#3b4db7'}}>복사하기</Text>
+            </TouchableOpacity>
+        </View>
     
     
     <KeyboardAwareScrollView enableOnAndroid={true}

@@ -209,16 +209,7 @@ export default class writeoffer_sell_second extends Component {
 
   }
 
-  onSwipeLeft(gestureState) {
-    
-    this._goNext();
-    
-  }
-  onSwipeRight(gestureState) {
-    
-    this._goPrevious();
-    
-  }
+
   _findInputIndex(item){
 
     var clone = this.state.addedInputList.slice(0);
@@ -319,9 +310,7 @@ export default class writeoffer_sell_second extends Component {
   render() {
    
     return (
-        <GestureRecognizer
-        onSwipeLeft={(state) => this.onSwipeLeft(state)}
-        onSwipeRight={(state) => this.onSwipeRight(state)}>
+        
             <KeyboardAwareScrollView enableOnAndroid={true}
             keyboardShouldPersistTaps='always'
             innerRef={ref => {this.scroll = ref}}
@@ -1123,7 +1112,6 @@ export default class writeoffer_sell_second extends Component {
              {/* </KeyboardAvoidingView>
              </ScrollView> */}
              </KeyboardAwareScrollView >
-          </GestureRecognizer>
         
            );
   }

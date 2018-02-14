@@ -251,20 +251,25 @@ _findOptionIndex(optionItem){
 
                 <View style={{marginBottom:10,}}>
                     <Text style={[styles.itemName, {marginBottom:7}]}>옵션</Text>
-        
+                  
                     <FlatList data ={[
-                        {checked: item.wr_o_tv, name:'TV'},
+                        
                         {checked: item.wr_o_air_cond, name:'에어컨'},
                         {checked: item.wr_o_fridger, name:'냉장고'},
+                        {checked: item.wr_o_stove, name: '가스렌지'},
+                        {checked: item.wr_o_ind, name:'인덕션'},
+                        {checked: item.wr_o_microwave, name:'전자렌지'},                        
                         {checked: item.wr_o_washer, name:'세탁기'},
-                        {checked: item.wr_o_sink, name:'싱크대'},
+                        {checked: item.wr_o_tv, name:'TV'},
                         {checked: item.wr_o_internet, name:'인터넷'},
-                        {checked: item.wr_o_microwave, name:'전자렌지'},
-                        {checked: item.wr_o_desk, name:'책상'},
                         {checked: item.wr_o_bed, name:'침대'},
                         {checked: item.wr_o_closet, name:'옷장'},
                         {checked: item.wr_o_shoe_rack, name:'신발장'},
+                        {checked: item.wr_o_sink, name:'싱크대'},
+                        {checked: item.wr_o_desk, name:'책상'},
                         {checked: item.wr_o_bookshelf, name:'책장'},
+                        {checked: item.wr_o_elock, name: '도어락'},
+                        {checked: item.wr_o_bidet, name: '비데'},
 
                     ]}
                     style={{marginBottom: 5, padding:0,}}

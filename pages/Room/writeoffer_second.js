@@ -27,7 +27,7 @@ export default class writeoffer_second extends Component {
         {
           headerLeft: <TouchableOpacity 
                       onPress={()=>{self.props.navigation.goBack(null);  }}
-                      style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:15}}>
+                      style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:20}}>
                         <Icon
                         name="close"
                         size={30}
@@ -66,7 +66,7 @@ export default class writeoffer_second extends Component {
           {
            headerLeft: <TouchableOpacity 
                         onPress={()=>{self.props.navigation.goBack(null);  }}
-                        style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:15}}>
+                        style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:20}}>
                           <Icon
                           name="close"
                           size={30}
@@ -119,7 +119,7 @@ static copyRoomInfo(itemState){
 
 
   self.setState({rooms:clone}, function(){
-     console.log(self.state.rooms)
+    //  console.log(self.state.rooms)
   })
 
 }
@@ -128,7 +128,7 @@ static saveRoomInfo(itemState){
   let clone = self.state.rooms.slice(0);
   clone[self._findRoomIndex(itemState)] = itemState;
   self.setState({rooms: clone}, function(){
-    console.log(self.state.rooms)
+    // console.log(self.state.rooms)
   });
   
 
@@ -174,18 +174,22 @@ static updateFigures(){
         temp[i] = {...params.rooms[i]}
         temp[i].options= [];
         temp[i].options.push(
-          {name:'TV', wr_o_tv: temp[i].wr_o_tv, checked: self._stringConverter(temp[i].wr_o_tv)},
           {name:'에어컨', wr_o_air_cond:  temp[i].wr_o_air_cond, checked: self._stringConverter(temp[i].wr_o_air_cond)},
           {name:'냉장고', wr_o_fridger: temp[i].wr_o_fridger, checked: self._stringConverter(temp[i].wr_o_fridger)},
-          {name:'세탁기', wr_o_washer: temp[i].wr_o_washer, checked: self._stringConverter(temp[i].wr_o_washer)},
-          {name:'싱크대', wr_o_sink: temp[i].wr_o_sink, checked: self._stringConverter(temp[i].wr_o_sink)},
-          {name:'인터넷', wr_o_internet: temp[i].wr_o_internet, checked: self._stringConverter(temp[i].wr_o_internet)},
+          {name:'가스렌지', wr_o_stove: temp[i].wr_o_stove, checked: self._stringConverter(temp[i].wr_o_stove)},
+          {name:'인덕션', wr_o_ind: temp[i].wr_o_ind, checked: self._stringConverter(temp[i].wr_o_ind)},
           {name:'전자렌지', wr_o_microwave: temp[i].wr_o_microwave, checked: self._stringConverter(temp[i].wr_o_microwave)},
-          {name:'책상', wr_o_desk: temp[i].wr_o_desk, checked: self._stringConverter(temp[i].wr_o_desk)},
+          {name:'세탁기', wr_o_washer: temp[i].wr_o_washer, checked: self._stringConverter(temp[i].wr_o_washer)},
+          {name:'TV', wr_o_tv: temp[i].wr_o_tv, checked: self._stringConverter(temp[i].wr_o_tv)},
+          {name:'인터넷', wr_o_internet: temp[i].wr_o_internet, checked: self._stringConverter(temp[i].wr_o_internet)},
           {name:'침대', wr_o_bed: temp[i].wr_o_bed, checked: self._stringConverter(temp[i].wr_o_bed)},
           {name:'옷장', wr_o_closet: temp[i].wr_o_closet, checked: self._stringConverter(temp[i].wr_o_closet)},
           {name:'신발장', wr_o_shoe_rack: temp[i].wr_o_shoe_rack, checked: self._stringConverter(temp[i].wr_o_shoe_rack)},
+          {name:'싱크대', wr_o_sink: temp[i].wr_o_sink, checked: self._stringConverter(temp[i].wr_o_sink)},
+          {name:'책상', wr_o_desk: temp[i].wr_o_desk, checked: self._stringConverter(temp[i].wr_o_desk)},
           {name:'책장', wr_o_bookshelf: temp[i].wr_o_bookshelf, checked: self._stringConverter(temp[i].wr_o_bookshelf)},
+          {name:'도어락', wr_o_elock: temp[i].wr_o_elock, checked: self._stringConverter(temp[i].wr_o_elock)},
+          {name:'비데', wr_o_bidet: temp[i].wr_o_bidet, checked: self._stringConverter(temp[i].wr_o_bidet)},
         )
         temp[i].mt_options= [];
         temp[i].mt_options.push(
@@ -242,19 +246,24 @@ static updateFigures(){
         listChecked : false,
         wr_room_inactive: false,
         options: [
-
-          {name:'TV', wr_o_tv: 0, checked: false},
+          
           {name:'에어컨', wr_o_air_cond: 0, checked: false},
           {name:'냉장고', wr_o_fridger: 0, checked: false},
-          {name:'세탁기', wr_o_washer: 0, checked: false},
-          {name:'싱크대', wr_o_sink: 0, checked: false},
-          {name:'인터넷', wr_o_internet: 0, checked: false},
+          {name:'가스렌지', wr_o_stove: 0, checked: false},
+          {name:'인덕션', wr_o_ind: 0, checked: false},
           {name:'전자렌지', wr_o_microwave: 0, checked: false},
-          {name:'책상', wr_o_desk: 0, checked: false},
+          {name:'세탁기', wr_o_washer: 0, checked: false},
+          {name:'TV', wr_o_tv: 0, checked: false},
+          {name:'인터넷', wr_o_internet: 0, checked: false},
           {name:'침대', wr_o_bed: 0, checked: false},
           {name:'옷장', wr_o_closet: 0, checked: false},
           {name:'신발장', wr_o_shoe_rack: 0, checked: false},
+          {name:'싱크대', wr_o_sink: 0, checked: false},
+          {name:'책상', wr_o_desk: 0, checked: false},
           {name:'책장', wr_o_bookshelf: 0, checked: false},
+          {name:'도어락', wr_o_elock:0, checked: false},
+          {name:'비데', wr_o_bidet: 0, checked: false},
+          
 
         ],
         mt_options: [
@@ -488,7 +497,7 @@ _goSubmit(){
 
   if(this.state.mode == 'edit'){
 
-    console.log(this.state.rooms)
+    // console.log(this.state.rooms)
     fetch('http://real-note.co.kr/app3/editOffer_room.php',{
       method:'post',
       header:{
@@ -522,7 +531,7 @@ _goSubmit(){
       })
     })
     .then((res)=>{
-      console.log(res);
+      // console.log(res);
        return res.json()})
     .then((json) =>{
       // console.log(json);
@@ -638,7 +647,9 @@ _chooseRoomType(type, state){
 _chooseRentType(type, state){
   var clone = this.state.rooms.slice(0);
   clone[this._findRoomIndex(state)]['wr_rent_type'] = type
-  this.setState({rooms: clone}, function(){console.log(this.state.rooms[this._findRoomIndex(state)])})
+  this.setState({rooms: clone}, function(){
+    // console.log(this.state.rooms[this._findRoomIndex(state)])
+  })
 
 }
 _saveRoomInfo(itemState){
@@ -697,7 +708,7 @@ _cancelHandler(){
   this.setState({scrollEnabled:true})
 }
   render() {
-
+    console.log('isRenderingddddddddddddddddd')
    
     return (
 

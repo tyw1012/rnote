@@ -1005,6 +1005,16 @@ export default class Root extends Component{
 	}
 	
 	componentDidMount() {
+
+		// if((process.env.NODE_ENV || '').toLowerCase() === 'production'){
+		// 	// disable console. log in production
+		// 	console.log = function () {};
+		// 	console.info = function () {};
+		// 	console.warn = function () {};
+		// 	console.error = function () {}
+		// 	console.debug = function () {}
+		//   }
+
         if (Platform.OS === 'android') {
             this.backButtonListener = BackHandler.addEventListener('hardwareBackPress', () => {
                 if (this.currentRouteName !== 'Myoffering') {

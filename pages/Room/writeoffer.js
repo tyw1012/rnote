@@ -24,7 +24,7 @@ export default class writeoffer extends Component {
         {
         headerLeft: <TouchableOpacity 
         onPress={()=>{self.props.navigation.goBack(null);  }}
-        style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:15}}>
+        style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:20}}>
           <Icon
           name="md-close"
           size={30}
@@ -55,7 +55,7 @@ export default class writeoffer extends Component {
           {
             headerLeft: <TouchableOpacity 
                         onPress={()=>{self.props.navigation.goBack(null);  }}
-                        style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:15}}>
+                        style={{justifyContent:'center', alignItems:'center', padding:5, paddingLeft:20}}>
                         <Icon
                         name="md-close"
                         size={30}
@@ -97,7 +97,7 @@ export default class writeoffer extends Component {
 	}
 
   componentWillMount(){
-    
+    // console.log('dev')
     const {params} = this.props.navigation.state;
   
     this.setState(
@@ -140,11 +140,52 @@ export default class writeoffer extends Component {
     var contact_dash = this.state.bld_contact!=undefined?
     this.state.bld_contact.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"):'';
 
+    if (this.state.bld_floor == undefined ){
+      alert('호실정보 작성을 위해 건물층수를 입력해주세요.')
+        return
+    }
+
+    if (this.state.bld_roomPerFloor == undefined ){
+      alert('호실정보 작성을 위해 층당 최대 호실수를 입력해주세요.')
+        return
+    }
+
+    if ( parseInt(this.state.bld_floor) <= 0  ){
+      alert('건물층수는 최소 1층부터 입력하실 수 있습니다.')
+        return
+    }
+    if ( parseInt(this.state.bld_floor) > 8 ){
+      alert('건물층수는 최대 10층까지 입력하실 수 있습니다.')
+        return
+    }
+    if ( parseInt(this.state.bld_roomPerFloor) <= 0  ){
+      alert('층당 최대 호실수는 최소 1개부터 입력하실 수 있습니다.')
+        return
+    }
+    if ( parseInt(this.state.bld_roomPerFloor) > 10 ){
+      alert('건물층수는 최대 10개까지 입력하실 수 있습니다.')
+        return
+    }
+
     if(
-      (writeoffer_second.getState('bld_roomPerFloor') === this.state.bld_roomPerFloor || writeoffer_second.getState('bld_roomPerFloor') ==undefined)
-   && (writeoffer_second.getState('bld_floor') === this.state.bld_floor || writeoffer_second.getState('bld_floor') ==undefined)
-   && (writeoffer_second.getState('bld_Bfloor') === this.state.bld_Bfloor || writeoffer_second.getState('bld_Bfloor') ==undefined)
-   && (writeoffer_second.getState('bld_firstRoomNumber') === this.state.bld_firstRoomNumber|| writeoffer_second.getState('bld_firstRoomNumber') ==undefined)
+     (
+      (writeoffer_second.getState('bld_roomPerFloor') === this.state.bld_roomPerFloor)
+    &&(writeoffer_second.getState('bld_floor') === this.state.bld_floor)
+    &&(writeoffer_second.getState('bld_Bfloor') === this.state.bld_Bfloor)
+    &&(writeoffer_second.getState('bld_firstRoomNumber') === this.state.bld_firstRoomNumber)
+    ) 
+    || (
+      (writeoffer_second.getState('bld_roomPerFloor') ==undefined)
+    &&(writeoffer_second.getState('bld_floor') ==undefined)
+    &&(writeoffer_second.getState('bld_Bfloor') ==undefined)
+    &&(writeoffer_second.getState('bld_firstRoomNumber') ==undefined)
+    )
+     
+
+  //  (writeoffer_second.getState('bld_roomPerFloor') === this.state.bld_roomPerFloor || writeoffer_second.getState('bld_roomPerFloor') ==undefined)
+  //  && (writeoffer_second.getState('bld_floor') === this.state.bld_floor || writeoffer_second.getState('bld_floor') ==undefined)
+  //  && (writeoffer_second.getState('bld_Bfloor') === this.state.bld_Bfloor || writeoffer_second.getState('bld_Bfloor') ==undefined)
+  //  && (writeoffer_second.getState('bld_firstRoomNumber') === this.state.bld_firstRoomNumber|| writeoffer_second.getState('bld_firstRoomNumber') ==undefined)
  )
    {
       this.setState( {bld_contact: contact_dash},
@@ -200,13 +241,7 @@ export default class writeoffer extends Component {
  
 
   }
- 
-  onSwipeLeft(gestureState) {
-    
-    this._goNext();
-    
-  }
- 
+
 
   render() {
 
@@ -217,9 +252,7 @@ export default class writeoffer extends Component {
    
     return (
    
-    <GestureRecognizer
-    onSwipeLeft={(state) => this.onSwipeLeft(state)}
-    config ={config}>
+    
     <KeyboardAwareScrollView enableOnAndroid={true}
     keyboardShouldPersistTaps='always'
     innerRef={ref => {this.scroll = ref}}
@@ -381,7 +414,7 @@ export default class writeoffer extends Component {
                 <Text style={styles.itemName}>건물층수 <Text style={{color: 'red', fontSize:12, marginTop:5}}> * </Text></Text>
 
                 <TextInput
-                placeholder=""
+                placeholder="최대 9"
                 placeholderTextColor='#aaa'
                 blurOnSubmit={false}
                 onSubmitEditing={(event) => { 
@@ -411,7 +444,7 @@ export default class writeoffer extends Component {
 
                 
                     <TextInput
-                    placeholder=""
+                    placeholder="최대 10"
                     placeholderTextColor='#aaa'
                     style={[styles.itemInput,{textAlign:'right',paddingRight: 35, paddingBottom:0}]}
                     ref='SecondInput'
@@ -572,7 +605,6 @@ export default class writeoffer extends Component {
      {/* </KeyboardAvoidingView>
      </ScrollView> */}
      </KeyboardAwareScrollView >
-     </GestureRecognizer>
      
 
    );

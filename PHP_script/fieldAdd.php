@@ -34,7 +34,9 @@ header("Content-Type: text/html; charset=UTF-8");
 //    echo '<br>';
 //    $result= mysqli_query($con, $sql2) or die("Error in Selecting " . mysqli_error($con));
 
-$sql2 = "ALTER TABLE `g5_write_test10`  ADD `wr_rent_type`  INT NULL AFTER `wr_room_type`";
+// ALTER TABLE Customer CHANGE Address Addr char(50);
+$sql2 = "ALTER TABLE `g5_write_test10`  CHANGE wr_direction wr_o_bidet varchar(1)";
+// $sql2 = "ALTER TABLE `g5_write_test10`  ADD `wr_rent_type`  INT NULL AFTER `wr_room_type`";
 echo $sql2;
 echo '<br>';
 sql_query($sql2);
