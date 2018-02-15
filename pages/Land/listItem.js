@@ -14,7 +14,7 @@ constructor(props){
 
 shouldComponentUpdate(nextProps, nextState) {
     
-   if(this.props.onCheckMode === nextProps.onCheckMode && this.props.isChecked === nextProps.isChecked && this.props.item.wr_subject === nextProps.item.wr_subject){
+   if(this.props.onCheckMode === nextProps.onCheckMode && this.props.isChecked === nextProps.isChecked && JSON.stringify(this.props.item) === JSON.stringify(nextProps.item)){
     //   console.log(this.props.onCheckMode, nextProps.onCheckMode )
       return false   ;
     }

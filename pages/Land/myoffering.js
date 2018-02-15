@@ -480,6 +480,8 @@ static setSelectedOfferingType(type){
 
   _onRefresh = () =>{
     if(!this.state.isFiltered){
+
+      
         const {memberID, memberName, countPerLoad, myoffering_from,selectedSegment,level, selectedOfferingType} = this.state;
         this.setState({myoffering_from: 0, isRefreshing: true, }, function(){
 
@@ -500,6 +502,8 @@ static setSelectedOfferingType(type){
               
             })
           })
+
+          
           .then((res)=>{
 
             var parsedRes = JSON.parse(res._bodyText).data;

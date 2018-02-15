@@ -117,19 +117,16 @@ export default class writeoffer_sell_second extends Component {
         wr_address_sale_added2: params.wr_address_sale_added2,
         wr_address_sale_added3: params.wr_address_sale_added3,
         wr_address_sale_added4: params.wr_address_sale_added4,
-        wr_address_sale_added5: params.wr_address_sale_added5,
         wr_area_p: params.wr_area_p,
         wr_area_p_added1: params.wr_area_p_added1,
         wr_area_p_added2: params.wr_area_p_added2,
         wr_area_p_added3: params.wr_area_p_added3,
         wr_area_p_added4: params.wr_area_p_added4,
-        wr_area_p_added5: params.wr_area_p_added5,
         wr_area_m: params.wr_area_m,
         wr_area_m_added1: params.wr_area_m_added1,
         wr_area_m_added2: params.wr_area_m_added2,
         wr_area_m_added3: params.wr_area_m_added3,
         wr_area_m_added4: params.wr_area_m_added4,
-        wr_area_m_added5: params.wr_area_m_added5,
         wr_area_p_all: params.wr_area_p_all,
         wr_area_m_all: params.wr_area_m_all,
         
@@ -160,9 +157,6 @@ export default class writeoffer_sell_second extends Component {
     }
     if(this.state.wr_address_sale_added4!=undefined){
       this.setState({addedInput_4_visible:true, addedInputList:[1,2,3,4]})
-    }
-    if(this.state.wr_address_sale_added5!=undefined){
-      this.setState({addedInput_5_visible:true, addedInputList:[1,2,3,4,5]})
     }
     if(this.state.wr_area_p==undefined){
       this.setState({wr_area_p:'',})
@@ -226,18 +220,17 @@ export default class writeoffer_sell_second extends Component {
     }
 
   }
-  _removeFromInputList(item, visibleBool,saleValue, pValue, mValue){
+  _removeFromInputList(item, visibleBool, value1, value2){
     var temp = this.state.addedInputList.slice(0);
     var index = this._findInputIndex(item);
     temp.splice(index,1);
     this.setState({
       addedInputList:temp, 
       [visibleBool]:false, 
-      [saleValue]:undefined,
-      [pValue]:undefined,
-      [mValue]:undefined,
-      wr_area_p_all: this.state[pValue]==''? (this.state.wr_area_p_all - 0).toFixed(2) : (this.state.wr_area_p_all - this.state[pValue]).toFixed(2),
-      wr_area_m_all: this.state[mValue]==''? (this.state.wr_area_p_all - 0).toFixed(2) : (this.state.wr_area_m_all - this.state[mValue]).toFixed(2),
+      [value1]:undefined,
+      [value2]:undefined,
+      wr_area_p_all: this.state[value1]==''? (this.state.wr_area_p_all - 0).toFixed(2) : (this.state.wr_area_p_all - this.state[value1]).toFixed(2),
+      wr_area_m_all: this.state[value2]==''? (this.state.wr_area_p_all - 0).toFixed(2) : (this.state.wr_area_m_all - this.state[value2]).toFixed(2),
     });  
   }
   _addedInputStyle(visible){
@@ -347,7 +340,18 @@ export default class writeoffer_sell_second extends Component {
                                 this.scroll.props.scrollToPosition(0, 0)
                             }}
                             />
-                           
+                            <TouchableOpacity
+                                style={{position:'absolute', top:5, right:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                                onPress={()=>{this.setState({wr_address_sale:''})}}
+                                >
+                                <Icon 
+                                name="md-close-circle"
+                                size={20}
+                                style={{ marginTop: 27,color: '#ddd', }}
+                                                      
+                                />   
+                            </TouchableOpacity>
+
                             {/* <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text> */}
                         
                     </View>
@@ -390,7 +394,17 @@ export default class writeoffer_sell_second extends Component {
                                 />                      
 
                                <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>평</Text>
-                               
+                               <TouchableOpacity
+                                  style={{position:'absolute', top:5, left:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                                  onPress={()=>{this.setState({wr_area_p:''})}}
+                                  >
+                                  <Icon 
+                                  name="md-close-circle"
+                                  size={20}
+                                  style={{ marginTop: 27,color: '#ddd', }}
+                                                        
+                                  />   
+                              </TouchableOpacity>
                         </View>
 
                         <Icon 
@@ -435,7 +449,17 @@ export default class writeoffer_sell_second extends Component {
                                 />                      
                             
                                <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>㎡</Text>
-                              
+                               <TouchableOpacity
+                                  style={{position:'absolute', top:5, left:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                                  onPress={()=>{this.setState({wr_area_m:''})}}
+                                  >
+                                  <Icon 
+                                  name="md-close-circle"
+                                  size={20}
+                                  style={{ marginTop: 27,color: '#ddd', }}
+                                                        
+                                  />   
+                              </TouchableOpacity>
                         </View>
     
                    </View>
@@ -466,7 +490,17 @@ export default class writeoffer_sell_second extends Component {
                             this.scroll.props.scrollToPosition(0, 120)
                         }}
                         />
-                      
+                        <TouchableOpacity
+                            style={{position:'absolute', top:5, right:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                            onPress={()=>{this.setState({wr_address_sale_added1:''})}}
+                            >
+                            <Icon 
+                            name="md-close-circle"
+                            size={20}
+                            style={{ marginTop: 27,color: '#ddd', }}
+                                                  
+                            />   
+                        </TouchableOpacity>
 
                         {/* <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text> */}
                     
@@ -509,7 +543,17 @@ export default class writeoffer_sell_second extends Component {
                             />                      
 
                           <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>평</Text>
-                          
+                          <TouchableOpacity
+                              style={{position:'absolute', top:5, left:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                              onPress={()=>{this.setState({wr_area_p_added1:''})}}
+                              >
+                              <Icon 
+                              name="md-close-circle"
+                              size={20}
+                              style={{ marginTop: 27,color: '#ddd', }}
+                                                    
+                              />   
+                          </TouchableOpacity>
                     </View>
 
                     <Icon 
@@ -553,12 +597,22 @@ export default class writeoffer_sell_second extends Component {
                             />                      
                         
                           <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>㎡</Text>
-                          
+                          <TouchableOpacity
+                              style={{position:'absolute', top:5, left:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                              onPress={()=>{this.setState({wr_area_m_added1:''})}}
+                              >
+                              <Icon 
+                              name="md-close-circle"
+                              size={20}
+                              style={{ marginTop: 27,color: '#ddd', }}
+                                                    
+                              />   
+                          </TouchableOpacity>
                     </View>
                 </View>
                 <TouchableOpacity
                 style={{position:'absolute', top:0, right:0, backgroundColor:'red', justifyContent:'center', alignItems:'center', padding:8}}
-                onPress={()=>{ this._removeFromInputList(1,'addedInput_1_visible','wr_address_sale_added1', 'wr_area_p_added1', 'wr_area_m_added1')}}>
+                onPress={()=>{ this._removeFromInputList(1,'addedInput_1_visible', 'wr_area_p_added1', 'wr_area_m_added1')}}>
                 <Text style={{color:'#fff'}}>X</Text>
 
                 </TouchableOpacity>
@@ -588,7 +642,17 @@ export default class writeoffer_sell_second extends Component {
                             this.scroll.props.scrollToPosition(0, 250)
                         }}
                         />
-                        
+                        <TouchableOpacity
+                            style={{position:'absolute', top:5, right:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                            onPress={()=>{this.setState({wr_address_sale_added2:''})}}
+                            >
+                            <Icon 
+                            name="md-close-circle"
+                            size={20}
+                            style={{ marginTop: 27,color: '#ddd', }}
+                                                  
+                            />   
+                        </TouchableOpacity>
 
                         {/* <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text> */}
                     
@@ -631,7 +695,17 @@ export default class writeoffer_sell_second extends Component {
                                 />                      
 
                               <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>평</Text>
-                              
+                              <TouchableOpacity
+                                  style={{position:'absolute', top:5, left:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                                  onPress={()=>{this.setState({wr_area_p_added2:''})}}
+                                  >
+                                  <Icon 
+                                  name="md-close-circle"
+                                  size={20}
+                                  style={{ marginTop: 27,color: '#ddd', }}
+                                                        
+                                  />   
+                              </TouchableOpacity>
                         </View>
 
                         <Icon 
@@ -675,12 +749,22 @@ export default class writeoffer_sell_second extends Component {
                                 />                      
                             
                               <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>㎡</Text>
-                            
+                              <TouchableOpacity
+                                  style={{position:'absolute', top:5, left:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                                  onPress={()=>{this.setState({wr_area_m_added2:''})}}
+                                  >
+                                  <Icon 
+                                  name="md-close-circle"
+                                  size={20}
+                                  style={{ marginTop: 27,color: '#ddd', }}
+                                                        
+                                  />   
+                              </TouchableOpacity>
                         </View>
                    </View>
                    <TouchableOpacity
                     style={{position:'absolute', top:0, right:0, backgroundColor:'red', justifyContent:'center', alignItems:'center', padding:8}}
-                    onPress={()=>{ this._removeFromInputList(2,'addedInput_2_visible', 'wr_address_sale_added2', 'wr_area_p_added2', 'wr_area_m_added2')}}>
+                    onPress={()=>{ this._removeFromInputList(2,'addedInput_2_visible', 'wr_area_p_added2', 'wr_area_m_added2')}}>
                     <Text style={{color:'#fff'}}>X</Text>
 
                     </TouchableOpacity>
@@ -711,7 +795,17 @@ export default class writeoffer_sell_second extends Component {
                             this.scroll.props.scrollToPosition(0, 430)
                         }}
                         />
-                        
+                        <TouchableOpacity
+                            style={{position:'absolute', top:5, right:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                            onPress={()=>{this.setState({wr_address_sale_added3:''})}}
+                            >
+                            <Icon 
+                            name="md-close-circle"
+                            size={20}
+                            style={{ marginTop: 27,color: '#ddd', }}
+                                                  
+                            />   
+                        </TouchableOpacity>
 
                         {/* <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text> */}
                     
@@ -754,7 +848,17 @@ export default class writeoffer_sell_second extends Component {
                                 />                      
 
                               <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>평</Text>
-                              
+                              <TouchableOpacity
+                                  style={{position:'absolute', top:5, left:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                                  onPress={()=>{this.setState({wr_area_p_added3:''})}}
+                                  >
+                                  <Icon 
+                                  name="md-close-circle"
+                                  size={20}
+                                  style={{ marginTop: 27,color: '#ddd', }}
+                                                        
+                                  />   
+                              </TouchableOpacity>
                         </View>
 
                         <Icon 
@@ -798,12 +902,22 @@ export default class writeoffer_sell_second extends Component {
                                 />                      
                             
                               <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>㎡</Text>
-                             
+                              <TouchableOpacity
+                                  style={{position:'absolute', top:5, left:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                                  onPress={()=>{this.setState({wr_area_m_added3:''})}}
+                                  >
+                                  <Icon 
+                                  name="md-close-circle"
+                                  size={20}
+                                  style={{ marginTop: 27,color: '#ddd', }}
+                                                        
+                                  />   
+                              </TouchableOpacity>
                         </View>
                    </View>
                    <TouchableOpacity
                     style={{position:'absolute', top:0, right:0, backgroundColor:'red', justifyContent:'center', alignItems:'center', padding:8}}
-                    onPress={()=>{ this._removeFromInputList(3,'addedInput_3_visible', 'wr_address_sale_added3', 'wr_area_p_added3', 'wr_area_m_added3')}}>
+                    onPress={()=>{ this._removeFromInputList(3,'addedInput_3_visible', 'wr_area_p_added3', 'wr_area_m_added3')}}>
                     <Text style={{color:'#fff'}}>X</Text>
 
                     </TouchableOpacity>
@@ -834,7 +948,17 @@ export default class writeoffer_sell_second extends Component {
                             this.scroll.props.scrollToPosition(0, 600)
                         }}
                         />
-                        
+                        <TouchableOpacity
+                            style={{position:'absolute', top:5, right:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                            onPress={()=>{this.setState({wr_address_sale_added4:''})}}
+                            >
+                            <Icon 
+                            name="md-close-circle"
+                            size={20}
+                            style={{ marginTop: 27,color: '#ddd', }}
+                                                  
+                            />   
+                        </TouchableOpacity>
 
                         {/* <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text> */}
                     
@@ -877,7 +1001,17 @@ export default class writeoffer_sell_second extends Component {
                                 />                      
 
                               <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>평</Text>
-                           
+                              <TouchableOpacity
+                                  style={{position:'absolute', top:5, left:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                                  onPress={()=>{this.setState({wr_area_p_added4:''})}}
+                                  >
+                                  <Icon 
+                                  name="md-close-circle"
+                                  size={20}
+                                  style={{ marginTop: 27,color: '#ddd', }}
+                                                        
+                                  />   
+                              </TouchableOpacity>
                         </View>
 
                         <Icon 
@@ -921,141 +1055,28 @@ export default class writeoffer_sell_second extends Component {
                                 />                      
                             
                               <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>㎡</Text>
-                           
+                              <TouchableOpacity
+                                  style={{position:'absolute', top:5, left:0, justifyContent:'center', alignItems:'center', paddingRight:10, paddingBottom:10,}}
+                                  onPress={()=>{this.setState({wr_area_m_added4:''})}}
+                                  >
+                                  <Icon 
+                                  name="md-close-circle"
+                                  size={20}
+                                  style={{ marginTop: 27,color: '#ddd', }}
+                                                        
+                                  />   
+                              </TouchableOpacity>
                         </View>
                    </View>
                    <TouchableOpacity
                     style={{position:'absolute', top:0, right:0, backgroundColor:'red', justifyContent:'center', alignItems:'center', padding:8}}
-                    onPress={()=>{ this._removeFromInputList(4,'addedInput_4_visible', 'wr_address_sale_added4', 'wr_area_p_added4', 'wr_area_m_added4')}}>
+                    onPress={()=>{ this._removeFromInputList(4,'addedInput_4_visible', 'wr_area_p_added4', 'wr_area_m_added4')}}>
                     <Text style={{color:'#fff'}}>X</Text>
 
                     </TouchableOpacity>
               </View>
 
 {/* ///////////////////////////////////////////////////다섯번째블락 끝 /////////////////////////////////*/}
-{/* ////////////////////////////////////////////////////////여섯번째블락 시작//////////////////////////////////////////////////////////// */}
-
-<View style={this._addedInputStyle(this.state.addedInput_5_visible)}>   
-              <View style = {[styles.row, {marginTop:0}]}>    
-                        
-                        <Text style={styles.itemName}>지번</Text>
-            
-                        <TextInput
-                        placeholder=""
-                        placeholderTextColor='#aaa'
-                        ref='ThirteenthInput'
-                        onSubmitEditing={(event) => { 
-                          this.refs.FourteenthInput.focus(); 
-                        }}
-                        blurOnSubmit={false}
-                        returnKeyType = {"next"} 
-                        style={[styles.itemInput, {position:'relative'}]}
-                        underlineColorAndroid="transparent"
-                        onChangeText= {wr_address_sale_added5 => this.setState({wr_address_sale_added5})}
-                        value={this.state.wr_address_sale_added5}
-                        onFocus={(event: Event) => {
-                            // `bind` the function if you're using ES6 classes
-                            this.scroll.props.scrollToPosition(0, 600)
-                        }}
-                        />
-                        
-                        {/* <Text style={{ marginTop: 37, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>층</Text> */}
-                    
-              </View>
-                
-              <View style={{flexDirection: 'row',}}>    
-
-                        <View style = {styles.row}>    
-                
-                                <Text style={styles.itemName}>면적 <Text style={{color: 'red', fontSize:12, marginTop:5}}> * </Text></Text>
-                
-                            
-                                <TextInput
-                                placeholder=""
-                                placeholderTextColor='#aaa'
-                                ref='FourteenthInput'
-                                onSubmitEditing={(event) => { 
-                                  this.refs.FifteenthInput.focus(); 
-                                }}
-                                blurOnSubmit={false}
-                                returnKeyType = {"next"}
-                                style={[styles.itemInput,{textAlign:'right',paddingRight: 35, paddingBottom:0}]}
-                                keyboardType='phone-pad'
-                                underlineColorAndroid="transparent"
-                                onChangeText= {wr_area_p_added5 => this.setState({
-                                  wr_area_p_added5: wr_area_p_added5, 
-                                  wr_area_m_added5: (wr_area_p_added5*3.3058).toFixed(2),
-                                  }, function(){
-                                    this.setState({
-                                      wr_area_p_all: this._getSum().toFixed(2),
-                                      wr_area_m_all: (this._getSum()*3.3058).toFixed(2)
-                                     
-                                     })
-                                   })}
-                                value={`${this.state.wr_area_p_added5}`}
-                                onFocus={(event: Event) => {
-                                // `bind` the function if you're using ES6 classes
-                                this.scroll.props.scrollToPosition(0, 600)
-                                }}
-                                />                      
-
-                              <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>평</Text>
-                             
-                        </View>
-
-                        <Icon 
-                        name="ios-repeat"
-                        size={20}
-                        style={{color: '#000', marginTop: 47, marginLeft: 10, marginRight: 10,}}
-                        />
-                        <View style = {styles.row}>    
-                
-                                <Text style={styles.itemName}> </Text>
-                
-                            
-                                <TextInput
-                                placeholder=""
-                                placeholderTextColor='#aaa'
-                                ref='FifteenthInput'
-                                onSubmitEditing={(event) => { 
-                                  
-                                  this._goNext();
-                                }}
-                                blurOnSubmit={false}
-                                returnKeyType = {"next"}
-                                style={[styles.itemInput,{textAlign:'right',paddingRight: 35, paddingBottom:0}]}
-                                keyboardType='phone-pad'
-                                underlineColorAndroid="transparent"
-                                onChangeText= {wr_area_m_added5 => this.setState({
-                                  wr_area_m_added5: wr_area_m_added5, 
-                                  wr_area_p_added5: (wr_area_m_added5*0.3025).toFixed(2),
-                                 }, function(){
-                                  this.setState({
-                                    wr_area_p_all: this._getSum().toFixed(2),
-                                    wr_area_m_all: (this._getSum()*3.3058).toFixed(2)
-                                   
-                                   })
-                                 })}
-                                value={`${this.state.wr_area_m_added5}`}
-                                onFocus={(event: Event) => {
-                                // `bind` the function if you're using ES6 classes
-                                this.scroll.props.scrollToPosition(0, 600)
-                                }}
-                                />                      
-                            
-                              <Text style={{ marginTop: 38, marginLeft: 3, fontSize:12, position: 'absolute', top:-3, right:15}}>㎡</Text>
-                            
-                        </View>
-                   </View>
-                   <TouchableOpacity
-                    style={{position:'absolute', top:0, right:0, backgroundColor:'red', justifyContent:'center', alignItems:'center', padding:8}}
-                    onPress={()=>{ this._removeFromInputList(5,'addedInput_5_visible', 'wr_address_sale_added5', 'wr_area_p_added5', 'wr_area_m_added5')}}>
-                    <Text style={{color:'#fff'}}>X</Text>
-
-                    </TouchableOpacity>
-              </View>
-
-{/* ///////////////////////////////////////////////////여섯번째블락 끝 /////////////////////////////////*/}
 
                <TouchableOpacity style={this.state.addedInput_4_visible?{display:'none'}:{width:'100%', justifyContent:'center', alignItems:'center', borderWidth:1, borderColor:'#3b4db7', padding:10}}
                 onPress={()=>{this._addTextInput(this.state.addedInputList)}}>
