@@ -15,6 +15,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.4.1",
     "react-native-maps": "^0.17.1",
     "react-native-modal-picker": "0.0.16",
+    "react-native-permissions": "^1.1.1",
     "react-native-phone-call": "^1.0.4",
     "react-native-popup-dialog": "^0.9.39",
     "react-native-radio-buttons": "^1.0.0",

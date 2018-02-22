@@ -592,6 +592,7 @@ tabBarPosition: 'bottom',
 ///////////////////////////////////////원룸 시작/////////////////////////////////////////////
 import Myoffering_room from './Room/myoffering';
 import Officeoffering_room from './Room/officeoffering';
+import RoomMapView from './Room/roomMapView';
 import GetBookmark_room from './Room/getBookmark';
 import BookmarkList_room from './Room/bookmarkList';
 import Detail_room from './Room/detail';
@@ -635,6 +636,64 @@ const WriteOfferRentNavigator_room = TabNavigator({
 },{
    backBehavior:'none',
    swipeEnabled:false,
+	tabBarOptions: {
+	   // inactiveBackgroundColor: '#e91e63',
+	   
+	   labelStyle: {
+		   fontSize: 12.5,
+		   marginBottom:1,
+		   color:'#777',
+	   },
+	   style: {
+
+	   height:45,
+	   backgroundColor: '#fff',
+	   borderBottomWidth: 1,
+	   borderColor: '#e1e1e1',
+	   marginTop: -2.5,
+	   elevation:0,
+	   
+	   },
+	   tabStyle: {
+		   
+		   // marginBottom: 3,
+	   },
+	   indicatorStyle:{
+		   backgroundColor: '#2b3bb5',
+		   height: 3,
+		   
+	   }
+	 }
+   })
+
+   const WriteOfferRentNavigator_room_roomFirst = TabNavigator({
+
+	First: { 
+		screen: Writeoffer_room,
+		navigationOptions:{
+			
+			tabBarLabel: '건물정보',
+			tabBarOnPress: (scene, jumpToIndex) => {
+			  
+		   },
+			
+		}
+	},
+	Second: {
+		screen: Writeoffer_second_room,
+		navigationOptions:{
+			tabBarLabel: '호실정보',
+			tabBarOnPress: (scene, jumpToIndex) => {
+			   
+			},
+		}
+
+	},
+	
+},{
+   backBehavior:'none',
+   swipeEnabled:false,
+   initialRouteName : 'Second',
 	tabBarOptions: {
 	   // inactiveBackgroundColor: '#e91e63',
 	   
@@ -748,14 +807,18 @@ const MyNoteStack_room = StackNavigator({
 	Profile : {screen : Profile_room,
 	   navigationOptions:{tabBarVisible:false,}
    },
-   WriteofferRent: {
-	screen: WriteOfferRentNavigator_room,
-	navigationOptions:{tabBarVisible:false,}	
- },
+    WriteofferRent: {
+		screen: WriteOfferRentNavigator_room,
+		navigationOptions:{tabBarVisible:false,}	
+   },
 	WriteofferSell: {
 	   screen: WriteOfferSellNavigator_room,
 	   navigationOptions:{tabBarVisible:false,}	
-	},
+   },
+	WriteofferRent_roomFirst: {
+		screen: WriteOfferRentNavigator_room_roomFirst,
+		navigationOptions:{tabBarVisible:false,}
+   },
    RoomIndividual: {
 	   screen: RoomIndividual,
 	   navigationOptions: {tabBarVisible:false,}
@@ -781,6 +844,10 @@ const BookmarkStack_room = StackNavigator({
    },
 
 },)
+
+const RoomMapViewStack = StackNavigator({
+	RoomMapView : {screen : RoomMapView}
+})
 
 const MainNavigator_room = TabNavigator({
 
@@ -812,10 +879,23 @@ const MainNavigator_room = TabNavigator({
 			
 	// 	},
 	// },
-	Bookmark: {
-		screen: BookmarkStack_room,
+	// Bookmark: {
+	// 	screen: BookmarkStack_room,
+	// 	navigationOptions:{
+	// 		tabBarLabel: '즐겨찾기',
+	// 		tabBarIcon:({ tintColor }) => (
+	// 			<Icon
+	// 				name='star'
+	// 				size={25}
+	// 				style={{color:tintColor,}}
+	// 			/>
+	// 		)
+	// 	},
+	// },
+	RoomMapView: {
+		screen: RoomMapViewStack,
 		navigationOptions:{
-			tabBarLabel: '즐겨찾기',
+			tabBarLabel: '지도',
 			tabBarIcon:({ tintColor }) => (
 				<Icon
 					name='star'

@@ -47,7 +47,7 @@ export default class writeoffer_second extends Component {
                             <Icon
                             name='check'
                             size={25}
-                            style={{color:'#fff',}}/>
+                            style={{color:'#fff', marginTop:1.5,}}/>
                           </TouchableOpacity>
                         </View>     , 
         title:'매물정보 수정',
@@ -87,7 +87,7 @@ export default class writeoffer_second extends Component {
                               <Icon
                               name='check'
                               size={27}
-                              style={{color:'#fff',}}/>
+                              style={{color:'#fff', marginTop:1.5}}/>
                             </TouchableOpacity>
                         </View>     , 
           title: '매물등록 - 임대',
@@ -326,6 +326,8 @@ static updateFigures(){
      
      }
       , function(){
+
+        writeoffer_second.updateFigures()
 
         this.state.bld_firstRoomNumber==0?
         this.setState({bld_firstRoomNumber: "1"}) : null

@@ -15,7 +15,6 @@ import PopupDialog from 'react-native-popup-dialog';
 var self;
 
 
-
 export default class detail extends Component{
 static navigationOptions= ({navigation}) =>({
      
@@ -27,12 +26,17 @@ static navigationOptions= ({navigation}) =>({
         height: 52,          
       },
       headerTintColor: 'white',
-      headerRight:   navigation.state.params.mode=='edit'? <TouchableOpacity
+      headerRight:  
+    //   navigation.state.params.mode=='edit'? 
+     
+      <TouchableOpacity
       style={{width:50,height:50,backgroundColor:'#3b4db7', marginRight:-5,justifyContent:'center', alignItems:'center'}}
       onPress={()=>{
         //   if(self.state.segment=='임대'){
         //       self.state.wr_rec_sectors.split(' ');
-              self.props.navigation.navigate('WriteofferRent',{...self.state})
+              self.state.currentRouteName=='Rooms'||self.state.currentRouteName==''?
+              self.props.navigation.navigate('WriteofferRent_roomFirst',{...self.state})
+              :self.props.navigation.navigate('WriteofferRent',{...self.state})
         //    }
         //    else if(self.state.segment=='매매'){
         //       self.props.navigation.navigate('WriteofferSell',self.state)
@@ -43,10 +47,11 @@ static navigationOptions= ({navigation}) =>({
       size={25}
       style={{color:'#fff', marginRight: 20,}}
       /> 
-      </TouchableOpacity> :   <Icon
-                            name="md-create"
-                            size={25}
-                            style={{color:'rgba(255,255,255,0.3)', marginRight:20}}/> 
+      </TouchableOpacity>
+    //    :   <Icon
+    //         name="md-create"
+    //         size={25}
+    //         style={{color:'rgba(255,255,255,0.3)', marginRight:20}}/> 
       
 });
 
@@ -59,11 +64,11 @@ static updateInformationFromOutside(params){
         this.state={ 
             isLoaded: false,
             selectedRoom : {},
-            // onEditMode:false,
+            currentRouteName: '',
                         
         };
 
- self = this;
+        self = this;
     }
     
     componentWillMount(){
@@ -77,6 +82,15 @@ static updateInformationFromOutside(params){
        
     
        
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+
+        if(this.state.currentRouteName !== nextState.currentRouteName){
+            return false
+        }
+
+        return true
     }
 
  
@@ -118,7 +132,7 @@ static updateInformationFromOutside(params){
     //     this.setState({onEditMode: !this.state.onEditMode})
     // }
 	render(){
-
+        console.log('currentRouteName',this.state.currentRouteName)
         const RoomMapNavigator = TabNavigator({
 
             Rooms: { screen : ()=><RoomDetail data = {this.state}
@@ -130,6 +144,10 @@ static updateInformationFromOutside(params){
             navigationOptions:{
 
                 tabBarLabel: '호실정보',
+                // tabBarOnPress:   (scene, jumpToIndex) => {
+                //     console.log('onpressed')
+                // },
+                
                             
             }},    
 
@@ -142,6 +160,10 @@ static updateInformationFromOutside(params){
             navigationOptions:{
 
                 tabBarLabel: '공실체크',
+                // tabBarOnPress:   (scene, jumpToIndex) => {
+                //     console.log('onpressed')
+                // },   
+                
                             
             }}, 
            
@@ -155,7 +177,7 @@ static updateInformationFromOutside(params){
     
         
         }, {
-            backBehavior:'none',            
+            backBehavior:'none',         
             tabBarOptions: {
                 
                 activeTintColor: '#3b4db7',
@@ -198,7 +220,18 @@ static updateInformationFromOutside(params){
             return(
              <ScrollView contentContainerStyle={styles.container}>
                     
-                     <RoomMapNavigator/>
+                     <RoomMapNavigator
+                     ref={(ref) => { this.nav = ref; }}
+                     onNavigationStateChange={(prevState, currentState) => {
+                        const getCurrentRouteName = (navigationState) => {
+                          if (!navigationState) return null;
+                          const route = navigationState.routes[navigationState.index];
+                          if (route.routes) return getCurrentRouteName(route);
+                          return route.routeName;
+                        };
+                     this.setState({currentRouteName :  getCurrentRouteName(currentState) }, function(){console.log(this.state.currentRouteName)});
+                   }}
+                     />
                 
             </ScrollView>
 
